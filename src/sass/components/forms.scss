@@ -1,0 +1,46 @@
+.form-groups-inline {
+    font-family: $form-font-family;
+    display: flex;
+    flex-wrap: wrap;
+
+    div {
+        margin-top: 10px;
+    }
+
+    .form-field {
+        width: 35%;
+    }
+}
+
+.form-field {
+    margin-right: 10%;
+    margin-top: 5px;
+
+    input {
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        color: $form-field-color;
+        font-size: 16px;
+        height: 40px;
+        margin-top: 5px;
+        padding-left: 10px;
+        width: 90%;
+    }
+
+    select {
+        font-size: 16px;
+        color: $form-field-color;
+        height: 45px;
+        margin-top: 5px;
+        width: 90%; 
+    }
+
+    .error {
+        border-color: red;
+    }
+
+    .readOnly {
+        background-color: #eee;
+        border: 1px dashed;
+    }
+}

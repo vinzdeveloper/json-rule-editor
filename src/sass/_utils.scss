@@ -1,0 +1,8 @@
+
+@mixin link {
+  background: $btn-bg-clr;
+  border: 1px solid $btn-bg-clr;
+  border-radius: 10px;
+  font-family: $btn-font-family;
+  color: $btn-color;
+}

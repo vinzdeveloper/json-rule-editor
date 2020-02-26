@@ -1,0 +1,18 @@
+table {
+    &.table {
+        color: $form-field-color;
+        font-family: $form-font-family;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    tr:first-child {
+        color: $form-label-color;
+        text-align: left;
+    }
+
+    hr {
+        margin: 20px 0px 10px;
+        border: 1px dashed #aaa;
+    }
+}

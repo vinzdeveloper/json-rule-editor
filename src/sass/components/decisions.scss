@@ -1,0 +1,23 @@
+.rule-flex-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 50px;
+
+    .decision-box {
+        border-bottom: 2px solid #ccc;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        width: 32%;
+    }
+
+    .tool-flex {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+
+        div {
+            width: 30px;
+        }
+    }
+}

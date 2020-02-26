@@ -1,0 +1,16 @@
+<svg width="32" height="40" xmlns="http://www.w3.org/2000/svg">
+ <title>plus-box</title>
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="32" width="32" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path fill="#1abb9c" id="svg_1" d="m8,14.857c-0.005,0 -0.01,0 -0.016,0c-0.631,0 -1.143,0.511 -1.143,1.143s0.511,1.143 1.143,1.143c0.006,0 0.011,0 0.017,0l15.998,0c0.005,0 0.01,0 0.016,0c0.631,0 1.143,-0.511 1.143,-1.143s-0.511,-1.143 -1.143,-1.143c-0.006,0 -0.011,0 -0.017,0l-15.998,0z"/>
+  <path fill="#1abb9c" id="svg_2" d="m17.143,8c0,-0.005 0,-0.01 0,-0.016c0,-0.631 -0.511,-1.143 -1.143,-1.143s-1.143,0.511 -1.143,1.143c0,0.006 0,0.011 0,0.017l0,-0.001l0,15.999c0,0.005 0,0.01 0,0.016c0,0.631 0.511,1.143 1.143,1.143s1.143,-0.511 1.143,-1.143c0,-0.006 0,-0.011 0,-0.017l0,0.001l0,-15.999z"/>
+  <path fill="#1abb9c" id="svg_3" d="m1.143,0c-0.631,0 -1.143,0.511 -1.143,1.143l0,0l0,29.713c0,0.631 0.512,1.143 1.143,1.143l29.713,0c0.631,0 1.143,-0.511 1.143,-1.143l0,0l0,-29.713c0,-0.631 -0.511,-1.143 -1.143,-1.143l-29.713,0zm1.143,2.286l27.428,0l0,27.428l-27.428,0l0,-27.428z"/>
+  <text id="svg_4" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif" font-weight="bold" font-size="5px" fill="#000000" y="47" x="0">Created by scott desmond</text>
+  <text id="svg_5" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif" font-weight="bold" font-size="5px" fill="#000000" y="52" x="0">from the Noun Project</text>
+ </g>
+</svg>

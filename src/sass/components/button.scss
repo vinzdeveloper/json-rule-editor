@@ -1,0 +1,76 @@
+
+.nav-btn {
+  margin: 30px 0;
+}
+
+.nav-glass-btn {
+  @include link;
+  font-size: $btn-font-size;
+  height: 50px;
+  width: 300px;
+
+  &:hover {
+    background: $btn-bg-clr-hover;  
+  }
+}
+
+.btn-container {
+  display: flex;
+  margin: {
+    right: 20px;
+    top: 20px;
+  }
+}
+
+.btn-group {
+  display: flex;
+  margin-top: 10px;
+}
+
+.btn {
+  border-radius: 5px;
+  color: $btn-color;
+  font-size: 16px;
+  font-family: $form-font-family;
+  height: 40px;
+  line-height: 40px;
+  outline:none;
+  padding-top: 0;
+  width: 140px;
+}
+
+.primary-btn {
+  background-color: $primary-btn-color;
+}
+
+.primary-btn:focus {
+  background-color: #0f7965;
+}
+
+.cancel-btn {
+  background-color: $cancel-btn-color;
+}
+
+.cancel-btn:focus {
+  background-color: #405367;
+}
+
+.btn-success {
+  background-color: $primary-btn-color;
+  text-decoration: none;
+}
+
+.btn-link {
+  background-color: $cancel-btn-color;
+  text-decoration: none;
+}
+
+.btn-danger {
+  background-color: $danger;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: $primary-btn-color;
+  text-decoration: none;
+}

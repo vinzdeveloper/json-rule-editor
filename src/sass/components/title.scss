@@ -1,0 +1,43 @@
+.header-container {
+    background-color: $title-bg-clr;
+    color: $title-color;
+    font-family: $title-font-family;
+    font-size: 25px;
+    left: 0;
+    height: $title-height;
+    padding: 20px;
+    position: fixed;
+    right: 0;
+    text-align: right;
+    top: 0;
+}
+
+.rule-icon {
+    background: url('../../assets/icons/rule-black.svg') no-repeat;
+    background-size: contain;
+    margin: 0 0px 0 0;
+    padding: 0;
+    padding-bottom: 60px;
+    position: absolute;
+    width: 100%;
+};
+
+.page-title {
+    display: flex;
+
+    h1 {
+        color: $page-title-color;
+        font-size: 1.75rem;
+        font-family: $title-font-family;
+        font-weight: 500;
+        margin-top: 5px;
+        margin-left: 20px;
+    }
+}
+
+.icon-card {
+    height: 60px;
+    width: 60px;
+}
+
+

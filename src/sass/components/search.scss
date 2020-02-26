@@ -1,0 +1,26 @@
+.search-field {
+    border: 1px solid $title-bg-clr;
+    border-radius: 10px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    font-size: 15px;
+    height: 30px;
+    outline: none;
+    width: 220px;
+}
+
+.search-btn {
+    background-color: $title-bg-clr;
+    border: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: $btn-color;
+    font-size: 15px;
+    height: 34px;
+    padding: {
+        top: 1px;
+        bottom: 1px;
+    }
+    width: 80px;
+    
+}

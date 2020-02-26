@@ -1,0 +1,26 @@
+.tab-container {
+    border-bottom: 2px solid #ccc;
+    display: flex;
+    margin-top: 20px;
+    padding: {
+        left: 40px;
+    };
+
+    div {
+        cursor: pointer;
+        color: $page-title-color;
+        font-family: $tab-font-family;
+        margin-right: 20px;
+        padding: {
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+        }
+
+        &.active {
+            border-bottom: 3px solid $border-left-color;
+            color: $title-bg-clr;
+            font-weight: bold;
+        }
+    }
+}

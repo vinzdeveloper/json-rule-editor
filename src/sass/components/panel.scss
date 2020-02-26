@@ -1,0 +1,17 @@
+.panel-wrapper {
+    border: 2px solid #006a4d;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.panel-box-wrapper {
+    border: 1px solid #bbb;
+    box-shadow: 1px 3px #eee;
+    display: flex;
+    font-family: $tab-font-family;
+    font-size: 17px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    padding: 20px;
+}

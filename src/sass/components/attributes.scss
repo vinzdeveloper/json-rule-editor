@@ -1,0 +1,124 @@
+.attributes-header {
+    color: $title-bg-clr;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: $tab-font-family;
+    justify-content: flex-end;
+    margin: 20px 0;
+    width: 100%;
+
+    .attr-link {
+        cursor: pointer;
+        margin: {
+            left: 25px;
+            right: 25px;
+            top: 10px;
+        }
+
+        .text {
+            margin-left: 30px;
+        }
+    }
+
+    .attr-link:hover {
+        text-decoration: underline;
+    }
+
+    .plus-icon {
+        background: url('../../assets/icons/plus-icon-rounded.svg') no-repeat;
+        background-size: contain;
+        margin: 0 0px 0 0;
+        padding: 0;
+        padding-bottom: 35px;
+        position: absolute;
+        width: 35px;
+    }
+
+    .submit-icon {
+        background: url('../../assets/icons/submit-icon-green-rounded.svg') no-repeat;
+        background-size: contain;
+        margin: 0 0px 0 0;
+        padding: 0;
+        padding-bottom: 25px;
+        position: absolute;
+        width: 25px;
+    }
+
+    .reset-icon {
+        background: url('../../assets/icons/reset-icon-red-rounded.svg') no-repeat;
+        background-size: contain;
+        margin: 0 0px 0 0;
+        padding: 0;
+        padding-bottom: 25px;
+        position: absolute;
+        width: 25px;
+    }
+}
+
+.panel-box-wrapper {
+    border: 1px solid #bbb;
+    box-shadow: 1px 3px #eee;
+    display: flex;
+    font-family: $tab-font-family;
+    font-size: 17px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    padding: 20px;
+
+    div {
+       margin: 0 20px;
+       width: 10%;
+    }
+
+    div:first-child {
+        width: 5%;
+    }
+
+    div:nth-child(2) {
+        width: 25%;
+    }
+
+    div:last-child {
+        width: 25%;
+    }
+
+   a {
+       color: $form-field-color;
+       cursor: pointer;
+       font-family: $tab-font-family;
+       font-size: 16px;
+       margin-right: 30px;
+
+       
+   }
+}
+
+@mixin attr-linktype($color) {
+    background-color: $color;
+    border-radius: 5px;
+    color: $btn-color;
+    padding: 2px 5px;
+    font-size: 16px;
+}
+
+.string {
+    @include attr-linktype(#2FA4E7);
+}
+
+.boolean {
+    @include attr-linktype(#DD5600);
+}
+
+.array {
+    @include attr-linktype(#6610f2);
+    
+}
+
+.date {
+    @include attr-linktype(#73A839);
+}
+
+.number {
+    @include attr-linktype(#033C73);
+}
+

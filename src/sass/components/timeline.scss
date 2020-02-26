@@ -1,0 +1,58 @@
+.timeline-icon-style {
+    height: 15px;
+    width: 15px;
+}
+
+.rulecases-container {
+
+    font-family: $form-font-family;
+
+    .vertical-timeline {
+        padding: 00px 0px;
+
+        div {
+            width: 100%;
+        }
+    }
+
+    .vertical-timeline-element-title {
+        span {
+            margin-right: 10px;
+        }
+        .caption {
+            color: $form-label-color;
+            font-size: 13px;
+        }
+
+        .badge {
+            background-color: #2FA4E7;
+            border-radius: 3px;
+            color: #fff;
+            font-size: 15px;
+            padding:5px;
+        }
+    }
+
+    .vertical-timeline-element-body {
+        color: $form-field-color;
+        font-size: 13px;
+    }
+
+    .vertical-timeline::before {
+        left: 7px;
+        background-color: #ccc;
+    }
+
+    .vertical-timeline-element--work {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .vertical-timeline-element-content {
+        background-color: #fff;
+        border-radius: 0px;
+        padding: 0px 10px;
+        box-shadow: none;
+        margin-left: 30px;
+    }
+}

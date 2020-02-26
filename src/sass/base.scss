@@ -1,0 +1,25 @@
+@import './variables.scss';
+@import './utils.scss';
+@import './components/index.scss';
+
+h1 {
+    color: blue;
+}
+
+.main-container {
+    margin: {
+        left: $sideNavWidth + 60px;
+        right: 30px;
+    }
+    padding: {
+        top: $title-height + 50px;
+        bottom: 30px;
+    };
+    position: relative;
+}
+
+label {
+    color: $form-label-color;
+    font-size: 20px;
+    margin-right: 20px;
+}

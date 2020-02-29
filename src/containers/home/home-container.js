@@ -5,7 +5,7 @@ import PageTitle from '../../components/title/page-title';
 import Tabs from '../../components/tabs/tabs';
 import Attributes from '../../components/attributes/attributes';
 import Decisions from '../../components/decisions/decision';
-import { handleAttribute, resetAttribute } from '../../actions/attributes';
+import { handleAttribute } from '../../actions/attributes';
 import { handleDecision } from '../../actions/decisions';
 
 class HomeContainer extends Component {
@@ -30,7 +30,7 @@ class HomeContainer extends Component {
             {this.state.activeTab === 'Attributes' && <Attributes attributes={attributes} 
               handleAttribute={this.props.handleAttribute }/>}
             {this.state.activeTab === 'Decisions' && <Decisions decisions={decisions} attributes={attributes}
-             handleRuleCase={this.props.handleDecisions} />}
+             handleDecisions={this.props.handleDecisions} />}
         </div>
       </div>
     }
@@ -55,7 +55,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 
   handleAttribute: (operation, attribute, index) => dispatch(handleAttribute(operation, attribute, index)),
-  handleDecisions: (operation, decision, index) => dispatch(handleDecision(operation, decision, index)),
+  handleDecisions: (operation, decision) => dispatch(handleDecision(operation, decision)),
 
 
 });

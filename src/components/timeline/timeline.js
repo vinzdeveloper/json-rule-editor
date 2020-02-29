@@ -10,9 +10,6 @@ const iconClass = {
     width: '15px'
 }
 
-const elementClass = {
-    
-}
 
 class Timeline extends Component {
 
@@ -26,7 +23,7 @@ class Timeline extends Component {
                 iconStyle={iconClass} key={attr.name}
             >
                 <p className="vertical-timeline-element-title">
-                    <span className="badge">{attr.name}</span>
+                    <span className={`badge ${attr.type}`}>{attr.name}</span>
                     <span className="caption">{attr.operator}</span>
                 </p>
                 <p className="vertical-timeline-element-body">{attr.value}</p>

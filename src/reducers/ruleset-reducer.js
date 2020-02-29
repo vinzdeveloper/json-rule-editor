@@ -7,24 +7,12 @@ const initialState = {
     activeRuleset: 0,
 }
 
-const findDecisionByOutcome = (decisions, value) => {
-    return decisions.find(decision => decision.outcome === value);
-}
 
 const replaceRulesetByIndex = (rulesets, targetset, index) => {
      //rulesets.splice(index, 1, targetset);
      return [ ...rulesets.slice(0, index), targetset, ...rulesets.slice(index + 1)];
 }
 
-
-/* const findAttribute = (attributes, index) => {
-    return attributes.find(attr => attribute.name === attr.name && 
-        attribute.type === attr.type);
-}*/
-
-/* const replaceAttributeByIndex = (attributes, targetset, index) => {
-    return rulesets.splice(index, 1, targetset);
-} */
 
 function ruleset(state = initialState, action='') {
 
@@ -41,22 +29,23 @@ function ruleset(state = initialState, action='') {
         }
 
         case ActionTypes.UPDATE_DECISION: {
-
-            const { decision, index } = action.payload;
-            let decisions = [ ...state.rulesets[state.activeRuleset].decisions ];
-            decisions[index] = decision;
-            state.rulesets[state.activeRuleset].decisions = decisions;
-
-            return { ...state };
-        }
+            const { caseAttr, decisionIndex, caseIndex } = action.payload;
+            const activeRuleSet =  { ...state.rulesets[state.activeRuleset] };
+ 
+            activeRuleSet.decisions[decisionIndex].cases[caseIndex] = caseAttr;
+ 
+             return { ...state, 
+                     rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
+         }
         case ActionTypes.REMOVE_DECISION: {
 
-            const { index } = action.payload;
-            let decisions = [ ...state.rulesets[state.activeRuleset].decisions ];
-            decisions = decisions.splice(index,1);
-            state.rulesets[state.activeRuleset].attributes = decisions;
-
-            return { ...state };
+            const { decisionIndex } = action.payload;
+            const activeRuleSet =  { ...state.rulesets[state.activeRuleset] };
+ 
+            activeRuleSet.decisions.splice(decisionIndex, 1);
+ 
+             return { ...state, 
+                     rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
         }
         case ActionTypes.ADD_ATTRIBUTE: {
            const { attribute } = action.payload;
@@ -94,6 +83,14 @@ function ruleset(state = initialState, action='') {
                 rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
         }
 
+        case ActionTypes.RESET_DECISION: {
+            const activeRuleSet =  { ...state.rulesets[state.activeRuleset] };
+            activeRuleSet.decisions = cloneDeep(mockruleset[state.activeRuleset].decisions);
+
+            return { ...state,
+                rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
+        }
+
         case ActionTypes.ADD_CASE: {
            const { caseAttr, outcome } = action.payload;
            const activeRuleSet =  { ...state.rulesets[state.activeRuleset] };
@@ -112,19 +109,11 @@ function ruleset(state = initialState, action='') {
                     rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
         }
 
-        case ActionTypes.UPDATE_CASE: {
-            const { caseAttr, outcome } = action.payload;
+        case ActionTypes.REMOVE_CASE: {
+            const { caseIndex, decisionIndex } = action.payload;
             const activeRuleSet =  { ...state.rulesets[state.activeRuleset] };
  
-            const updatedDecisions = activeRuleSet.decisions.map(decision => {
-                if (decision.outcome === outcome.value) {
-                    decision.cases.push(caseAttr);
-                    return decision;
-                }
-                return decision;
-            });
- 
-            activeRuleSet.decisions = updatedDecisions;
+            activeRuleSet.decisions[decisionIndex].cases.splice(caseIndex, 1);
  
              return { ...state, 
                      rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}

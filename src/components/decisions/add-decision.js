@@ -85,10 +85,10 @@ class AddDecision extends Component {
      renderOutputField(type) {
         if (type === DATA_TYPES.BOOLEAN) {
             return <SelectField options={['true', 'false']} onChange={this.onChangeOutcomeValue}
-            value={this.state.outcome.value} error={this.state.outcome.error.value}/>
+            value={this.state.outcome.value} error={this.state.outcome.error.value} readOnly={this.props.editDecision}/>
         } else {
             return <InputField onChange={this.onChangeOutcomeValue} value={this.state.outcome.value}
-             error={this.state.outcome.error.value}/>
+             error={this.state.outcome.error.value} readOnly={this.props.editDecision} />
         }
      }
 
@@ -107,7 +107,7 @@ class AddDecision extends Component {
         const outcome = (<tr>
                 <td>Outcome</td>
                 <td><SelectField options={Object.keys(operator)} onChange={this.onChangeOutcomeType}
-                     value={this.state.outcome.type} error={this.state.outcome.error.type}/></td>
+                     value={this.state.outcome.type} error={this.state.outcome.error.type} readOnly={this.props.editDecision}/></td>
                 <td>{this.renderOutputField(this.state.outcome.type)}</td>
         </tr>);
 

@@ -78,7 +78,7 @@ class AttributeDetails extends Component {
 
     const attrList = attributes.map((attr, index) => 
     (<div key={attr.name}>
-        <PanelBox>
+        <PanelBox className={attr.type}>
             <div>{index + 1}</div>
             <div>{attr.name}</div>
             <div><span className={attr.type}>{attr.type}</span></div>

@@ -71,7 +71,7 @@
     }
 
     div:first-child {
-        width: 5%;
+        width: 1%;
     }
 
     div:nth-child(2) {
@@ -79,17 +79,20 @@
     }
 
     div:last-child {
-        width: 25%;
+        width: 0;
     }
 
    a {
-       color: $form-field-color;
+       color: $link-color;
        cursor: pointer;
        font-family: $tab-font-family;
-       font-size: 16px;
+       font-size: 14px;
        margin-right: 30px;
+       text-decoration: none;;
+   }
 
-       
+   a:hover {
+       text-decoration: underline;
    }
 }
 
@@ -98,7 +101,8 @@
     border-radius: 5px;
     color: $btn-color;
     padding: 2px 5px;
-    font-size: 16px;
+    font-size: 12px;
+    text-transform: uppercase;
 }
 
 .string {
@@ -119,6 +123,6 @@
 }
 
 .number {
-    @include attr-linktype(#033C73);
+    @include attr-linktype(#9A1750);
 }
 

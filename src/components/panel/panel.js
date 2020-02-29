@@ -25,7 +25,7 @@ Panel.propTypes = {
 
 export const PanelBox = (props) => {
 
-    return (<div className="panel-box-wrapper">
+    return (<div className={`panel-box-wrapper ${props.className}-type`}>
         {props.children}
     </div>);
 }
@@ -33,10 +33,12 @@ export const PanelBox = (props) => {
 
 PanelBox.defaultProps = {
     children: {},
+    className: '',
   };
   
   PanelBox.propTypes = {
     children: PropTypes.any,
+    className: PropTypes.string,
 };
 
 

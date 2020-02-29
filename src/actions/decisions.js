@@ -6,10 +6,16 @@ export const addCase = (caseAttr, outcome) => {
     return ({ type: ActionTypes.ADD_CASE, payload});
 }
 
-export const updateCase = (caseAttr, decisionIndex, caseIndex) => {
+export const removeCase = (caseIndex, decisionIndex) => {
+    const payload = { caseIndex, decisionIndex };
+
+    return ({ type: ActionTypes.REMOVE_CASE, payload});
+}
+
+export const updateDecision = (caseAttr, decisionIndex, caseIndex) => {
     const payload = { caseAttr, decisionIndex, caseIndex };
 
-    return ({ type: ActionTypes.UPDATE_CASE, payload});
+    return ({ type: ActionTypes.UPDATE_DECISION, payload});
 }
 
 export const addDecision = (caseAttr, outcome) => {
@@ -19,14 +25,8 @@ export const addDecision = (caseAttr, outcome) => {
     return ({ type: ActionTypes.ADD_DECISION, payload});
 }
 
-export const update = (decision, index) => {
-    const payload = { decision, index};
-
-    return ({ type: ActionTypes.UPDATE_DECISION, payload});
-}
-
-export const remove = (decision, index) => {
-    const payload = { decision, index};
+export const removeDecision = (decisionIndex) => {
+    const payload = { decisionIndex };
 
     return ({ type: ActionTypes.REMOVE_DECISION, payload});
 }
@@ -36,8 +36,12 @@ const find = (caseAttr, outcome, ruleset) => {
     return decision;
 }
 
-export const handleDecision = (action, decision, index) => (dispatch, getState) => {
-    const {caseAttr, outcome} = decision;
+export const reset = () => {
+    return ({type: ActionTypes.RESET_DECISION});
+}
+
+export const handleDecision = (action, editDecision={}) => (dispatch, getState) => {
+    const {caseAttr, outcome} = editDecision;
     switch(action) {
         case 'ADD': {
             const activeRuleset = getState().ruleset.rulesets[getState().ruleset.activeRuleset];
@@ -49,18 +53,24 @@ export const handleDecision = (action, decision, index) => (dispatch, getState) 
             }
         }
         case 'UPDATE': {
+            const { decisionIndex, caseIndex } = editDecision;
             const activeRuleset = getState().ruleset.rulesets[getState().ruleset.activeRuleset];
-            const { decisionIndex, caseIndex } = decision;
             const decision = find(caseAttr, outcome, activeRuleset);
             if (decision && outcome.value === activeRuleset.decisions[decisionIndex].outcome) {
-                return dispatch(updateCase(caseAttr, decisionIndex, caseIndex)); 
-            } else if (decision && outcome.value !== activeRuleset.decisions[decisionIndex].outcome) {
-                return dispatch(addCase(caseAttr, outcome)); 
-            } else {
-                return dispatch(addDecision(caseAttr, outcome));
+                return dispatch(updateDecision(caseAttr, decisionIndex, caseIndex)); 
             }
+            return '';
         }
-        case 'REMOVE':
-            return dispatch(remove(decision, index));
+        case 'REMOVECASE': {
+            const { decisionIndex, caseIndex } = editDecision;
+            return dispatch(removeCase(caseIndex, decisionIndex));
+        }
+        case 'REMOVEDECISION': {
+            const { decisionIndex } = editDecision;
+            return dispatch(removeDecision(decisionIndex));
+        }
+        case 'RESET': {
+            return dispatch(reset());
+        }
     }
 };

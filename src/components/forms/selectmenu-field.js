@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-const SelectField = ({label, onChange, error, required, options, value}) => {
+const SelectField = ({label, onChange, error, required, options, value, readOnly }) => {
 
     const [fieldValue, setFieldValue] = useState(value);
 
     let errorClass = error ? 'error': undefined;
+    let readOnlyClass = readOnly ? 'readOnly': undefined;
 
     const change = (e) => {
         setFieldValue(e.target.value);
@@ -17,7 +18,7 @@ const SelectField = ({label, onChange, error, required, options, value}) => {
 
     return (<div className="form-field">
         {label && <label>{label}</label>}
-        <select onChange={change} className={`form-field-drpdwn ${errorClass}`} value={fieldValue}>
+        <select onChange={change} className={`form-field-drpdwn ${errorClass} ${readOnlyClass}`} value={fieldValue}>
           <option value="-1">Please select...</option>
             {options.length > 0 && 
                 options.map(option => (
@@ -36,6 +37,7 @@ SelectField.defaultProps = {
     required: false,
     options: [],
     value: '',
+    readOnly: false,
   };
   
   SelectField.propTypes = {
@@ -45,6 +47,7 @@ SelectField.defaultProps = {
     required: PropTypes.bool,
     options: PropTypes.array,
     value: PropTypes.string,
+    readOnly: PropTypes.bool,
 };
 
 

@@ -12,7 +12,7 @@ h1 {
         right: 30px;
     }
     padding: {
-        top: $title-height + 50px;
+        top: 10px;
         bottom: 30px;
     };
     position: relative;
@@ -20,6 +20,10 @@ h1 {
 
 label {
     color: $form-label-color;
-    font-size: 20px;
+    font-size: 18px;
     margin-right: 20px;
+}
+
+body {
+    margin: 0px;
 }

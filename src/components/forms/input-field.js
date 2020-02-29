@@ -36,7 +36,7 @@ InputField.defaultProps = {
     label: PropTypes.string,
     onChange: PropTypes.func,
     error: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.any,
     required: PropTypes.bool,
     readOnly: PropTypes.bool,
 };

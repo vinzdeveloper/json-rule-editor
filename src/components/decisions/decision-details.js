@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Timeline from '../timeline/timeline';
 import { PanelBox } from '../panel/panel';
 import 'font-awesome/css/font-awesome.min.css';
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 class DecisionDetails extends Component {
 
@@ -12,7 +13,7 @@ class DecisionDetails extends Component {
             ({case: false, edit: false, index }));
             return { showCase };
         }
-        return undefined;
+        return null;
     }
 
     constructor(props) {
@@ -20,9 +21,14 @@ class DecisionDetails extends Component {
         const showCase = props.decisions.map((decision, index) =>
            ({case: false, edit: false, index })
         )
-        this.state = { showCase };
+        this.state = { showCase, submitAlert: false, removeAlert:false, successAlert: false, removeDecisionAlert: false};
         this.handleExpand = this.handleExpand.bind(this);
+        this.handleRemoveCase = this.handleRemoveCase.bind(this);
+        this.handleRemoveDecision = this.handleRemoveDecision.bind(this);
         this.editCase = this.editCase.bind(this);
+        this.cancelAlert = this.cancelAlert.bind(this);
+        this.removeCase = this.removeCase.bind(this);
+        this.removeDecision = this.removeDecision.bind(this);
     }
 
 
@@ -45,16 +51,83 @@ class DecisionDetails extends Component {
         this.setState({showCase: cases});
     }
 
-    handleRemove(e) {
+    handleRemoveCase(e, caseIndex, decisionIndex) {
         e.preventDefault();
+        this.setState({removeAlert: true, removeCaseIndex: caseIndex, removeDecisionIndex: decisionIndex});
     }
+
+    handleRemoveDecision(e, decisionIndex) {
+        e.preventDefault();
+        this.setState({removeDecisionAlert: true, removeDecisionIndex: decisionIndex});
+    }
+
+    cancelAlert = () => {
+        this.setState({removeAlert: false, successAlert: false, removeDecisionAlert: false});
+    }
+
+    removeCase = () => {
+        this.props.removeCase(this.state.removeCaseIndex, this.state.removeDecisionIndex);
+        this.setState({removeAlert: false, successAlert: true, successMsg: 'Selected Case is removed'});
+    }
+
+    removeDecision = () => {
+        this.props.removeDecision(this.state.removeDecisionIndex);
+        this.setState({removeDecisionAlert: false, successAlert: true, successMsg: 'Selected Decision is removed'});
+    }
+
+    removeCaseAlert = () => {
+        return (<SweetAlert
+            warning
+            showCancel
+            confirmBtnText="Yes, Remove it!"
+            confirmBtnBsStyle="danger"
+            title="Are you sure?"
+            onConfirm={this.removeCase}
+            onCancel={this.cancelAlert}
+            focusCancelBtn
+          >
+            You will not be able to recover the changes!
+          </SweetAlert>)
+    }
+
+    removeDecisionAlert = () => {
+        return (<SweetAlert
+            warning
+            showCancel
+            confirmBtnText="Yes, Remove it!"
+            confirmBtnBsStyle="danger"
+            title="Are you sure?"
+            onConfirm={this.removeDecision}
+            onCancel={this.cancelAlert}
+            focusCancelBtn
+          >
+            You will not be able to recover the changes!
+          </SweetAlert>)
+    }
+
+    successAlert = () => {
+        return (<SweetAlert
+            success
+            title={this.state.successMsg}
+            onConfirm={this.cancelAlert}
+          >
+          </SweetAlert>);
+    }
+
+    alert = () => {
+        return (<div>
+             {this.state.removeAlert && this.removeCaseAlert()}
+             {this.state.removeDecisionAlert && this.removeDecisionAlert()}
+             {this.state.successAlert && this.successAlert()}
+         </div>);
+     }
 
     renderCases = (cases, decisionIndex) => {
         return (<div className="rule-flex-container">
-         { cases && cases.map((caseAttribute, caseIndex) => (<div className="decision-box" key={`case - ${caseAttribute.length}`}>
+         { cases && cases.map((caseAttribute, caseIndex) => (<div className="decision-box" key={`case - ${caseIndex} - ${decisionIndex}`}>
             <div className="tool-flex">
                 <div><a href="" onClick={(e) => this.editCase(e, caseAttribute, caseIndex, decisionIndex)}><span className="fa fa-edit" /></a></div>
-                <div><a href="" onClick=""><span className="fa fa-trash-o" /></a></div>
+                <div><a href="" onClick={((e) => this.handleRemoveCase(e, caseIndex, decisionIndex))}><span className="fa fa-trash-o" /></a></div>
             </div>
             <Timeline caseAttribute={caseAttribute} />
             </div>))}
@@ -67,20 +140,21 @@ class DecisionDetails extends Component {
 
         const decisionList = decisions.map((decision, index) =>
             (<div key={decision.outcome}>
-                <PanelBox>
+                <PanelBox className={decision.type}>
                     <div>{index + 1}</div>
                     <div>{String(decision.outcome)}</div>
                     <div><span className={decision.type}>{decision.type}</span></div>
-                    <div>{`cases(${decision.cases.length})`}</div>
+                    <div>{`cases (${decision.cases.length})`}</div>
                     <div>
                         <a href="" onClick={(e) => this.handleExpand(e, index)}> { showCase[index].case ? 'Collapse' : 'Expand' }</a>
-                        <a href="" onClick={this.handleRemove}>Remove</a>
+                        <a href="" onClick={((e) => this.handleRemoveDecision(e, index))}>Remove</a>
                     </div>
                  </PanelBox>
                  { showCase[index].case && this.renderCases(decision.cases, index)}
             </div>));
 
         return (<div className="">
+            { this.alert() }
             { decisionList }
         </div>);
     }
@@ -89,11 +163,15 @@ class DecisionDetails extends Component {
 DecisionDetails.defaultProps = ({
     decisions: [],
     editCase: () => false,
+    removeCase: () => false,
+    removeDecision: () => false,
 });
 
 DecisionDetails.propTypes = ({
     decisions: PropTypes.array,
     editCase: PropTypes.func,
+    removeCase: PropTypes.func,
+    removeDecision: PropTypes.func,
 });
 
 export default DecisionDetails;

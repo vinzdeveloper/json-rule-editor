@@ -11,9 +11,13 @@ class Decision extends Component {
         super(props);
         this.state={showAddRuleCase: false, editCaseFlag: false, editCase: []};
         this.handleAdd = this.handleAdd.bind(this);
+        this.updateCase = this.updateCase.bind(this);
         this.editCase = this.editCase.bind(this);
         this.addCase = this.addCase.bind(this);
+        this.removeCase = this.removeCase.bind(this);
         this.cancelAddAttribute = this.cancelAddAttribute.bind(this);
+        this.removeDecision = this.removeDecision.bind(this);
+        this.handleReset = this.handleReset.bind(this);
     }
 
     handleSearch = () => {
@@ -39,38 +43,50 @@ class Decision extends Component {
         const decision = this.props.decisions[decisionIndex];
         this.setState({ editCaseFlag: true, editCase, 
             editCaseIndex: caseIndex, 
-            decisionIndex: decisionIndex, 
+            editDecisionIndex: decisionIndex, 
             editOutcome: {value: decision.outcome, type: decision.type }});
     }
 
     addCase(attributes, outcome) {
         const caseAttr = attributes.filter(attribute => attribute.operator !== 'any');
-        this.props.handleRuleCase('ADD', { caseAttr, outcome });
+        this.props.handleDecisions('ADD', { caseAttr, outcome });
         this.setState({showAddRuleCase: false});
     }
 
     updateCase(attributes, outcome) {
         const caseAttr = attributes.filter(attribute => attribute.operator !== 'any');
-        this.props.handleRuleCase('UPDATE', { caseAttr, outcome, 
-            caseIndex: this.state.editCaseIndex, decisionIndex: this.state.decisionIndex });
-        this.setState({showAddRuleCase: false});
+        this.props.handleDecisions('UPDATE', { caseAttr, outcome, 
+            caseIndex: this.state.editCaseIndex, decisionIndex: this.state.editDecisionIndex });
+        this.setState({editCaseFlag: false});
+    }
+
+    removeCase(caseIndex, decisionIndex) {
+        this.props.handleDecisions('REMOVECASE', { caseIndex, decisionIndex});
+    }
+
+    removeDecision(decisionIndex) {
+        this.props.handleDecisions('REMOVEDECISION', { decisionIndex});
+    }
+
+    handleReset() {
+        this.props.handleDecisions('RESET');
     }
 
 
     render() {
         const buttonProps = { primaryLabel: 'Add Rulecase', secondaryLabel: 'Cancel'};
         return (<div className="rulecases-container">
-            <ToolBar handleAdd={this.handleAdd} submit={this.props.submit} reset={this.props.reset} />
+            <ToolBar handleAdd={this.handleAdd} submit={this.props.submit} reset={this.handleReset} />
             {this.state.showAddRuleCase && <AddDecision attributes={this.props.attributes} addCase={this.addCase} cancel={this.cancelAddAttribute} buttonProps={buttonProps} />}
             {this.state.editCaseFlag && <AddDecision attributes={this.state.editCase}
                  outcome={this.state.editOutcome} editDecision addCase={this.updateCase} cancel={this.cancelAddAttribute} buttonProps={buttonProps} />}
-            <DecisionDetails decisions={this.props.decisions} editCase={this.editCase} />
+            <DecisionDetails decisions={this.props.decisions} editCase={this.editCase} removeCase={this.removeCase} removeDecision={this.removeDecision} />
       </div>);
     }
 }
 
 Decision.defaultProps = ({
-    handleRuleCase: () => false,
+    handleDecisions: () => false,
     submit: () =>  false,
     reset: () =>  false,
     decisions: [],
@@ -78,7 +94,7 @@ Decision.defaultProps = ({
 });
 
 Decision.propTypes = ({
-    handleRuleCase: PropTypes.func,
+    handleDecisions: PropTypes.func,
     submit: PropTypes.func,
     reset: PropTypes.func,
     decisions: PropTypes.array,

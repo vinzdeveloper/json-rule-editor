@@ -1,5 +1,7 @@
+@use "sass:map";
+
 .panel-wrapper {
-    border: 2px solid #006a4d;
+    border: 1px solid #006a4d;
     border-radius: 10px;
     margin-top: 20px;
     padding: 20px;
@@ -16,22 +18,22 @@
     padding: 20px;
 
     &.string-type {
-        border-left: 5px solid #2FA4E7;
+        border-left: 5px solid map-get($attribute-type, "string");
     }
 
     &.number-type {
-        border-left: 5px solid #9A1750;
+        border-left: 5px solid map-get($attribute-type, "number");
     }
 
     &.date-type {
-        border-left: 5px solid #73A839;
+        border-left: 5px solid map-get($attribute-type, "date");
     }
 
     &.boolean-type {
-        border-left: 5px solid #DD5600;
+        border-left: 5px solid map-get($attribute-type, "boolean");
     }
 
     &.array-type {
-        border-left: 5px solid #6610f2;
+        border-left: 5px solid map-get($attribute-type, "array");
     }
 }

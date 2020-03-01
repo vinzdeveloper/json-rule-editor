@@ -1,3 +1,5 @@
+@use "sass:map";
+
 .attributes-header {
     color: $title-bg-clr;
     display: flex;
@@ -106,23 +108,23 @@
 }
 
 .string {
-    @include attr-linktype(#2FA4E7);
+    @include attr-linktype(map-get($attribute-type, "string"));
 }
 
 .boolean {
-    @include attr-linktype(#DD5600);
+    @include attr-linktype(map-get($attribute-type, "boolean"));
 }
 
 .array {
-    @include attr-linktype(#6610f2);
+    @include attr-linktype(map-get($attribute-type, "array"));
     
 }
 
 .date {
-    @include attr-linktype(#73A839);
+    @include attr-linktype(map-get($attribute-type, "date"));
 }
 
 .number {
-    @include attr-linktype(#9A1750);
+    @include attr-linktype(map-get($attribute-type, "number"));
 }
 

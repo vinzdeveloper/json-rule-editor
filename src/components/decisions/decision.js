@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import ToolBar from '../toolbar/toolbar';
 import AddDecision from './add-decision';
 import DecisionDetails from './decision-details';
+import Banner from '../panel/banner';
+import * as Message from '../../constants/messages';
 
 
 class Decision extends Component {
 
     constructor(props){
         super(props);
-        this.state={showAddRuleCase: false, editCaseFlag: false, editCase: []};
+        this.state={showAddRuleCase: false, editCaseFlag: false, editCase: [], message: Message.NO_DECISION_MSG};
         this.handleAdd = this.handleAdd.bind(this);
         this.updateCase = this.updateCase.bind(this);
         this.editCase = this.editCase.bind(this);
@@ -76,11 +78,12 @@ class Decision extends Component {
     render() {
         const buttonProps = { primaryLabel: 'Add Rulecase', secondaryLabel: 'Cancel'};
         return (<div className="rulecases-container">
-            <ToolBar handleAdd={this.handleAdd} submit={this.props.submit} reset={this.handleReset} />
+            { this.props.decisions.length > 0 && <ToolBar handleAdd={this.handleAdd} submit={this.props.submit} reset={this.handleReset} /> }
             {this.state.showAddRuleCase && <AddDecision attributes={this.props.attributes} addCase={this.addCase} cancel={this.cancelAddAttribute} buttonProps={buttonProps} />}
             {this.state.editCaseFlag && <AddDecision attributes={this.state.editCase}
                  outcome={this.state.editOutcome} editDecision addCase={this.updateCase} cancel={this.cancelAddAttribute} buttonProps={buttonProps} />}
             <DecisionDetails decisions={this.props.decisions} editCase={this.editCase} removeCase={this.removeCase} removeDecision={this.removeDecision} />
+            {this.props.decisions.length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
       </div>);
     }
 }

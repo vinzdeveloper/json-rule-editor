@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const NavLinks = (props) => {
     const { links } = props;
-    const [visible, setVisible] = useState({0: false});
+    const [visible, setVisible] = useState({0: true});
     
     const enableSublinks = (e, index) => {
       e.preventDefault();
@@ -14,7 +14,7 @@ const NavLinks = (props) => {
     <ul className="link-container" key={link.name}>
         <NavParentLink link={link} onConfirm={enableSublinks} index={index} visible={visible[index]} />
         { link.sublinks && link.sublinks.length > 0 && 
-          <NavSubLink sublinks={link.sublinks} visible={visible[index]} />
+          <NavSubLink sublinks={link.sublinks} visible={visible[index]} onConfirm={props.onConfirm}/>
         }
     </ul>)));
 };
@@ -44,13 +44,21 @@ NavParentLink.propTypes = {
 };
 
 
-const NavSubLink = ({ sublinks, visible }) => {
+const NavSubLink = ({ sublinks, visible, onConfirm }) => {
+
+    const [active, setActive] = useState('');
+
+    const handleClick = (e, link) => {
+      e.preventDefault();
+      setActive(link);
+      onConfirm(link);
+    }
 
     return (sublinks.map(link => 
-    (<ul className={`sublink-container ${visible ? 'visible' : ''}`} key={link.name}>
-    <li className={`sublink ${visible ? 'visible' : ''}`}>
-      <a href="" className="link">
-          <span className="text">{link.name}</span>
+    (<ul className={`sublink-container ${visible ? 'visible' : ''}`} key={link}>
+    <li className={`sublink ${visible ? 'visible' : ''} ${active === link ? 'active' : ''}`}>
+      <a href="" className="link" onClick={(e) => handleClick(e, link)}>
+          <span className="text">{link}</span>
       </a>
     </li>
   </ul>)));

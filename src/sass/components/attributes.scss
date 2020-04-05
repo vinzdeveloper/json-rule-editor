@@ -55,6 +55,14 @@
         position: absolute;
         width: 25px;
     }
+
+    .btn-container {
+        margin-top: 0px;
+    }
+}
+
+td.attributes-header {
+    justify-content: flex-start;
 }
 
 .panel-box-wrapper {

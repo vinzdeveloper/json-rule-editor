@@ -1,62 +1,144 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import PageTitle from '../../components/title/page-title';
-import Tabs from '../../components/tabs/tabs';
-import Attributes from '../../components/attributes/attributes';
-import Decisions from '../../components/decisions/decision';
-import { handleAttribute } from '../../actions/attributes';
-import { handleDecision } from '../../actions/decisions';
+import { uploadRuleset } from '../../actions/ruleset';
+import { TitlePanel } from '../../components/panel/panel';
+import Button from '../../components/button/button';
+import { createHashHistory } from 'history';
+
+
+function readFile(file, cb) {
+  // eslint-disable-next-line no-undef
+  var reader = new FileReader();
+  reader.onload = () => {
+    cb(JSON.parse(reader.result), file.name)
+  }
+
+  return reader.readAsText(file);
+}
 
 class HomeContainer extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {activeTab: 'Attributes'};
+        this.state = {uploadedFilesCount: 0, files: [], ruleset: []};
+        this.drop = this.drop.bind(this);
+        this.allowDrop = this.allowDrop.bind(this);
+        this.printFile = this.printFile.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
+        this.chooseFile = this.chooseFile.bind(this);
+        this.chooseDirectory = this.chooseDirectory.bind(this);
     }
 
-    tabs = [{name: 'Attributes'}, {name: 'Decisions'}]
+    allowDrop(e) {
+      e.preventDefault();
+    }
 
-    handleTab = (tabName) => {
-        this.setState({activeTab: tabName});
+    printFile(file, name) {
+      const isFileAdded = this.state.files.some(fname => fname === name);
+      if (!isFileAdded) {
+        const files = this.state.files.concat([name]);
+        const ruleset = this.state.ruleset.concat(file);
+        this.setState({files, ruleset});
+      }
+    }
+
+    uploadFile(items, index) {
+      const file = items[index].getAsFile();
+      readFile(file, this.printFile);
+    }
+
+    uploadDirectory(item) {
+      var dirReader = item.createReader();
+      const print = this.printFile;
+      dirReader.readEntries(function(entries) {
+        for (let j=0; j<entries.length; j++) {
+          let subItem = entries[j];
+          if (subItem.isFile) {
+            subItem.file((file) => {
+              readFile(file, print);
+            });
+          }
+        }
+      });
+   }
+
+   chooseFile() {
+    const file = document.getElementById("uploadFile");
+    if (file && file.files) {
+      for (let i = 0; i < file.files.length; i++) {
+        readFile(file.files[i], this.printFile);
+      }
+    }
+   }
+
+   chooseDirectory(e) {
+    const files = e.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].type === 'application/json') {
+          readFile(files[i], this.printFile);
+        }
+      }
+    }
+   }
+
+    drop(e) {
+      e.preventDefault();
+      const items = e.dataTransfer.items;
+      if (items) {
+        for (let i = 0; i < items.length; i++) {
+          let item = items[i].webkitGetAsEntry();
+          if (item.isFile) {
+            this.uploadFile(items, i);
+          } else if (item.isDirectory) {
+              this.uploadDirectory(item);
+            }
+          }
+        }
+    }
+    
+    handleUpload() {
+      this.props.uploadRuleset(this.state.ruleset);
+      const history = createHashHistory();
+      history.push('./ruleset'); 
     }
 
     render() {
-      const { attributes, decisions } = this.props.ruleset;
       return <div>
-        <PageTitle name="Home Container" />
-        <Tabs tabs={this.tabs} onConfirm={this.handleTab} activeTab={this.state.activeTab} />
-        <div className="tab-page-container">
-            {this.state.activeTab === 'Attributes' && <Attributes attributes={attributes} 
-              handleAttribute={this.props.handleAttribute }/>}
-            {this.state.activeTab === 'Decisions' && <Decisions decisions={decisions} attributes={attributes}
-             handleDecisions={this.props.handleDecisions} />}
+        <div className="single-panel-container">
+          <TitlePanel title="Upload Rulesets" titleClass="upload-icon">
+            <div className="upload-panel">
+              <div className="drop-section" onDrop={this.drop} onDragOver={this.allowDrop}>
+                  <div><label htmlFor="uploadFile">Choose Ruleset directory<input id="uploadFile" type="file" onChange={this.chooseDirectory} webkitdirectory="true" multiple/></label> or Drag Files</div>
+                  {this.state.files.length > 0 && <div className="file-drop-msg">{`${this.state.files.length} json files are dropped!`}</div>}
+              </div>
+            </div>
+            <div className="btn-group">
+              <Button label={"Upload"} onConfirm={this.handleUpload} classname="primary-btn" type="button" />
+              </div>
+          </TitlePanel>
         </div>
       </div>
     }
 }
 
 HomeContainer.propTypes = {
-  ruleset: PropTypes.object,
-  handleAttribute: PropTypes.func,
-  handleDecisions: PropTypes.func,
+  ruleset: PropTypes.array,
+  uploadRuleset: PropTypes.func,
 }
 
 HomeContainer.defaultProps = {
   ruleset: [],
-  handleAttribute: () => false,
-  handleDecisions: () => false,
+  uploadRuleset: () => false,
 }
 
-const mapStateToProps = (state) => ({
-  ruleset: state.ruleset.rulesets[state.ruleset.activeRuleset],
+const mapStateToProps = () => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
 
-  handleAttribute: (operation, attribute, index) => dispatch(handleAttribute(operation, attribute, index)),
-  handleDecisions: (operation, decision) => dispatch(handleDecision(operation, decision)),
-
+  uploadRuleset: (ruleset) =>  dispatch(uploadRuleset(ruleset)),
 
 });
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { TitleIcon } from '../title/page-title';
 
 const Panel = (props) => {
 
@@ -39,6 +40,33 @@ PanelBox.defaultProps = {
   PanelBox.propTypes = {
     children: PropTypes.any,
     className: PropTypes.string,
+};
+
+export const TitlePanel = (props) => {
+
+    return (<div className={"title-panel"}>
+        <div className="title">
+        {props.titleClass && 
+            <div>
+                {props.titleClass && <TitleIcon iconClass={props.titleClass} name={props.title} />}
+            </div>}
+        <h3>{props.title}</h3>
+        </div>
+        {props.children}
+    </div>);
+}
+
+
+TitlePanel.defaultProps = {
+    children: {},
+    titleClass: '',
+    title: '',
+  };
+  
+TitlePanel.propTypes = {
+    children: PropTypes.any,
+    titleClass: PropTypes.string,
+    title: PropTypes.string,
 };
 
 

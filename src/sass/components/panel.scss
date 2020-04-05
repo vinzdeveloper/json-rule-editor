@@ -37,3 +37,71 @@
         border-left: 5px solid map-get($attribute-type, "array");
     }
 }
+
+.title-panel {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 3px 6px 6px 3px #eee;
+    font-family: $title-font-family;
+    height: 40vh;
+    padding: 20px;
+    width: 80vh;
+
+    .title {
+        display: flex;
+    
+        h3 {
+            color: $page-title-color;
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+    }
+}
+
+.upload-icon {
+    background: url('../../assets/icons/upload.svg') no-repeat;
+    background-size: contain;
+    margin: 0 0px 0 0;
+    padding: 0;
+    padding-bottom: 60px;
+    position: absolute;
+    width: 100%;
+};
+
+.add-icon {
+    background: url('../../assets/icons/plus-icon-black.svg') no-repeat;
+    background-size: contain;
+    margin: 0 0px 0 0;
+    padding: 0;
+    padding-bottom: 60px;
+    position: absolute;
+    width: 100%;
+};
+
+
+.banner {
+    border-radius: 5px;
+    display: flex;
+    font-family: $form-font-family;
+    justify-content: space-between;
+    padding: 20px 20px;
+}
+
+.submit-panel {
+    background-color: $primary-btn-color;
+    color: #fff;
+}
+
+.warning-panel {
+    background-color: $warning;
+    border: 1px dashed #000;
+    color: #404040;
+}
+
+.banner-container {
+    margin-left: 35px;
+    margin-top: 50px;
+}
+

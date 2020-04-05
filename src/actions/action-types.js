@@ -9,3 +9,6 @@ export const UPDATE_ATTRIBUTE = 'UPDATE_ATTRIBUTE';
 export const ADD_CASE = 'ADD_CASE';
 export const UPDATE_CASE = 'UPDATE_CASE';
 export const REMOVE_CASE = 'REMOVE_CASE';
+export const UPLOAD_RULESET = 'UPLOAD_RULESET';
+export const ADD_RULESET = 'ADD_RULESET';
+export const UPDATE_RULESET_INDEX = 'UPDATE_RULESET_INDEX';

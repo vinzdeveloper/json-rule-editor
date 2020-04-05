@@ -8,7 +8,6 @@ h1 {
 
 .main-container {
     margin: {
-        left: $sideNavWidth + 60px;
         right: 30px;
     }
     padding: {
@@ -16,6 +15,17 @@ h1 {
         bottom: 30px;
     };
     position: relative;
+    overflow-x: hidden;
+
+    &.closed {
+        left: 100px;
+        width: calc(100% - 140px);
+    }
+
+    &.open {
+        left: $sideNavWidth + 60px;
+        width: calc(100% - 380px);
+    }   
 }
 
 label {
@@ -24,6 +34,15 @@ label {
     margin-right: 20px;
 }
 
+input[type="file"] {
+    display: none;
+}
+
 body {
     margin: 0px;
+}
+
+hr {
+    margin: 20px 0px 10px;
+    border: 1px dashed #aaa;
 }

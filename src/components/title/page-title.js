@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const PageTitle = ({name}) => {
+const PageTitle = ({name, titleFlag}) => {
     
     return (<div className="page-title">
-        <TitleIcon iconClass="rule-icon" />
+        {titleFlag && <TitleIcon />}
         <div><h1>{name}</h1></div>
     </div>);
 };
@@ -12,12 +12,15 @@ const PageTitle = ({name}) => {
 PageTitle.defaultProps = {
     name: '',
     classname: '',
+    titleFlag: false,
 };
 
 PageTitle.propTypes = {
     name: PropTypes.string,
     classname: PropTypes.string,
+    titleFlag: PropTypes.bool,
 }
+
 
 export const TitleIcon = ({iconClass}) => {
 
@@ -25,5 +28,13 @@ export const TitleIcon = ({iconClass}) => {
         <span className={iconClass} />
     </div>);
 };
+
+TitleIcon.defaultProps = {
+    iconClass: '',
+};
+
+TitleIcon.propTypes = {
+    iconClass: PropTypes.string,
+}
 
 export default PageTitle;

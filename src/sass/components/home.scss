@@ -1,3 +1,70 @@
 .page-container {
     padding: 60px 20px;
 }
+
+.single-panel-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 150px;
+
+    .upload-panel{
+        display: flex;
+        margin-top: 50px;
+    }
+
+    .upload-section {
+        border-right: 1px solid #aaa;
+        padding-top: 25px;
+        width: 50%;
+        margin-right:20px;
+    }
+
+    .drop-section {
+        border: 1px dashed #aaa;
+        border-radius: 5px;
+        color: #73879C;
+        font-size: 18px;
+        height: 70px;
+        line-height: 30px;
+        margin-left: 20px;
+        padding-top: 35px;
+        text-align: center;
+        width: 100%;
+
+        label {
+            color: $title-bg-clr;
+            margin-right: 0px;
+        }
+
+        label:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+
+    .file-drop-msg {
+        font-size: 14px;
+    }
+
+    .btn-group {
+        justify-content: center;
+        margin-top: 25px;
+    }
+
+    
+}
+
+.browse-label {
+    background-color: $cancel-btn-color;
+    border-radius: 5px;
+    color: $btn-color;
+    font-size: 16px;
+    font-family: $form-font-family;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 20px;
+    outline:none;
+    padding-top: 0;
+    text-align: center;
+    width: 140px;
+}

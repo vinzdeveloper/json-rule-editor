@@ -1,15 +1,17 @@
 import * as ActionTypes from '../actions/action-types';
  import { cloneDeep } from 'lodash/lang';
+ import { findIndex } from 'lodash/array';
 import mockruleset from '../mock/ruleset1.json';
 
 const initialState = {
-    rulesets : cloneDeep(mockruleset),
+    //rulesets : cloneDeep(mockruleset),
+    rulesets: [],
     activeRuleset: 0,
+    updatedFlag: false,
 }
 
 
 const replaceRulesetByIndex = (rulesets, targetset, index) => {
-     //rulesets.splice(index, 1, targetset);
      return [ ...rulesets.slice(0, index), targetset, ...rulesets.slice(index + 1)];
 }
 
@@ -17,6 +19,26 @@ const replaceRulesetByIndex = (rulesets, targetset, index) => {
 function ruleset(state = initialState, action='') {
 
     switch(action.type) {
+
+        case ActionTypes.UPLOAD_RULESET: {
+
+            const { ruleset } = action.payload;
+             return { ...state, rulesets: ruleset }
+        }
+
+        case ActionTypes.ADD_RULESET: {
+
+            const { name } = action.payload;
+            const rulset = { name, attributes: [], decisions: []};
+             return { ...state, rulesets: state.rulesets.concat(rulset),  activeRuleset: state.activeRuleset + 1}
+        }
+
+        case ActionTypes.UPDATE_RULESET_INDEX: {
+
+            const { name } = action.payload;
+            const index = findIndex(state.rulesets, { name });
+             return { ...state, activeRuleset: index}
+        }
         
         case ActionTypes.ADD_DECISION: {
 
@@ -24,7 +46,8 @@ function ruleset(state = initialState, action='') {
            const activeRuleSet =  { ...state.rulesets[state.activeRuleset] };
            activeRuleSet.decisions.push(decision);
 
-            return { ...state, 
+            return { ...state,
+                updatedFlag: true,
                 rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
         }
 
@@ -34,8 +57,9 @@ function ruleset(state = initialState, action='') {
  
             activeRuleSet.decisions[decisionIndex].cases[caseIndex] = caseAttr;
  
-             return { ...state, 
-                     rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
+             return { ...state,
+                updatedFlag: true,
+                rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
          }
         case ActionTypes.REMOVE_DECISION: {
 
@@ -44,7 +68,8 @@ function ruleset(state = initialState, action='') {
  
             activeRuleSet.decisions.splice(decisionIndex, 1);
  
-             return { ...state, 
+             return { ...state,
+                     updatedFlag: true,
                      rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
         }
         case ActionTypes.ADD_ATTRIBUTE: {
@@ -52,7 +77,8 @@ function ruleset(state = initialState, action='') {
            const activeRuleSet =  { ...state.rulesets[state.activeRuleset] };
            activeRuleSet.attributes.push(attribute);
 
-            return { ...state, 
+            return { ...state,
+                    updatedFlag: true,
                     rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
         }
             
@@ -62,6 +88,7 @@ function ruleset(state = initialState, action='') {
             activeRuleSet.attributes.splice(index, 1, attribute);
 
             return { ...state,
+                updatedFlag: true,
                 rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
         }
 
@@ -72,6 +99,7 @@ function ruleset(state = initialState, action='') {
             activeRuleSet.attributes.splice(index, 1);
 
             return { ...state,
+                updatedFlag: true,
                 rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
         }
 
@@ -105,7 +133,8 @@ function ruleset(state = initialState, action='') {
 
            activeRuleSet.decisions = updatedDecisions;
 
-            return { ...state, 
+            return { ...state,
+                    updatedFlag: true,
                     rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
         }
 
@@ -115,7 +144,8 @@ function ruleset(state = initialState, action='') {
  
             activeRuleSet.decisions[decisionIndex].cases.splice(caseIndex, 1);
  
-             return { ...state, 
+             return { ...state,
+                     updatedFlag: true,
                      rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
          }
 

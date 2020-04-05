@@ -5,8 +5,15 @@
     left: 0;
     margin-top: -80px;
     position: fixed;
-    width: $sideNavWidth;
     padding: 25px;
+
+    &.closed {
+      width: 40px;
+    }
+
+    &.open {
+      width: $sideNavWidth;
+    }
 }
 
 .link-container {
@@ -57,6 +64,11 @@
     transition: transform 0.5s;
   }
 
+  .link-heading {
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+
   .sublink-container {
     list-style-type: none;
     top: 10px;
@@ -73,6 +85,10 @@
         opacity: 1; 
         visibility: visible;
         transition: opacity .5s .5s, height .5s .5s, visibility .5s .5s;
+      }
+
+      &.active {
+        background: $btn-bg-clr;
       }
     }
 

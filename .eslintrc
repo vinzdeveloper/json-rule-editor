@@ -8,7 +8,11 @@
   ],
   "globals": {
     "process": true,
-    "document": true
+    "document": true,
+    "webpack": true,
+    "module": true,
+    "require": true,
+    "__dirname": true
   },
   "parser": "babel-eslint",
   "settings": {

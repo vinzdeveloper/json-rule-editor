@@ -56,8 +56,8 @@ const NavSubLink = ({ sublinks, visible, onConfirm }) => {
 
     return (sublinks.map(link => 
     (<ul className={`sublink-container ${visible ? 'visible' : ''}`} key={link}>
-    <li className={`sublink ${visible ? 'visible' : ''} ${active === link ? 'active' : ''}`}>
-      <a href="" className="link" onClick={(e) => handleClick(e, link)}>
+    <li className={`sublink ${visible ? 'visible' : ''} ${active === link ? 'active' : ''}`} onClick={(e) => handleClick(e, link)}>
+      <a href="" className="link">
           <span className="text">{link}</span>
       </a>
     </li>

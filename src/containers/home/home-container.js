@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { login } from '../../actions/app';
 import { uploadRuleset } from '../../actions/ruleset';
 import { TitlePanel } from '../../components/panel/panel';
 import Button from '../../components/button/button';
@@ -99,9 +100,16 @@ class HomeContainer extends Component {
     }
     
     handleUpload() {
-      this.props.uploadRuleset(this.state.ruleset);
+      if(this.state.ruleset.length > 0) {
+        this.props.uploadRuleset(this.state.ruleset);
+        this.navigate('./ruleset');
+      }
+    }
+
+    navigate(location)  {
       const history = createHashHistory();
-      history.push('./ruleset'); 
+      this.props.login();
+      history.push(location); 
     }
 
     render() {
@@ -116,6 +124,7 @@ class HomeContainer extends Component {
             </div>
             <div className="btn-group">
               <Button label={"Upload"} onConfirm={this.handleUpload} classname="primary-btn" type="button" />
+              <Button label={"Create"} onConfirm={() => this.navigate('./create-ruleset')} classname="primary-btn" type="button" />
               </div>
           </TitlePanel>
         </div>
@@ -126,11 +135,13 @@ class HomeContainer extends Component {
 HomeContainer.propTypes = {
   ruleset: PropTypes.array,
   uploadRuleset: PropTypes.func,
+  login: PropTypes.func,
 }
 
 HomeContainer.defaultProps = {
   ruleset: [],
   uploadRuleset: () => false,
+  login: () => false,
 }
 
 const mapStateToProps = () => ({
@@ -138,6 +149,7 @@ const mapStateToProps = () => ({
 
 const mapDispatchToProps = (dispatch) => ({
 
+  login: () => dispatch(login()),
   uploadRuleset: (ruleset) =>  dispatch(uploadRuleset(ruleset)),
 
 });

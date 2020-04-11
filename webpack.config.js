@@ -3,19 +3,17 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const path = require('path');
 module.exports = {
-    entry: {
-      app: './src/app.js',
-      style: './src/sass/base.scss'
-    },
+    entry: ['./src/app.js','./src/sass/base.scss'],
     output: {
       filename: "main.bundle.js",
       path: path.resolve(__dirname, 'dist')
     },
+    devtool: 'eval-source-map',
     module: {
         rules: [{ 
           test: /\.(js|jsx)$/, 
-          use: ['react-hot-loader/webpack', 'babel-loader'],
-          exclude: /node_modules/
+          use: ['babel-loader'],
+          exclude: /node_modules/,
         },{
           test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg|png)(\?.*$|$)/,
           loader: 'file-loader',
@@ -39,6 +37,12 @@ module.exports = {
           use: ['style-loader', 'css-loader'],
         }
       ]
+    },
+    resolve: {
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      alias: {
+        'react-dom': '@hot-loader/react-dom',
+      }
     },
     plugins: [
         new HtmlWebPackPlugin({

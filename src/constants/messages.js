@@ -13,7 +13,7 @@ export const MODIFIED_MSG = {header: MODIFIED_HEADER, body: MODIFIED_BODY, type:
 
 const NO_ATTRIBUTE_HEADER = 'No Attributes';
 const NO_ATTRIBUTE_BODY = 'There is no attributes available in the selected ruleset.'
-const BUTTON_PROPS_ATTRIBUTE = {label: 'Create Attribute'};
+const BUTTON_PROPS_ATTRIBUTE = {label: 'Create Attributes'};
 export const NO_ATTRIBUTE_MSG = {header: NO_ATTRIBUTE_HEADER, body: NO_ATTRIBUTE_BODY, buttonProps: BUTTON_PROPS_ATTRIBUTE, type: 'warning-panel'};
 
 

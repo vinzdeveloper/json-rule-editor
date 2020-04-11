@@ -10,7 +10,7 @@ const AppRoutes = (props) => {
     return (<div className={`main-container ${props.closedState ? 'closed': 'open'}`}>
         <HashRouter>
             <Switch>
-                <Route path="/" exact component={HomeContainer} />
+                <Route path="/" exact={props.loggedIn} component={HomeContainer} />
                 <Route path="/ruleset" exact component={RulesetContainer} />
                 <Route path="/create-ruleset" exact component={CreateRulesetContainer} />
             </Switch>   
@@ -21,10 +21,12 @@ const AppRoutes = (props) => {
 
 AppRoutes.defaultProps = {
     closedState: false,
+    loggedIn: false,
 };
 
 AppRoutes.propTypes = {
     closedState: PropTypes.bool,
+    loggedIn: PropTypes.bool,
 }
 
 export default AppRoutes;

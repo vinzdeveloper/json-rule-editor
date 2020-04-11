@@ -29,11 +29,11 @@ class NavigationPanel extends Component {
     render() {
         const { closedState } = this.props;
         const rulesetLink = this.props.rulenames.length > 0 ?
-         {name: 'Ruleset', sublinks: this.props.rulenames, iconClass:"rules-icon"}: [];
+         {name: 'Ruleset', sublinks: this.props.rulenames, iconClass:"rules-icon"}: undefined;
 
         return (
-            <div className={`nav-container ${closedState ? 'closed': 'open'}`}>
-                {!closedState && <React.Fragment>
+            <div className={`nav-container ${closedState || !rulesetLink ? 'closed': 'open'}`}>
+                {!closedState && rulesetLink && <React.Fragment>
                     <NavLinks links={[rulesetLink]} onConfirm={this.handleNavLink}/>
                     <NavButton label="Create Ruleset" onConfirm={this.handleNavBtn} classname={'nav-glass-btn'} />
                  </React.Fragment>

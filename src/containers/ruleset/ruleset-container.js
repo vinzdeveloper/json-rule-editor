@@ -13,6 +13,7 @@ import { handleDecision } from '../../actions/decisions';
 import Banner from '../../components/panel/banner';
 import * as Message from '../../constants/messages';
 
+const tabs = [{name: 'Attributes'}, {name: 'Decisions'}, {name: 'Validate'}, {name: 'Generate'}];
 class RulesetContainer extends Component {
 
     constructor(props) {
@@ -21,7 +22,7 @@ class RulesetContainer extends Component {
         this.generateFile = this.generateFile.bind(this);
     }
 
-    tabs = [{name: 'Attributes'}, {name: 'Decisions'}, {name: 'Validate'}, {name: 'Generate'}]
+    
 
     handleTab = (tabName) => {
         this.setState({activeTab: tabName});
@@ -43,7 +44,7 @@ class RulesetContainer extends Component {
       const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
       return <div>
         <PageTitle name={name} />
-        <Tabs tabs={this.tabs} onConfirm={this.handleTab} activeTab={this.state.activeTab} />
+        <Tabs tabs={tabs} onConfirm={this.handleTab} activeTab={this.state.activeTab} />
         <div className="tab-page-container">
             {this.state.activeTab === 'Attributes' && <Attributes attributes={attributes} 
               handleAttribute={this.props.handleAttribute }/>}
@@ -71,10 +72,12 @@ RulesetContainer.defaultProps = {
   updatedFlag: false,
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => {
+
+  return ({
   ruleset: state.ruleset.rulesets[state.ruleset.activeRuleset],
   updatedFlag: state.ruleset.updatedFlag,
-});
+})};
 
 const mapDispatchToProps = (dispatch) => ({
 

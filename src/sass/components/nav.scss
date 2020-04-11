@@ -75,6 +75,7 @@
 
     li {
       border-left: 3px solid $border-left-color;
+      cursor: pointer;
       height: 0;
       opacity: 0;
       transition: opacity .5s, height .5s, visibility .5s;

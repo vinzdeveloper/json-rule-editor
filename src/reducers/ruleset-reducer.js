@@ -30,7 +30,8 @@ function ruleset(state = initialState, action='') {
 
             const { name } = action.payload;
             const rulset = { name, attributes: [], decisions: []};
-             return { ...state, rulesets: state.rulesets.concat(rulset),  activeRuleset: state.activeRuleset + 1}
+            const count = state.rulesets.length === 0 ? 0 : state.activeRuleset + 1
+             return { ...state, rulesets: state.rulesets.concat(rulset),  activeRuleset: count}
         }
 
         case ActionTypes.UPDATE_RULESET_INDEX: {

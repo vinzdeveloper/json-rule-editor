@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-const Search = ({onConfirm}) => {
+const Search = ({onConfirm, value}) => {
 
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState(value);
 
     const handleSearch = (e) => {
         setSearch(e.target.value);
@@ -17,10 +17,12 @@ const Search = ({onConfirm}) => {
 
 Search.defaultProps = ({
     onConfirm: () => false,
+    value: '',
 });
 
 Search.propTypes = ({
     onConfirm: PropTypes.func,
+    value: PropTypes.string,
 });
 
 export default Search;

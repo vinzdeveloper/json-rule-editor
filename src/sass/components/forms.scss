@@ -51,3 +51,9 @@
         border: 1px dashed;
     }
 }
+
+.form-error {
+    color: red;
+    font-family: $form-font-family;
+    font-size: 16px;
+}

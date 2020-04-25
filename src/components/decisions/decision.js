@@ -5,20 +5,24 @@ import AddDecision from './add-decision';
 import DecisionDetails from './decision-details';
 import Banner from '../panel/banner';
 import * as Message from '../../constants/messages';
-
+import { transformRuleToTree } from '../../utils/transform';
 
 class Decision extends Component {
 
     constructor(props){
         super(props);
-        this.state={showAddRuleCase: false, editCaseFlag: false, editCase: [], message: Message.NO_DECISION_MSG};
+        this.state={showAddRuleCase: false,
+             editCaseFlag: false,
+             editCondition: [],
+             message: Message.NO_DECISION_MSG,
+             decisions: props.decisions || []};
         this.handleAdd = this.handleAdd.bind(this);
-        this.updateCase = this.updateCase.bind(this);
-        this.editCase = this.editCase.bind(this);
-        this.addCase = this.addCase.bind(this);
+        this.updateCondition = this.updateCondition.bind(this);
+        this.editCondition = this.editCondition.bind(this);
+        this.addCondition = this.addCondition.bind(this);
         this.removeCase = this.removeCase.bind(this);
         this.cancelAddAttribute = this.cancelAddAttribute.bind(this);
-        this.removeDecision = this.removeDecision.bind(this);
+        this.removeDecisions = this.removeDecisions.bind(this);
         this.handleReset = this.handleReset.bind(this);
     }
 
@@ -34,40 +38,31 @@ class Decision extends Component {
         this.setState({showAddRuleCase: false, editCaseFlag: false});
     }
 
-    editCase(caseAttribute, caseIndex, decisionIndex) {
-        const editCase = this.props.attributes.map(attribute => {
-            const editAttribute = caseAttribute.find(attr => attr.name === attribute.name)
-            if (editAttribute) {
-                return editAttribute;
-            }
-            return attribute;
-        })
+    editCondition(decisionIndex) {
         const decision = this.props.decisions[decisionIndex];
-        this.setState({ editCaseFlag: true, editCase, 
-            editCaseIndex: caseIndex, 
+        const editCondition = transformRuleToTree(decision);
+        this.setState({ editCaseFlag: true, editCondition, 
             editDecisionIndex: decisionIndex, 
-            editOutcome: {value: decision.outcome, type: decision.type }});
+            editOutcome: {value: decision.event.type }});
     }
 
-    addCase(attributes, outcome) {
-        const caseAttr = attributes.filter(attribute => attribute.operator !== 'any');
-        this.props.handleDecisions('ADD', { caseAttr, outcome });
+    addCondition(condition) {
+        this.props.handleDecisions('ADD', { condition });
         this.setState({showAddRuleCase: false});
     }
 
-    updateCase(attributes, outcome) {
-        const caseAttr = attributes.filter(attribute => attribute.operator !== 'any');
-        this.props.handleDecisions('UPDATE', { caseAttr, outcome, 
-            caseIndex: this.state.editCaseIndex, decisionIndex: this.state.editDecisionIndex });
+    updateCondition(condition) {
+        this.props.handleDecisions('UPDATE', { condition, 
+            decisionIndex: this.state.editDecisionIndex });
         this.setState({editCaseFlag: false});
     }
 
-    removeCase(caseIndex, decisionIndex) {
-        this.props.handleDecisions('REMOVECASE', { caseIndex, decisionIndex});
+    removeCase(decisionIndex) {
+        this.props.handleDecisions('REMOVECONDITION', { decisionIndex});
     }
 
-    removeDecision(decisionIndex) {
-        this.props.handleDecisions('REMOVEDECISION', { decisionIndex});
+    removeDecisions(outcome) {
+        this.props.handleDecisions('REMOVEDECISIONS', { outcome});
     }
 
     handleReset() {
@@ -77,13 +72,15 @@ class Decision extends Component {
 
     render() {
         const buttonProps = { primaryLabel: 'Add Rulecase', secondaryLabel: 'Cancel'};
+        const editButtonProps = { primaryLabel: 'Edit Rulecase', secondaryLabel: 'Cancel'};
+        const { outcomes } = this.props;
         return (<div className="rulecases-container">
-            { this.props.decisions.length > 0 && <ToolBar handleAdd={this.handleAdd} submit={this.props.submit} reset={this.handleReset} /> }
-            {this.state.showAddRuleCase && <AddDecision attributes={this.props.attributes} addCase={this.addCase} cancel={this.cancelAddAttribute} buttonProps={buttonProps} />}
-            {this.state.editCaseFlag && <AddDecision attributes={this.state.editCase}
-                 outcome={this.state.editOutcome} editDecision addCase={this.updateCase} cancel={this.cancelAddAttribute} buttonProps={buttonProps} />}
-            <DecisionDetails decisions={this.props.decisions} editCase={this.editCase} removeCase={this.removeCase} removeDecision={this.removeDecision} />
-            {this.props.decisions.length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
+            { Object.keys(outcomes).length > 0 && <ToolBar handleAdd={this.handleAdd} submit={this.props.submit} reset={this.handleReset} /> }
+            {this.state.showAddRuleCase && <AddDecision attributes={this.props.attributes} addCondition={this.addCondition} cancel={this.cancelAddAttribute} buttonProps={buttonProps} />}
+            {this.state.editCaseFlag && <AddDecision attributes={this.props.attributes} editCondition={this.state.editCondition}
+                 outcome={this.state.editOutcome} editDecision addCondition={this.updateCondition} cancel={this.cancelAddAttribute} buttonProps={editButtonProps} />}
+            <DecisionDetails outcomes={outcomes} editCondition={this.editCondition} removeCase={this.removeCase} removeDecisions={this.removeDecisions} />
+            {Object.keys(outcomes).length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
       </div>);
     }
 }
@@ -94,6 +91,7 @@ Decision.defaultProps = ({
     reset: () =>  false,
     decisions: [],
     attributes: [],
+    outcomes: [],
 });
 
 Decision.propTypes = ({
@@ -102,6 +100,7 @@ Decision.propTypes = ({
     reset: PropTypes.func,
     decisions: PropTypes.array,
     attributes: PropTypes.array,
+    outcomes: PropTypes.array,
 });
 
 export default Decision;

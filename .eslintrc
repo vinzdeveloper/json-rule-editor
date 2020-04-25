@@ -12,7 +12,8 @@
     "webpack": true,
     "module": true,
     "require": true,
-    "__dirname": true
+    "__dirname": true,
+    "window": true
   },
   "parser": "babel-eslint",
   "settings": {

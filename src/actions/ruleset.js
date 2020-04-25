@@ -2,6 +2,7 @@
 import * as ActionTypes from './action-types';
 import { updateState } from './app';
 
+
 export const uploadRuleset = (ruleset)  => (dispatch) => {
     dispatch(updateState('open'));
     return dispatch({

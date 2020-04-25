@@ -1,0 +1,170 @@
+{
+    "name": "Room Rent Category",
+    "attributes": [{ "name": "rooms", "type": "number" },
+                   { "name": "bathroom", "type": "number"},
+                   { "name": "floor", "type": "number" },
+                   { "name": "metropolitan", "type": "string"},
+                   { "name": "carparking", "type": "string" }],
+
+    "decisions": [{
+        "conditions": {
+            "all": [{
+                    "fact": "rooms",
+                    "operator": "equal",
+                    "value": 1
+                },
+                {
+                    "fact": "bathroom",
+                    "operator": "equal",
+                    "value": 1
+                },
+                {
+                    "fact": "metropolitan",
+                    "operator": "equal",
+                    "value": "No"
+                }
+            ]},
+                "event": {
+                    "type": "£500"
+                }
+         },
+         {
+            "conditions": {
+                "all": [{
+                    "fact": "rooms",
+                    "operator": "equal",
+                    "value": 1
+                },
+                {
+                    "fact": "bathroom",
+                    "operator": "equal",
+                    "value": 1
+                },
+                {
+                    "fact": "metropolitan",
+                    "operator": "equal",
+                    "value": "Yes"
+                }
+            ]},
+                "event": {
+                    "type": "£750"
+                }
+        },
+        {
+            "conditions": {
+                "all": [{
+                    "fact": "rooms",
+                    "operator": "equal",
+                    "value": 2
+                },
+                {
+                    "fact": "bathroom",
+                    "operator": "equal",
+                    "value": 1
+                },
+                {
+                    "fact": "metropolitan",
+                    "operator": "equal",
+                    "value": "No"
+                }
+        ]},
+                "event": {
+                    "type": "£750"
+                }
+        },
+        {
+            "conditions": {
+                "any": [{
+                    "all":  [{
+                        "fact": "rooms",
+                        "operator": "equal",
+                        "value": 2
+                    },
+                    {
+                        "fact": "bathroom",
+                        "operator": "equal",
+                        "value": 1
+                    },
+                    {
+                        "fact": "metropolitan",
+                        "operator": "equal",
+                        "value": "Yes"
+                    }
+                ]},
+                {
+                    "all":  [{
+                        "fact": "rooms",
+                        "operator": "equal",
+                        "value": 3
+                    },
+                    {
+                        "fact": "bathroom",
+                        "operator": "equal",
+                        "value": 2
+                    },
+                    {
+                        "fact": "metropolitan",
+                        "operator": "equal",
+                        "value": "No"
+                    }
+                ]}
+            ]},
+                "event": {
+                    "type": "£1000"
+                }
+        } ,
+        {
+            "conditions": {
+                "any": [{
+                    "all":  [{
+                        "fact": "rooms",
+                        "operator": "equal",
+                        "value": 3
+                    },
+                    {
+                        "fact": "bathroom",
+                        "operator": "equal",
+                        "value": 2
+                    },
+                    {
+                        "fact": "carparking",
+                        "operator": "equal",
+                        "value": "Yes"
+                    },
+                    {
+                        "fact": "metropolitan",
+                        "operator": "equal",
+                        "value": "No"
+                    }
+                ]},
+                {
+                    "all":  [{
+                        "fact": "rooms",
+                        "operator": "equal",
+                        "value": 3
+                    },
+                    {
+                        "fact": "bathroom",
+                        "operator": "equal",
+                        "value": 2
+                    },
+                    {
+                        "fact": "carparking",
+                        "operator": "equal",
+                        "value": "No"
+                    },
+                    {
+                        "fact": "metropolitan",
+                        "operator": "equal",
+                        "value": "Yes"
+                    }
+                ]}
+            ]},
+                "event": {
+                    "type": "£1250"
+                }
+        }     
+
+    ]
+
+}

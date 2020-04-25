@@ -4,132 +4,288 @@ import Panel from '../panel/panel';
 import InputField from '../forms/input-field';
 import SelectField from '../forms/selectmenu-field';
 import Button from '../button/button';
+import ButtonGroup from '../button/button-groups';
 import operator from '../../data-objects/operator.json';
-import Table from '../table/table';
 import decisionValidations from '../../validations/decision-validation';
-import {DATA_TYPES} from '../../constants/data-types';
+import Tree from '../tree/tree';
+import { has } from 'lodash/object';
+import { getNodeDepthDetails, getNodeDepth } from '../../utils/treeutils';
+import { transformTreeToRule } from '../../utils/transform';
+import { sortBy } from 'lodash/collection';
+import { validateAttribute } from '../../validations/decision-validation';
 
+
+const nodeStyle ={
+    shape: 'circle',
+    shapeProps: {
+        fill: '#1ABB9C',
+        r: 10,
+    },
+  };
+
+const factsButton = [{label : 'Add Facts', disable: false },
+                             {label : 'Add All', disable: false },
+                             {label : 'Add Any', disable: false },
+                            {label : 'Remove', disable: false}];
+const topLevelOptions = [{label : 'All', active: false, disable: false },
+                         {label : 'Any', active: false, disable: false }];
+
+const outcomeOptions = [{label : 'Add Outcome', active: false, disable: false },
+                        {label : 'Edit Conditions', active: false, disable: false }];
 
 class AddDecision extends Component {
     constructor(props) {
         super(props);
-        const attributes = props.attributes.map(attribute => {
-            if (props.editDecision) {
-                return ({...attribute, operator: attribute.operator, error: {}, value: attribute.value});
-            }
-            else {
-                return ({...attribute, operator: 'any', error: {}, value: ''});
-            }
-        });
-        const outcome = { ...props.outcome, error: {}};
-        this.state = { attributes, outcome };
+        const outcome = props.editDecision ? props.outcome : ({ value: '', error: {}});
+        const addAttribute = { error: {}, name: '', operator: '', value: ''};
+        const node = props.editDecision ? props.editCondition.node : {};
+        const activeNode = { index: 0, depth: 0 };
+        this.state = { attributes: props.attributes,
+             outcome,
+             addAttribute,
+             enableTreeView: props.editDecision, 
+             enableFieldView: false,
+             enableOutcomeView: false,
+             node,
+             topLevelOptions,
+             factsButton,
+             outcomeOptions,
+             formError: '',
+             activeNodeDepth: [activeNode] };
         this.handleAdd = this.handleAdd.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.onChangeValue = this.onChangeValue.bind(this);
-        this.onChangeType = this.onChangeType.bind(this);
-        this.onChangeOutcomeType = this.onChangeOutcomeType.bind(this);
+        this.onChangeNewFact = this.onChangeNewFact.bind(this);
         this.onChangeOutcomeValue = this.onChangeOutcomeValue.bind(this);
+        this.handleTopNode = this.handleTopNode.bind(this);
+        this.handleActiveNode = this.handleActiveNode.bind(this);
+        this.handleChildrenNode = this.handleChildrenNode.bind(this);
+        this.handleFieldCancel = this.handleFieldCancel.bind(this);
+        this.handleOutputPanel = this.handleOutputPanel.bind(this);
     }
 
     handleAdd() {
-        const error = decisionValidations(this.state.attributes, this.state.outcome);
+        const error = decisionValidations(this.state.node, this.state.outcome);
 
         if (error.formError) {
-            return '';
-        }
-
-        if (error.attributes.length > 0 || Object.keys(error.outcome).length > 0) {
-
-            const attributes = this.state.attributes.map(attribute => {
-                const errorAttr = error.attributes.find(attr => attr.name === attribute.name) || {};
-                return { ...attribute, error: errorAttr };
-            });
-            const outcome = { ...this.state.outcome, error: error.outcome };
-            this.setState({attributes, outcome});
-
+            this.setState({formError: error.formError, outcome: { ...this.state.outcome, error: error.outcome }})
         } else {
-            this.props.addCase(this.state.attributes, this.state.outcome);
+            const condition = transformTreeToRule(this.state.node, this.state.outcome);
+           this.props.addCondition(condition);
         }
     }
 
     handleCancel() {
         this.props.cancel();
     }
-
-    onChangeValue(e, index) {
-        const attribute = this.state.attributes[index];
-        attribute.value = e.target.value;
-        const attributes = [ ...this.state.attributes.slice(0, index), attribute, ...this.state.attributes.slice(index + 1)];
-        this.setState({attributes});
-     }
  
-     onChangeType(e, index) {
-        const attribute = this.state.attributes[index];
-        attribute.operator = e.target.value;
-        const attributes = [ ...this.state.attributes.slice(0, index), attribute, ...this.state.attributes.slice(index + 1)];
-        this.setState({attributes});
+     onChangeNewFact(e, name) {
+         const addAttribute = { ...this.state.addAttribute };
+         addAttribute[name] = e.target.value;
+        this.setState({ addAttribute });
      }
 
-     onChangeOutcomeType(e) {
-        const outcome = this.state.outcome;
-        outcome.type = e.target.value;
+     onChangeOutcomeValue(e, type){
+        const outcome = { ...this.state.outcome };
+        outcome[type] = e.target.value;
         this.setState({outcome});
      }
 
-     onChangeOutcomeValue(e){
-        const outcome = this.state.outcome;
-        outcome.value = e.target.value;
-        this.setState({outcome});
-     }
-
-     renderOutputField(type) {
-        if (type === DATA_TYPES.BOOLEAN) {
-            return <SelectField options={['true', 'false']} onChange={this.onChangeOutcomeValue}
-            value={this.state.outcome.value} error={this.state.outcome.error.value} readOnly={this.props.editDecision}/>
+    handleTopNode(value) {
+        let parentNode = { ...this.state.node};
+        const activeNode = { index: 0, depth: 0 };
+        if (has(parentNode, 'name')) {
+            parentNode.name = value === 'All' ? 'all' : 'any';
         } else {
-            return <InputField onChange={this.onChangeOutcomeValue} value={this.state.outcome.value}
-             error={this.state.outcome.error.value} readOnly={this.props.editDecision} />
+            parentNode = { name: value === 'All' ? 'all' : 'any', nodeSvgShape: nodeStyle, children: [] };
         }
-     }
+        const topLevelOptions = this.state.topLevelOptions.map(option => {
+            if (option.label === value) {
+                return { ...option, active: true};
+            }
+            return { ...option, active: false};
+        })
 
-    attributeItems = () => {
-        const { attributes } = this.state;
-
-        const formElements = attributes.map((attribute, index) =>
-            (<tr key={attribute.name}>
-                <td>{attribute.name}</td>
-                <td><SelectField options={operator[attribute.type]} onChange={(e) => this.onChangeType(e, index)}
-                     value={attribute.operator} error={attribute.error.operator} /></td>
-                <td><InputField onChange={(value) => this.onChangeValue(value, index)} value={attribute.value}
-                     readOnly={attribute.operator === 'any'} error={attribute.error.name}/></td>
-            </tr>)
-        );
-        const outcome = (<tr>
-                <td>Outcome</td>
-                <td><SelectField options={Object.keys(operator)} onChange={this.onChangeOutcomeType}
-                     value={this.state.outcome.type} error={this.state.outcome.error.type} readOnly={this.props.editDecision}/></td>
-                <td>{this.renderOutputField(this.state.outcome.type)}</td>
-        </tr>);
-
-        return (<Table columns={['Name', 'Operator', 'Value']}>
-                     {formElements}
-                     <tr><td colSpan={3}><hr /></td></tr>
-                     {outcome}
-                     <tr><td colSpan={3}><hr /></td></tr>
-            </Table>)
+        this.setState({ enableTreeView: true, topNodeName: value, node: parentNode, activeNodeDepth: [activeNode], topLevelOptions });
     }
 
-    rulecasePanel = () => {
+    mapNodeName(val) {
+        const node = {};
+        const { addAttribute: { name, operator, value }} = this.state;
+        if (val === 'Add All' || val === 'Add Any') {
+            node['name'] = val === 'Add All' ? 'all' : 'any';
+            node['nodeSvgShape'] = nodeStyle;
+            node['children'] = [];
+        } else {
+            node['name'] = name;
+            node['attributes'] = { [operator]: value };
+        }
+        return node;
+    } 
 
+    handleChildrenNode(value) {
+        let factOptions = [ ...factsButton];
+        if (value === 'Add Facts') {
+            this.setState({enableFieldView: true});
+        } else {
+            const { activeNodeDepth, node } = this.state;
+            const addAttribute = { error: {}, name: '', operator: '', value: ''};
+            if (value === 'Add fact node') {
+                const error = validateAttribute(this.state.addAttribute);
+                if (Object.keys(error).length > 0 ) {
+                    let addAttribute = this.state.addAttribute;
+                    addAttribute.error = error;
+                    this.setState({addAttribute});
+                    return undefined;
+                }
+            }
+            if (activeNodeDepth && node) {
+                const newNode = { ...node };
+
+                const getActiveNode = (pNode, depthIndex) => pNode[depthIndex];
+                
+                let activeNode = newNode;
+                const cloneDepth = value === 'Remove' ? activeNodeDepth.slice(0, activeNodeDepth.length -1 ): [ ...activeNodeDepth ] 
+                cloneDepth.forEach(nodeDepth => {
+                    if (nodeDepth.depth !== 0) {
+                        activeNode = getActiveNode(activeNode.children, nodeDepth.index);
+                    }
+                });
+                const childrens = activeNode['children'] || [];
+                if (value !== 'Remove') {
+                    activeNode['children'] = childrens.concat(this.mapNodeName(value));
+                } else {
+                    const lastNode = activeNodeDepth[activeNodeDepth.length - 1];
+                    childrens.splice(lastNode.index, 1);
+                    factOptions = this.state.factsButton.map(button =>
+                        ({ ...button, disable: true }));
+                }
+                
+                this.setState({node: newNode, enableFieldView: false, addAttribute, factsButton: factOptions});
+            }
+        }
     }
 
+
+    handleActiveNode(node) {
+        const depthArr = getNodeDepthDetails(node);
+        const sortedArr = sortBy(depthArr, 'depth');
+
+        const factsNodemenu = this.state.factsButton.map(button => {
+            if (button.label !== 'Remove') {
+                return { ...button, disable: true };
+            }
+            return { ...button, disable: false };
+        });
+
+        const parentNodeMenu = this.state.factsButton.map(button => {
+            if (sortedArr.length < 1 && button.label === 'Remove') {
+                return { ...button, disable: true };
+            }
+            return { ...button, disable: false };
+        });
+        
+        const facts = node.name === 'all' || node.name === 'any' ? parentNodeMenu : factsNodemenu;
+        this.setState({ activeNodeDepth: sortedArr, factsButton: facts });
+    }
+
+    handleFieldCancel() {
+        const addAttribute = { error: {}, name: '', operator: '', value: ''};
+        this.setState({ enableFieldView: false, addAttribute });
+    }
+
+    handleOutputPanel(value) {
+        if(value === 'Add Outcome') {
+            const factsOptions = this.state.factsButton.map(fact => ({ ...fact, disable: true }))
+            const options = this.state.outcomeOptions.map(opt => {
+                if(opt.label === 'Add Outcome') {
+                    return { ...opt, active: true };
+                }
+                return { ...opt, active: false };
+            });
+            this.setState({ enableOutcomeView: true, enableTreeView: false,
+                 enableFieldView: false, outcomeOptions: options, factsButton: factsOptions });
+        }
+        if(value === 'Edit Conditions') {
+            const options = this.state.outcomeOptions.map(opt => {
+                if(opt.label === 'Edit Conditions') {
+                    return { ...opt, active: true };
+                }
+                return { ...opt, active: false };
+            });
+            this.setState({ enableOutcomeView: false, enableTreeView: true, enableFieldView: false, outcomeOptions: options });
+        }
+    }
+
+    topPanel() {
+        const { topLevelOptions, factsButton, outcomeOptions } = this.state;
+        return (<div className="add-decision-step">
+        <div className="step1"><div>Step 1: Add Toplevel</div><ButtonGroup buttons={topLevelOptions} onConfirm={this.handleTopNode}/></div>
+        <div className="step2"><div> Step 2: Add / Remove facts</div><ButtonGroup buttons={factsButton} onConfirm={this.handleChildrenNode} /></div>
+        <div className="step3"><div> Step 3: Add outcome</div><ButtonGroup buttons={outcomeOptions} onConfirm={this.handleOutputPanel} /></div>
+      </div>)
+    }
+
+    fieldPanel() {
+        const { attributes, addAttribute } = this.state;
+        const attributeOptions = attributes.map(attr => attr.name);
+        const attribute = addAttribute.name && attributes.find(attr => attr.name === addAttribute.name);
+        const operatorOptions = attribute && operator[attribute.type];
+
+        return (<Panel>
+            <div className="add-field-panel">
+                <div><SelectField options={attributeOptions} onChange={(e) => this.onChangeNewFact(e, 'name')}
+                        value={addAttribute.name} error={addAttribute.error.name} label="Attribute"/></div>
+                <div><SelectField options={operatorOptions} onChange={(e) => this.onChangeNewFact(e, 'operator')}
+                        value={addAttribute.operator} error={addAttribute.error.operator} label="Operator"/></div>
+                <div><InputField onChange={(value) => this.onChangeNewFact(value, 'value')} value={addAttribute.value}
+                        error={addAttribute.error.value} label="Value"/></div>
+            </div>
+            <div className="btn-group">
+                    <Button label={'Add'} onConfirm={() => this.handleChildrenNode('Add fact node') } classname="btn-dark" type="submit" />
+                    <Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-dark"/>
+            </div>
+        </Panel>)
+    }
+
+    outputPanel() {
+        const { outcome } = this.state;
+        const { editDecision } = this.props;
+        return (<Panel>
+            <div className="add-field-panel">
+                <div><InputField onChange={(value) => this.onChangeOutcomeValue(value, 'value')} value={outcome.value}
+                        error={outcome.error && outcome.error.value} label="Value" readOnly={editDecision}/></div>
+            </div>
+        </Panel>)
+    }
+
+    treePanel() {
+        const { node } = this.state;
+        const depthCount = getNodeDepth(node);
+        return(<Panel>
+            <Tree treeData={node} count={depthCount} onConfirm={this.handleActiveNode} />
+        </Panel>)
+    }
+
+
+    addPanel() {
+        const { enableTreeView, enableFieldView, enableOutcomeView } = this.state;
+
+        return (<div>
+            {this.topPanel()}
+            {enableFieldView && this.fieldPanel()}
+            {enableOutcomeView && this.outputPanel()}
+            {enableTreeView && this.treePanel()}
+        </div>);
+
+    }
 
     render() {
         const { buttonProps } = this.props;
-        return (<Panel>
+        return (
             <form>
                 <div className="add-rulecase-wrapper">
-                    {this.attributeItems()}
+                    {this.addPanel()}
+                    {this.state.formError && <p className="form-error"> {this.state.formError}</p>}
                     <div className="btn-group">
                     <Button label={buttonProps.primaryLabel} onConfirm={this.handleAdd} classname="primary-btn" type="submit" />
                     <Button label={buttonProps.secondaryLabel} onConfirm={this.handleCancel} classname="cancel-btn"/>
@@ -137,28 +293,30 @@ class AddDecision extends Component {
                     
                 </div>
             </form>
-        </Panel>);
+        );
     }
 }
 
 AddDecision.defaultProps = ({
-    addCase: () => false,
+    addCondition: () => false,
     cancel: () => false,
     attribute: {},
     buttonProps: {},
     attributes: [],
     outcome: {},
     editDecision: false,
+    editCondition: {}
 });
 
 AddDecision.propTypes = ({
-    addCase: PropTypes.func,
+    addCondition: PropTypes.func,
     cancel: PropTypes.func,
     attribute: PropTypes.object,
     buttonProps: PropTypes.object,
     attributes: PropTypes.array,
     outcome: PropTypes.object,
     editDecision: PropTypes.bool,
+    editCondition: PropTypes.object
 });
 
 

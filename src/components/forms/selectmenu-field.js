@@ -18,7 +18,7 @@ const SelectField = ({label, onChange, error, required, options, value, readOnly
 
     return (<div className="form-field">
         {label && <label>{label}</label>}
-        <select onChange={change} className={`form-field-drpdwn ${errorClass} ${readOnlyClass}`} value={fieldValue}>
+        <select onChange={change} className={`form-field-drpdwn ${errorClass} ${readOnlyClass}`} value={fieldValue} disabled={readOnly}>
           <option value="-1">Please select...</option>
             {options.length > 0 && 
                 options.map(option => (

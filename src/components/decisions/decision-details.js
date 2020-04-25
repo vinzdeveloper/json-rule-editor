@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Timeline from '../timeline/timeline';
+import Tree from '../tree/tree';
 import { PanelBox } from '../panel/panel';
 import 'font-awesome/css/font-awesome.min.css';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { transformRuleToTree } from '../../utils/transform';
 
 class DecisionDetails extends Component {
 
     static getDerivedStateFromProps(props, state) {
-        if (props.decisions.length !== state.showCase.length) {
-            const showCase = props.decisions.map((decision, index) =>
-            ({case: false, edit: false, index }));
+        if (Object.keys(props.outcomes).length !== state.showCase.length) {
+            const showCase = Object.keys(props.outcomes).map((key, index) => {
+                return ({case: false, edit: false, index });
+            });
             return { showCase };
         }
         return null;
@@ -18,17 +20,18 @@ class DecisionDetails extends Component {
 
     constructor(props) {
         super(props);
-        const showCase = props.decisions.map((decision, index) =>
-           ({case: false, edit: false, index })
-        )
+        const showCase = Object.keys(props.outcomes).map((key, index) => {
+            return ({case: false, edit: false, index });
+        })
+       
         this.state = { showCase, submitAlert: false, removeAlert:false, successAlert: false, removeDecisionAlert: false};
         this.handleExpand = this.handleExpand.bind(this);
-        this.handleRemoveCase = this.handleRemoveCase.bind(this);
-        this.handleRemoveDecision = this.handleRemoveDecision.bind(this);
-        this.editCase = this.editCase.bind(this);
+        this.handleRemoveCondition = this.handleRemoveCondition.bind(this);
+        this.handleRemoveConditions = this.handleRemoveConditions.bind(this);
+        this.editCondition = this.editCondition.bind(this);
         this.cancelAlert = this.cancelAlert.bind(this);
         this.removeCase = this.removeCase.bind(this);
-        this.removeDecision = this.removeDecision.bind(this);
+        this.removeDecisions = this.removeDecisions.bind(this);
     }
 
 
@@ -37,9 +40,9 @@ class DecisionDetails extends Component {
         this.setState({showRuleIndex: val});
     }
 
-    editCase(e, caseAttribute, caseIndex, decisionIndex) {
+    editCondition(e, decisionIndex) {
         e.preventDefault();
-        this.props.editCase(caseAttribute, caseIndex, decisionIndex);
+        this.props.editCondition(decisionIndex);
     }
 
     handleExpand(e, index) {
@@ -51,14 +54,14 @@ class DecisionDetails extends Component {
         this.setState({showCase: cases});
     }
 
-    handleRemoveCase(e, caseIndex, decisionIndex) {
+    handleRemoveCondition(e, decisionIndex) {
         e.preventDefault();
-        this.setState({removeAlert: true, removeCaseIndex: caseIndex, removeDecisionIndex: decisionIndex});
+        this.setState({removeAlert: true, removeDecisionIndex: decisionIndex});
     }
 
-    handleRemoveDecision(e, decisionIndex) {
+    handleRemoveConditions(e, outcome) {
         e.preventDefault();
-        this.setState({removeDecisionAlert: true, removeDecisionIndex: decisionIndex});
+        this.setState({removeDecisionAlert: true, removeOutcome: outcome});
     }
 
     cancelAlert = () => {
@@ -66,13 +69,13 @@ class DecisionDetails extends Component {
     }
 
     removeCase = () => {
-        this.props.removeCase(this.state.removeCaseIndex, this.state.removeDecisionIndex);
+        this.props.removeCase(this.state.removeDecisionIndex);
         this.setState({removeAlert: false, successAlert: true, successMsg: 'Selected Case is removed'});
     }
 
-    removeDecision = () => {
-        this.props.removeDecision(this.state.removeDecisionIndex);
-        this.setState({removeDecisionAlert: false, successAlert: true, successMsg: 'Selected Decision is removed'});
+    removeDecisions = () => {
+        this.props.removeDecisions(this.state.removeOutcome);
+        this.setState({removeDecisionAlert: false, successAlert: true, successMsg: 'Selected Decision is removed', removeOutcome: ''});
     }
 
     removeCaseAlert = () => {
@@ -97,7 +100,7 @@ class DecisionDetails extends Component {
             confirmBtnText="Yes, Remove it!"
             confirmBtnBsStyle="danger"
             title="Are you sure?"
-            onConfirm={this.removeDecision}
+            onConfirm={this.removeDecisions}
             onCancel={this.cancelAlert}
             focusCancelBtn
           >
@@ -120,58 +123,60 @@ class DecisionDetails extends Component {
              {this.state.removeDecisionAlert && this.removeDecisionAlert()}
              {this.state.successAlert && this.successAlert()}
          </div>);
-     }
+    }
 
-    renderCases = (cases, decisionIndex) => {
+    renderConditions = (conditions, decisionIndex) => {
+        const transformedData = transformRuleToTree(conditions);
         return (<div className="rule-flex-container">
-         { cases && cases.map((caseAttribute, caseIndex) => (<div className="decision-box" key={`case - ${caseIndex} - ${decisionIndex}`}>
+         { transformedData && transformedData.map((data, caseIndex) => (<div className="decision-box" key={`case - ${caseIndex} - ${decisionIndex}`}>
             <div className="tool-flex">
-                <div><a href="" onClick={(e) => this.editCase(e, caseAttribute, caseIndex, decisionIndex)}><span className="fa fa-edit" /></a></div>
-                <div><a href="" onClick={((e) => this.handleRemoveCase(e, caseIndex, decisionIndex))}><span className="fa fa-trash-o" /></a></div>
+                <div><a href="" onClick={(e) => this.editCondition(e, data.index)}><span className="fa fa-edit" /></a></div>
+                <div><a href="" onClick={((e) => this.handleRemoveCondition(e, data.index))}><span className="fa fa-trash-o" /></a></div>
             </div>
-            <Timeline caseAttribute={caseAttribute} />
+            <Tree treeData={data.node} count={data.depthCount}/>
             </div>))}
         </div>)
     }
 
     render() {
-        const { decisions } = this.props;
+        const { outcomes } = this.props;
         const { showCase} = this.state;
 
-        const decisionList = decisions.map((decision, index) =>
-            (<div key={decision.outcome}>
-                <PanelBox className={decision.type}>
+        const conditions = Object.keys(outcomes).map((key, index) =>
+            (<div key={key}>
+                <PanelBox className={'boolean'}>
                     <div>{index + 1}</div>
-                    <div>{String(decision.outcome)}</div>
-                    <div><span className={decision.type}>{decision.type}</span></div>
-                    <div>{`cases (${decision.cases.length})`}</div>
+                    <div>{String(key)}</div>
+                    <div>{`cases (${outcomes[key].length})`}</div>
                     <div>
                         <a href="" onClick={(e) => this.handleExpand(e, index)}> { showCase[index].case ? 'Collapse' : 'Expand' }</a>
-                        <a href="" onClick={((e) => this.handleRemoveDecision(e, index))}>Remove</a>
+                        <a href="" onClick={((e) => this.handleRemoveConditions(e, String(key)))}>Remove</a>
                     </div>
                  </PanelBox>
-                 { showCase[index].case && this.renderCases(decision.cases, index)}
+                 { showCase[index].case && this.renderConditions(outcomes[key], index)}
             </div>));
 
         return (<div className="">
             { this.alert() }
-            { decisionList }
+            { conditions }
         </div>);
     }
 }
 
 DecisionDetails.defaultProps = ({
     decisions: [],
-    editCase: () => false,
+    editCondition: () => false,
     removeCase: () => false,
-    removeDecision: () => false,
+    removeDecisions: () => false,
+    outcomes: {},
 });
 
 DecisionDetails.propTypes = ({
     decisions: PropTypes.array,
-    editCase: PropTypes.func,
+    editCondition: PropTypes.func,
     removeCase: PropTypes.func,
-    removeDecision: PropTypes.func,
+    removeDecisions: PropTypes.func,
+    outcomes: PropTypes.object,
 });
 
 export default DecisionDetails;

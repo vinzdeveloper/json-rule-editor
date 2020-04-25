@@ -1,6 +1,5 @@
 .rule-flex-container {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     margin-top: 50px;
     margin-left: 50px;
@@ -9,7 +8,7 @@
         border-bottom: 2px solid #ccc;
         margin-bottom: 30px;
         padding-bottom: 20px;
-        width: 32%;
+        width: 100%;
     }
 
     .tool-flex {
@@ -21,4 +20,39 @@
             width: 30px;
         }
     }
+}
+
+.add-decision-step {
+    display: flex;
+    color: $form-label-color;
+    font-family: $form-font-family;
+    flex-wrap: wrap;
+
+    .step1 {
+        margin-right: 10%;
+    }
+
+    .step2 {
+        margin-right: 10%;
+    }
+
+    div {
+        margin-bottom: 10px;
+    }
+}
+
+.add-field-panel {
+    display: flex;
+    flex-direction: row;
+    font-family: $form-font-family;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    div {
+        flex-grow: 1;
+    }
+
+    .btn-container {
+        margin-top: 27px;
+    }  
 }

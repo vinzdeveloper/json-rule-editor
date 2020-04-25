@@ -1,16 +1,8 @@
-import {DATA_TYPES} from '../constants/data-types';
 
 export const validateOutcome = (outcome) => {
     const error = {};
-    if (!outcome.type) {
-        error.type = 'Please specify the outcome type'
-    }
 
     if (!outcome.value) {
-        error.value = 'Please specify the outcome value'
-    }
-
-    if (outcome.type === DATA_TYPES.BOOLEAN && outcome.value === '-1') {
         error.value = 'Please specify the outcome value'
     }
 
@@ -27,26 +19,22 @@ export const validateAttribute = (attribute) => {
         error.value = 'Please specify the attribute value'
     }
 
+    if (!attribute.name) {
+        error.name = 'Please specify the attribute name'
+    }
+
     return error;
 }
 
-export default function decisionValidations(attributes=[], outcome) {
-    const error = {attributes: [], outcome: {}};
-    const validCase = attributes.some(attr => attr.operator !== 'any');
+export default function decisionValidations(node={}, outcome) {
+    const error = {node: {}, outcome: {}};
     error.outcome = validateOutcome(outcome);
-
-    if (!validCase) {
-        return ({formError: 'Please specify atlease one attribute'});
-    }
+    const validCase = node.children && node.children.length > 0;
     
-    attributes.forEach(attribute => {
-        if (attribute.operator != 'any') {
-            const err = validateAttribute(attribute);
-            if (Object.keys(err).length > 0) {
-                error.attributes.push({ ...err, name: attribute.name });
-            }
-        }
-    });
-
+    if (!validCase) {
+        error.formError = 'Please specify atlease one condition';
+    } else if (Object.keys(error.outcome).length > 0){
+        error.formError = 'Please specify valid output values';
+    }
     return error;
 }

@@ -1,0 +1,121 @@
+{
+    "name": "Credit Card Eligibility",
+    "attributes": [{ "name": "nationality", "type": "string" },
+                   { "name": "age", "type": "number"},
+                   { "name": "creditScore", "type": "number" },
+                   { "name": "income", "type": "number"},
+                   { "name": "residentInUK", "type": "string" }],
+
+    "decisions": [{
+                    "conditions": {
+                        "all": [{
+                            "fact": "nationality",
+                            "operator": "equal",
+                            "value": "United Kingdom"
+                        },
+                        {
+                            "fact": "income",
+                            "operator": "greaterThan",
+                            "value": 1000
+                        },
+                        {
+                            "fact": "residentInUK",
+                            "operator": "equal",
+                            "value": "Yes"
+                        },
+                        {
+                            "fact": "creditScore",
+                            "operator": "greaterThan",
+                            "value": 200
+                        }
+                    ]},
+                    "event": {
+                        "type": "Eligible"
+                    }
+                },
+                {
+                    "conditions": {
+                        "all": [{
+                            "fact": "nationality",
+                            "operator": "notEqual",
+                            "value": "United Kingdom"
+                        },
+                        
+                        {
+                            "fact": "residentInUK",
+                            "operator": "equal",
+                            "value": "Yes"
+                        },
+                        {
+                            "any": [{
+                                "fact": "income",
+                                "operator": "greaterThan",
+                                "value": 2000
+                            },
+                            {
+                                "fact": "creditScore",
+                                "operator": "greaterThan",
+                                "value": 400
+                            }]
+                        }
+                    ]},
+                    "event": {
+                        "type": "Eligible"
+                    }
+                },
+                {
+                    "conditions": {
+                        "all": [{
+                        "fact": "nationality",
+                        "operator": "notEqual",
+                        "value": "United Kingdom"
+                    },
+                    
+                    {
+                        "fact": "residentInUK",
+                        "operator": "equal",
+                        "value": "Yes"
+                    },
+                    {
+                        "fact": "age",
+                        "operator": "lessThan",
+                        "value": 18
+                    },
+                    {
+                        "any": [{
+                            "fact": "income",
+                            "operator": "greaterThan",
+                            "value": 2000
+                        },
+                        {
+                            "fact": "creditScore",
+                            "operator": "greaterThan",
+                            "value": 400
+                        }]
+                    }
+                ]},
+                    "event": {
+                        "type": "Eligible"
+                    }
+                },
+
+                {
+                    "conditions": {
+                        "all": [{
+                        "fact": "nationality",
+                        "operator": "notEqual",
+                        "value": "United Kingdom"
+                    },
+                    
+                    {
+                        "fact": "residentInUK",
+                        "operator": "notEqual",
+                        "value": "Yes"
+                    }
+                ]},
+                    "event": {
+                        "type": "Not Eligible"
+                    }
+                }
+    ]
+}

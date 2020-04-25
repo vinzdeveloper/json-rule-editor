@@ -93,3 +93,52 @@
   background-color: $button-dark;
   border: none;
 }
+
+.btn-group-container {
+  display: flex;
+  flex-direction: row;
+
+  .btn-grp {
+    border: 1px solid $form-field-color;
+    cursor: pointer;
+  }
+
+  .btn-grp:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  .btn-grp:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  button {
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    font-family: $form-font-family;
+    font-size: 13px;
+    height: 35px;
+    margin: 0;
+    outline:none;
+    padding: 10px;
+  }
+
+  button:hover {
+    background-color: $form-field-color;
+    border-radius: 0;
+    color: #fff;
+  }
+  button:focus {
+    background-color: $form-field-color;
+    border-radius: 0;
+    color: #fff;
+  }
+  button.active {
+    background-color: $form-field-color;
+    border-radius: 0;
+    color: #fff;
+  }
+}

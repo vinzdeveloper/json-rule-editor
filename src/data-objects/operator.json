@@ -1,6 +1,5 @@
 {
-    "boolean": ["equals", "notEqual", "any"],
-    "string": ["equals", "equalIgnoreCase", "contains", "startsWith", "endsWith", "notEqual", "any"],
-    "number": ["equal to", "not equal", "less than", "greater than", "less than or equal", "greater than or equal", "between", "any"],
-    "array": ["includes", "excludes", "any"]
+    "string": ["equal", "notEqual"],
+    "number": ["equal", "lessThan", "lessThanInclusive", "greaterThan", "greaterThanInclusive", "notEqual"],
+    "array": ["contains", "doesNotContain", "in", "notIn"]
 }

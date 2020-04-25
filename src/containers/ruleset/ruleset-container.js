@@ -12,6 +12,7 @@ import { handleAttribute } from '../../actions/attributes';
 import { handleDecision } from '../../actions/decisions';
 import Banner from '../../components/panel/banner';
 import * as Message from '../../constants/messages';
+import { groupBy } from 'lodash/collection';
 
 const tabs = [{name: 'Attributes'}, {name: 'Decisions'}, {name: 'Validate'}, {name: 'Generate'}];
 class RulesetContainer extends Component {
@@ -41,6 +42,11 @@ class RulesetContainer extends Component {
 
     render() {
       const { attributes, decisions, name } = this.props.ruleset;
+      const indexedDecisions = decisions.map((decision, index) => ({ ...decision, index }));
+      let outcomes;
+        if (indexedDecisions.length > 0) {
+            outcomes = groupBy(indexedDecisions, data => data.event.type);
+        }
       const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
       return <div>
         <PageTitle name={name} />
@@ -48,8 +54,8 @@ class RulesetContainer extends Component {
         <div className="tab-page-container">
             {this.state.activeTab === 'Attributes' && <Attributes attributes={attributes} 
               handleAttribute={this.props.handleAttribute }/>}
-            {this.state.activeTab === 'Decisions' && <Decisions decisions={decisions} attributes={attributes}
-             handleDecisions={this.props.handleDecisions} />}
+            {this.state.activeTab === 'Decisions' && <Decisions decisions={indexedDecisions} attributes={attributes}
+             handleDecisions={this.props.handleDecisions} outcomes={outcomes}/>}
             {this.state.activeTab === 'Validate' && <ValidateRules attributes={attributes} decisions={decisions} />}
             {this.state.activeTab === 'Generate' && <Banner message={message} ruleset={this.props.ruleset} onConfirm={this.generateFile}/> }
         </div>
@@ -80,7 +86,6 @@ const mapStateToProps = (state) => {
 })};
 
 const mapDispatchToProps = (dispatch) => ({
-
   handleAttribute: (operation, attribute, index) => dispatch(handleAttribute(operation, attribute, index)),
   handleDecisions: (operation, decision) => dispatch(handleDecision(operation, decision)),
 });

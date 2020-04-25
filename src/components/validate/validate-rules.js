@@ -45,10 +45,17 @@ class ValidateRules extends Component {
 
     validateRules() {
         let facts = {};
-        const { decisions } = this.props;
+        const { decisions, attributes } = this.props;
         this.setState({loading: true});
         this.state.conditions.forEach(condition => {
+           const attrProps = attributes.find(attr => attr.name === condition.name);
+           if (attrProps.type === 'number') {
+            facts[condition.name] = Number(condition.value);
+           } else if (condition.value && condition.value.indexOf(',') > -1) {
+            facts[condition.name] = condition.value.split(',');
+           } else {
             facts[condition.name] = condition.value;
+           }
         })
         validateRuleset(facts, decisions).then(outcomes => {
             this.setState({loading: false, outcomes,  result: true});
@@ -68,9 +75,9 @@ class ValidateRules extends Component {
             </tr>)
         );
 
-        const noResults = outcomes.length < 1 && result ? <tr><td>No results found</td></tr> : undefined;
+        const noResults = outcomes && outcomes.length < 1 && result ? <tr><td>No results found</td></tr> : undefined;
         
-        const outcome = outcomes.length > 0 ? outcomes.map(outcome => <tr key={outcome.type}>
+        const outcome = outcomes && outcomes.length > 0 ? outcomes.map(outcome => <tr key={outcome.type}>
                 <td>Type</td>
                 <td>{outcome.type}</td>
         </tr>) : noResults;

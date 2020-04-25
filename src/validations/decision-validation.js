@@ -7,19 +7,66 @@ export const validateOutcome = (outcome) => {
     }
 
     return error;
+} 
+
+const isEmpty = (val) => {
+    if(!val) {
+        return true;
+    } else if (!val.trim()) {
+        return true;
+    }
+    return false;
 }
 
-export const validateAttribute = (attribute) => {
+const fieldValidationByType = (value, type, operator) => {
+    switch(type) {
+        case 'string':
+            return value.indexOf(',') === -1;
+        case 'number': {
+            const re = RegExp('[+-]?([0-9]*[.])?[0-9]+');
+            if (re.test(value)) {
+                return !(isNaN(Number(value)));
+            } 
+            return re.test(value);
+        }
+        case 'array': {
+            if (operator === 'doesNotContain' || operator === 'contains') {
+                return value.indexOf(',') === -1;
+            } else {
+                const arrValues = value.split(',');
+                if (arrValues && arrValues.length > 0) {
+                    return !arrValues.some(v => isEmpty(v))
+                } else {
+                    return false;
+                }
+            }
+        }
+        default:
+            return true;
+    }
+}
+
+export const validateAttribute = (attribute, attributes) => {
     const error = {};
-    if (!attribute.operator) {
+    if (isEmpty(attribute.operator)) {
         error.operator = 'Please specify the operator type'
     }
 
-    if (!attribute.value) {
+    if (isEmpty(attribute.value)) {
         error.value = 'Please specify the attribute value'
+    } else {
+        if (attribute.name) {
+            const attProps = attributes.find(att => att.name === attribute.name);
+            if(attProps && attProps.type) {
+                if (!fieldValidationByType(attribute.value, attProps.type, attribute.operator)) {
+                    error.value = 'Please specify the valid attribute value' ;
+                }
+               
+            }
+        }
     }
 
-    if (!attribute.name) {
+    if (isEmpty(attribute.name)) {
         error.name = 'Please specify the attribute name'
     }
 

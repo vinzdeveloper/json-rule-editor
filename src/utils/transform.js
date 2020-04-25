@@ -1,5 +1,6 @@
 import { has } from 'lodash/object';
 import { isArray } from 'lodash/lang';
+import { join } from 'lodash/array';
 
 const nodeSvgShape = {
     shape: 'circle',
@@ -11,8 +12,12 @@ const nodeSvgShape = {
 
 const mapFactToChildren = (fact) => {
     if (has(fact, 'fact') && has(fact, 'operator') && has(fact, 'value')) {
+        let value = fact.value;
+        if (isArray(fact.value)){
+            value = join(fact.value, ',');
+        }
         return ({name: fact.fact, attributes: {
-            [fact.operator] : fact.value
+            [fact.operator] : value
         }})
     }
     return undefined;
@@ -55,7 +60,13 @@ const mapChildNodeToFacts = (children) => {
     const fact = { fact: children.name };
     Object.keys(children.attributes).forEach((key) => {
         fact['operator'] = key;
-        fact['value'] = children.attributes[key];
+        let value;
+        if (String(children.attributes[key]).indexOf(',') > -1) {
+            value = children.attributes[key].split(',');
+        } else {
+            value = children.attributes[key];
+        }
+        fact['value'] = value;
     });
     return fact;
 }

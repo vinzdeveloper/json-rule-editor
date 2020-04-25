@@ -8,7 +8,7 @@ import attributeValidations from '../../validations/attribute-validations';
 
 class AddAttributes extends Component {
 
-    options = ['string', 'number', 'boolean', 'array', 'date']
+    options = ['string', 'number', 'array'];
 
     constructor(props) {
         super(props);

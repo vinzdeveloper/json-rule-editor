@@ -13,6 +13,7 @@ import { getNodeDepthDetails, getNodeDepth } from '../../utils/treeutils';
 import { transformTreeToRule } from '../../utils/transform';
 import { sortBy } from 'lodash/collection';
 import { validateAttribute } from '../../validations/decision-validation';
+import { PLACEHOLDER } from '../../constants/data-types';
 
 
 const nodeStyle ={
@@ -110,14 +111,19 @@ class AddDecision extends Component {
 
     mapNodeName(val) {
         const node = {};
-        const { addAttribute: { name, operator, value }} = this.state;
+        const { addAttribute: { name, operator, value }, attributes } = this.state;
         if (val === 'Add All' || val === 'Add Any') {
             node['name'] = val === 'Add All' ? 'all' : 'any';
             node['nodeSvgShape'] = nodeStyle;
             node['children'] = [];
         } else {
             node['name'] = name;
-            node['attributes'] = { [operator]: value };
+            let factValue = value.trim();
+            const attProps = attributes.find(att => att.name === name);
+            if (attProps.type === 'number') {
+                factValue = Number(value.trim());
+            }
+            node['attributes'] = { [operator]: factValue };
         }
         return node;
     } 
@@ -127,10 +133,10 @@ class AddDecision extends Component {
         if (value === 'Add Facts') {
             this.setState({enableFieldView: true});
         } else {
-            const { activeNodeDepth, node } = this.state;
+            const { activeNodeDepth, node, attributes } = this.state;
             const addAttribute = { error: {}, name: '', operator: '', value: ''};
             if (value === 'Add fact node') {
-                const error = validateAttribute(this.state.addAttribute);
+                const error = validateAttribute(this.state.addAttribute, attributes);
                 if (Object.keys(error).length > 0 ) {
                     let addAttribute = this.state.addAttribute;
                     addAttribute.error = error;
@@ -231,6 +237,9 @@ class AddDecision extends Component {
         const attribute = addAttribute.name && attributes.find(attr => attr.name === addAttribute.name);
         const operatorOptions = attribute && operator[attribute.type];
 
+        const placeholder = addAttribute.operator === 'contains' || addAttribute.operator === 'doesNotContain' ?
+         PLACEHOLDER['string'] : PLACEHOLDER[attribute.type]
+
         return (<Panel>
             <div className="add-field-panel">
                 <div><SelectField options={attributeOptions} onChange={(e) => this.onChangeNewFact(e, 'name')}
@@ -238,7 +247,7 @@ class AddDecision extends Component {
                 <div><SelectField options={operatorOptions} onChange={(e) => this.onChangeNewFact(e, 'operator')}
                         value={addAttribute.operator} error={addAttribute.error.operator} label="Operator"/></div>
                 <div><InputField onChange={(value) => this.onChangeNewFact(value, 'value')} value={addAttribute.value}
-                        error={addAttribute.error.value} label="Value"/></div>
+                        error={addAttribute.error.value} label="Value" placeholder={placeholder}/></div>
             </div>
             <div className="btn-group">
                     <Button label={'Add'} onConfirm={() => this.handleChildrenNode('Add fact node') } classname="btn-dark" type="submit" />

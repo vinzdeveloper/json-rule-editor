@@ -65,47 +65,6 @@ td.attributes-header {
     justify-content: flex-start;
 }
 
-.panel-box-wrapper {
-    border: 1px solid #bbb;
-    box-shadow: 1px 3px #eee;
-    display: flex;
-    font-family: $tab-font-family;
-    font-size: 17px;
-    flex-wrap: wrap;
-    margin-top: 30px;
-    padding: 20px;
-
-    div {
-       margin: 0 20px;
-       width: 10%;
-    }
-
-    div:first-child {
-        width: 1%;
-    }
-
-    div:nth-child(2) {
-        width: 25%;
-    }
-
-    div:last-child {
-        width: 0;
-    }
-
-   a {
-       color: $link-color;
-       cursor: pointer;
-       font-family: $tab-font-family;
-       font-size: 14px;
-       margin-right: 30px;
-       text-decoration: none;;
-   }
-
-   a:hover {
-       text-decoration: underline;
-   }
-}
-
 @mixin attr-linktype($color) {
     background-color: $color;
     border-radius: 5px;
@@ -136,3 +95,14 @@ td.attributes-header {
     @include attr-linktype(map-get($attribute-type, "number"));
 }
 
+.view-attribute {
+    border-bottom: 2px solid #ddd;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.view-params-container {
+    width: 40%;
+}

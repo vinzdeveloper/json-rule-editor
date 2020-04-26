@@ -5,6 +5,7 @@ import { PanelBox } from '../panel/panel';
 import 'font-awesome/css/font-awesome.min.css';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { transformRuleToTree } from '../../utils/transform';
+import ViewAttribute from '../attributes/view-attributes';
 
 class DecisionDetails extends Component {
 
@@ -21,7 +22,7 @@ class DecisionDetails extends Component {
     constructor(props) {
         super(props);
         const showCase = Object.keys(props.outcomes).map((key, index) => {
-            return ({case: false, edit: false, index });
+            return ({case: false, edit: false, index});
         })
        
         this.state = { showCase, submitAlert: false, removeAlert:false, successAlert: false, removeDecisionAlert: false};
@@ -49,8 +50,8 @@ class DecisionDetails extends Component {
         e.preventDefault();
         const cases = [...this.state.showCase];
         let updateCase  = cases[index];
-        updateCase = {case: !updateCase.case}
-        cases[index] = {...updateCase};
+        updateCase = { ...updateCase, case: !updateCase.case}
+        cases[index] = { ...updateCase };
         this.setState({showCase: cases});
     }
 
@@ -129,11 +130,15 @@ class DecisionDetails extends Component {
         const transformedData = transformRuleToTree(conditions);
         return (<div className="rule-flex-container">
          { transformedData && transformedData.map((data, caseIndex) => (<div className="decision-box" key={`case - ${caseIndex} - ${decisionIndex}`}>
-            <div className="tool-flex">
-                <div><a href="" onClick={(e) => this.editCondition(e, data.index)}><span className="fa fa-edit" /></a></div>
-                <div><a href="" onClick={((e) => this.handleRemoveCondition(e, data.index))}><span className="fa fa-trash-o" /></a></div>
-            </div>
-            <Tree treeData={data.node} count={data.depthCount}/>
+                <div className="tool-flex">
+                    <div><a href="" onClick={(e) => this.editCondition(e, data.index)}><span className="fa fa-edit" /></a></div>
+                    <div><a href="" onClick={((e) => this.handleRemoveCondition(e, data.index))}><span className="fa fa-trash-o" /></a></div>
+                </div>
+                <Tree treeData={data.node} count={data.depthCount}/>
+                { data.event.params && <div className="view-params-container">
+                        <h4>Params  </h4>
+                        <ViewAttribute  items={data.event.params}/>
+                    </div>}
             </div>))}
         </div>)
     }
@@ -145,14 +150,15 @@ class DecisionDetails extends Component {
         const conditions = Object.keys(outcomes).map((key, index) =>
             (<div key={key}>
                 <PanelBox className={'boolean'}>
-                    <div>{index + 1}</div>
-                    <div>{String(key)}</div>
-                    <div>{`cases (${outcomes[key].length})`}</div>
-                    <div>
-                        <a href="" onClick={(e) => this.handleExpand(e, index)}> { showCase[index].case ? 'Collapse' : 'Expand' }</a>
+                    <div className="index">{index + 1}</div>
+                    <div className="name">{String(key)}</div>
+                    <div className="type">{`conditions(${outcomes[key].length})`}</div>
+                    <div className="menu">
+                        <a href="" onClick={(e) => this.handleExpand(e, index)}> { showCase[index].case ? 'Collapse' : 'View Conditions' }</a>
                         <a href="" onClick={((e) => this.handleRemoveConditions(e, String(key)))}>Remove</a>
                     </div>
                  </PanelBox>
+                 
                  { showCase[index].case && this.renderConditions(outcomes[key], index)}
             </div>));
 

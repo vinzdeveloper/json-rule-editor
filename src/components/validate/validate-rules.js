@@ -9,6 +9,7 @@ import Banner from '../panel/banner';
 import * as Message from '../../constants/messages';
 import { validateRuleset } from '../../validations/rule-validation';
 import Loader from '../loader/loader';
+import { ViewOutcomes } from '../attributes/view-attributes';
 
 class ValidateRules extends Component {
 
@@ -75,27 +76,24 @@ class ValidateRules extends Component {
             </tr>)
         );
 
-        const noResults = outcomes && outcomes.length < 1 && result ? <tr><td>No results found</td></tr> : undefined;
+        const noResults = outcomes && outcomes.length < 1 && result ? <div>No results found</div> : undefined;
         
-        const outcome = outcomes && outcomes.length > 0 ? outcomes.map(outcome => <tr key={outcome.type}>
-                <td>Type</td>
-                <td>{outcome.type}</td>
-        </tr>) : noResults;
+        const outcome = outcomes && outcomes.length > 0 ? (<div className="view-params-container">
+                <h4>Outcomes  </h4>
+                <ViewOutcomes  items={outcomes}/>
+            </div>) : noResults;
 
         return (
         <React.Fragment>
             <Table columns={['Name', 'Value']}>
                      {formElements}
-                </Table>
-                <div className="btn-group">
-                    <Button label={'Validate Ruleset'} onConfirm={this.validateRules} classname="primary-btn" type="submit" />
-                </div>
-                <Table>
-                     <tr><td colSpan={3}><hr /></td></tr>
-                     { loading && <Loader /> }
-                     { !loading && outcome }
-                     <tr><td colSpan={3}><hr /></td></tr>  
-                </Table>
+            </Table>
+            <div className="btn-group">
+               <Button label={'Validate Ruleset'} onConfirm={this.validateRules} classname="primary-btn" type="submit" />
+           </div>
+            <hr/>
+                { loading && <Loader /> }
+                { !loading && outcome }
         </React.Fragment>)
     }
 

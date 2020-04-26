@@ -50,10 +50,10 @@ export const transformRuleToTree = (conditions = []) => {
     if (isArray(conditions)) {
         return conditions.map((condition) => {
             depthCount = 0;
-            return { node: mapConditionsToChildren(condition.conditions, 1), depthCount, index: condition.index };
+            return { node: mapConditionsToChildren(condition.conditions, 1), depthCount, index: condition.index, event: condition.event };
         });
     } 
-    return { node: mapConditionsToChildren(conditions.conditions, 1), depthCount, index: 0 };
+    return { node: mapConditionsToChildren(conditions.conditions, 1), depthCount, index: 0, event: conditions.event};
 };
 
 const mapChildNodeToFacts = (children) => {
@@ -88,6 +88,6 @@ const mapNodeToCondition = (node) => {
 }
 
 
-export const transformTreeToRule = (node = {}, outcome) => {
-    return ({conditions: mapNodeToCondition(node), event: { type: outcome.value }});
+export const transformTreeToRule = (node = {}, outcome, params) => {
+    return ({conditions: mapNodeToCondition(node), event: { type: outcome.value, params }});
 }

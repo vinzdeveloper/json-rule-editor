@@ -36,6 +36,41 @@
     &.array-type {
         border-left: 5px solid map-get($attribute-type, "array");
     }
+
+    div {
+        margin: 0 20px;
+        width: 10%;
+     }
+ 
+    .index {
+         width: 1%;
+    }
+ 
+    .name {
+         width: 25%;
+    }
+ 
+    .type {
+         width: 10%;
+    }
+
+    .menu {
+        margin-left: 20px;
+        width: auto;
+   }
+ 
+    a {
+        color: $link-color;
+        cursor: pointer;
+        font-family: $tab-font-family;
+        font-size: 14px;
+        margin-right: 30px;
+        text-decoration: none;;
+    }
+ 
+    a:hover {
+        text-decoration: underline;
+    }
 }
 
 .title-panel {

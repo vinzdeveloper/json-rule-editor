@@ -16,6 +16,7 @@ import { validateAttribute } from '../../validations/decision-validation';
 import { PLACEHOLDER } from '../../constants/data-types';
 
 
+
 const nodeStyle ={
     shape: 'circle',
     shapeProps: {
@@ -37,7 +38,7 @@ const outcomeOptions = [{label : 'Add Outcome', active: false, disable: false },
 class AddDecision extends Component {
     constructor(props) {
         super(props);
-        const outcome = props.editDecision ? props.outcome : ({ value: '', error: {}});
+        const outcome = props.editDecision ? props.outcome : ({ value: '', error: {}, params: []});
         const addAttribute = { error: {}, name: '', operator: '', value: ''};
         const node = props.editDecision ? props.editCondition.node : {};
         const activeNode = { index: 0, depth: 0 };
@@ -62,6 +63,8 @@ class AddDecision extends Component {
         this.handleChildrenNode = this.handleChildrenNode.bind(this);
         this.handleFieldCancel = this.handleFieldCancel.bind(this);
         this.handleOutputPanel = this.handleOutputPanel.bind(this);
+        this.handleOutputParams = this.handleOutputParams.bind(this);
+        this.addParams = this.addParams.bind(this);
     }
 
     handleAdd() {
@@ -70,7 +73,11 @@ class AddDecision extends Component {
         if (error.formError) {
             this.setState({formError: error.formError, outcome: { ...this.state.outcome, error: error.outcome }})
         } else {
-            const condition = transformTreeToRule(this.state.node, this.state.outcome);
+            let outcomeParams = {};
+            this.state.outcome.params.forEach(param => {     
+                outcomeParams[param.pkey] = param.pvalue;
+            })
+            const condition = transformTreeToRule(this.state.node, this.state.outcome, outcomeParams);
            this.props.addCondition(condition);
         }
     }
@@ -89,6 +96,29 @@ class AddDecision extends Component {
         const outcome = { ...this.state.outcome };
         outcome[type] = e.target.value;
         this.setState({outcome});
+     }
+
+     addParams() {
+        const { outcome } = this.state;
+        const newParams = outcome.params.concat({pkey: '', pvalue: '' });
+        this.setState({ outcome: { ...outcome, params: newParams }});
+     }
+
+     handleOutputParams(e, type, index){
+         const { outcome } = this.state;
+         const params = [ ...outcome.params ];
+         const newParams = params.map((param, ind) => {
+             if (index === ind) {
+                if (type === 'pkey') {
+                    return { ...param, pkey: e.target.value };
+                } else {
+                    return { ...param, pvalue: e.target.value };
+                }
+             }
+             return param;
+         });
+         this.setState({outcome: { ...outcome, params: newParams }});
+
      }
 
     handleTopNode(value) {
@@ -261,8 +291,22 @@ class AddDecision extends Component {
         const { editDecision } = this.props;
         return (<Panel>
             <div className="add-field-panel">
-                <div><InputField onChange={(value) => this.onChangeOutcomeValue(value, 'value')} value={outcome.value}
-                        error={outcome.error && outcome.error.value} label="Value" readOnly={editDecision}/></div>
+                <div>
+                    <InputField onChange={(value) => this.onChangeOutcomeValue(value, 'value')} value={outcome.value}
+                        error={outcome.error && outcome.error.value} label="Value" readOnly={editDecision}/>
+                </div>
+                <div className="attributes-header">
+                    <div className="attr-link" onClick={this.addParams}>
+                        <span className="plus-icon" /><span className="text">Add Params</span> 
+                    </div>
+                </div>
+            </div>
+            <div>
+                {outcome.params.length > 0 && outcome.params.map((param, ind) => 
+                    (<div key={ind} className="add-field-panel">
+                        <InputField onChange={(value) => this.handleOutputParams(value, 'pkey', ind)} value={param.pkey} label="key" />
+                        <InputField onChange={(value) => this.handleOutputParams(value, 'pvalue', ind)} value={param.pvalue} label="Value" />
+                    </div>))}
             </div>
         </Panel>)
     }

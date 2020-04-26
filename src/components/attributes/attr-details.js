@@ -73,16 +73,14 @@ class AttributeDetails extends Component {
 
     const buttonProps = { primaryLabel: 'Save Changes', secondaryLabel: 'Cancel'};
 
-    // const alertFlag = this.state.removeAlert || this.state.successAlert;
-
 
     const attrList = attributes.map((attr, index) => 
     (<div key={attr.name}>
         <PanelBox className={attr.type}>
-            <div>{index + 1}</div>
-            <div>{attr.name}</div>
-            <div><span className={attr.type}>{attr.type}</span></div>
-            <div>
+            <div className="index">{index + 1}</div>
+            <div className="name">{attr.name}</div>
+            <div className="type"><span className={attr.type}>{attr.type}</span></div>
+            <div className="menu">
                 <a href="" onClick={(e) => this.handleEdit(e, index)}>Edit</a>
                 <a href="" onClick={(e) => this.handleRemove(e, attr, index)}>Remove</a>
             </div>

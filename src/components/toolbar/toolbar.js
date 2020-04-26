@@ -10,6 +10,7 @@ class ToolBar extends Component {
         this.handleReset = this.handleReset.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.reset = this.reset.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
 
         this.state={submitAlert: false, resetAlert:false, successAlert: false};
     }
@@ -22,8 +23,8 @@ class ToolBar extends Component {
         this.setState({resetAlert: true});
     }
 
-    handleSearch() {
-
+    handleSearch(value) {
+        this.props.searchTxt(value);
     }
 
     cancelAlert = () => {
@@ -94,13 +95,10 @@ class ToolBar extends Component {
             <div className="attr-link" onClick={this.props.handleAdd}>
                 <span className="plus-icon" /><span className="text">Add</span> 
             </div>
-            {/*<div className="attr-link" onClick={this.handleSubmit}>
-                 <span className="submit-icon" /><span className="text">Submit</span> 
-    </div>*/}
             <div className="attr-link" onClick={this.handleReset}>
                  <span className="reset-icon" /><span className="text">Reset</span> 
             </div>
-            <div><Search onConfirm={this.handleSearch} /></div>
+            <div><Search onConfirm={this.handleSearch} onChange={this.handleSearch}/></div>
         </div>)
     }
 }
@@ -112,12 +110,14 @@ ToolBar.defaultProps = ({
     handleAdd: () => false,
     submit: () =>  false,
     reset: () =>  false,
+    searchTxt: () => false,
 });
 
 ToolBar.propTypes = ({
     handleAdd: PropTypes.func,
     submit: PropTypes.func,
     reset: PropTypes.func,
+    searchTxt: PropTypes.func,
 });
 
 export default ToolBar;

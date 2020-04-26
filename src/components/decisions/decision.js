@@ -6,12 +6,14 @@ import DecisionDetails from './decision-details';
 import Banner from '../panel/banner';
 import * as Message from '../../constants/messages';
 import { transformRuleToTree } from '../../utils/transform';
+import { isContains } from '../../utils/stringutils';
 
 class Decision extends Component {
 
     constructor(props){
         super(props);
         this.state={showAddRuleCase: false,
+             searchCriteria: '',
              editCaseFlag: false,
              editCondition: [],
              message: Message.NO_DECISION_MSG,
@@ -24,10 +26,11 @@ class Decision extends Component {
         this.cancelAddAttribute = this.cancelAddAttribute.bind(this);
         this.removeDecisions = this.removeDecisions.bind(this);
         this.handleReset = this.handleReset.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
-    handleSearch = () => {
-
+    handleSearch = (value) => {
+        this.setState({ searchCriteria: value})
     }
 
     handleAdd = () => {
@@ -41,9 +44,14 @@ class Decision extends Component {
     editCondition(decisionIndex) {
         const decision = this.props.decisions[decisionIndex];
         const editCondition = transformRuleToTree(decision);
+        let outputParams = [];
+        if (Object.keys(decision.event.params).length > 0) {
+             outputParams = Object.keys(decision.event.params).map(key => ({pkey: key, pvalue: decision.event.params[key]}))
+        }
+        
         this.setState({ editCaseFlag: true, editCondition, 
             editDecisionIndex: decisionIndex, 
-            editOutcome: {value: decision.event.type }});
+            editOutcome: {value: decision.event.type, params: outputParams }});
     }
 
     addCondition(condition) {
@@ -69,17 +77,32 @@ class Decision extends Component {
         this.props.handleDecisions('RESET');
     }
 
+    filterOutcomes = () => {
+        const { searchCriteria } = this.state;
+        const { outcomes } = this.props;
+        let filteredOutcomes = {};
+        Object.keys(outcomes).forEach((key) => {
+            if (isContains(key, searchCriteria)) {
+                filteredOutcomes[key] = outcomes[key];
+            }
+        });
+        return filteredOutcomes;
+    }
+
 
     render() {
+        const { searchCriteria } = this.state;
         const buttonProps = { primaryLabel: 'Add Rulecase', secondaryLabel: 'Cancel'};
         const editButtonProps = { primaryLabel: 'Edit Rulecase', secondaryLabel: 'Cancel'};
+        const filteredOutcomes = searchCriteria ? this.filterOutcomes() : this.props.outcomes;
         const { outcomes } = this.props;
+
         return (<div className="rulecases-container">
-            { Object.keys(outcomes).length > 0 && <ToolBar handleAdd={this.handleAdd} submit={this.props.submit} reset={this.handleReset} /> }
+            { Object.keys(outcomes).length > 0 && <ToolBar handleAdd={this.handleAdd} submit={this.props.submit} reset={this.handleReset} searchTxt={this.handleSearch} /> }
             {this.state.showAddRuleCase && <AddDecision attributes={this.props.attributes} addCondition={this.addCondition} cancel={this.cancelAddAttribute} buttonProps={buttonProps} />}
             {this.state.editCaseFlag && <AddDecision attributes={this.props.attributes} editCondition={this.state.editCondition}
                  outcome={this.state.editOutcome} editDecision addCondition={this.updateCondition} cancel={this.cancelAddAttribute} buttonProps={editButtonProps} />}
-            <DecisionDetails outcomes={outcomes} editCondition={this.editCondition} removeCase={this.removeCase} removeDecisions={this.removeDecisions} />
+            <DecisionDetails outcomes={filteredOutcomes} editCondition={this.editCondition} removeCase={this.removeCase} removeDecisions={this.removeDecisions} />
             {Object.keys(outcomes).length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
       </div>);
     }

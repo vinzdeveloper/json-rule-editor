@@ -13,12 +13,17 @@ const nodeSvgShape = {
 const mapFactToChildren = (fact) => {
     if (has(fact, 'fact') && has(fact, 'operator') && has(fact, 'value')) {
         let value = fact.value;
-        if (isArray(fact.value)){
+        let attributes = {};
+        if (isArray(fact.value)) {
             value = join(fact.value, ',');
         }
-        return ({name: fact.fact, attributes: {
-            [fact.operator] : value
-        }})
+
+        attributes[fact.operator] = value;
+
+        if (fact.path) {
+            attributes['path'] = fact.path;
+        }
+        return ({name: fact.fact, attributes});
     }
     return undefined;
 };
@@ -59,14 +64,18 @@ export const transformRuleToTree = (conditions = []) => {
 const mapChildNodeToFacts = (children) => {
     const fact = { fact: children.name };
     Object.keys(children.attributes).forEach((key) => {
-        fact['operator'] = key;
-        let value;
-        if (String(children.attributes[key]).indexOf(',') > -1) {
-            value = children.attributes[key].split(',');
+        if (key === 'path') {
+            fact['path'] = children.attributes.path;
         } else {
-            value = children.attributes[key];
+            fact['operator'] = key;
+            let value;
+            if (String(children.attributes[key]).indexOf(',') > -1) {
+                value = children.attributes[key].split(',');
+            } else {
+                value = children.attributes[key];
+            }
+            fact['value'] = value;
         }
-        fact['value'] = value;
     });
     return fact;
 }

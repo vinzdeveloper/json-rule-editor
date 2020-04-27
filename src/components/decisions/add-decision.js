@@ -53,6 +53,7 @@ class AddDecision extends Component {
              factsButton,
              outcomeOptions,
              formError: '',
+             addPathflag: false,
              activeNodeDepth: [activeNode] };
         this.handleAdd = this.handleAdd.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -65,6 +66,7 @@ class AddDecision extends Component {
         this.handleOutputPanel = this.handleOutputPanel.bind(this);
         this.handleOutputParams = this.handleOutputParams.bind(this);
         this.addParams = this.addParams.bind(this);
+        this.addPath = this.addPath.bind(this);
     }
 
     handleAdd() {
@@ -104,6 +106,10 @@ class AddDecision extends Component {
         this.setState({ outcome: { ...outcome, params: newParams }});
      }
 
+     addPath() {
+        this.setState({ addPathflag: true });
+     }
+
      handleOutputParams(e, type, index){
          const { outcome } = this.state;
          const params = [ ...outcome.params ];
@@ -141,7 +147,7 @@ class AddDecision extends Component {
 
     mapNodeName(val) {
         const node = {};
-        const { addAttribute: { name, operator, value }, attributes } = this.state;
+        const { addAttribute: { name, operator, value, path }, attributes } = this.state;
         if (val === 'Add All' || val === 'Add Any') {
             node['name'] = val === 'Add All' ? 'all' : 'any';
             node['nodeSvgShape'] = nodeStyle;
@@ -153,7 +159,11 @@ class AddDecision extends Component {
             if (attProps.type === 'number') {
                 factValue = Number(value.trim());
             }
-            node['attributes'] = { [operator]: factValue };
+            let fact = { [operator]: factValue };
+            if (path) {
+                fact['path'] = `.${path}`;
+            }
+            node['attributes'] = { ...fact };
         }
         return node;
     } 
@@ -262,7 +272,7 @@ class AddDecision extends Component {
     }
 
     fieldPanel() {
-        const { attributes, addAttribute } = this.state;
+        const { attributes, addAttribute, addPathflag} = this.state;
         const attributeOptions = attributes.map(attr => attr.name);
         const attribute = addAttribute.name && attributes.find(attr => attr.name === addAttribute.name);
         const operatorOptions = attribute && operator[attribute.type];
@@ -271,6 +281,11 @@ class AddDecision extends Component {
          PLACEHOLDER['string'] : PLACEHOLDER[attribute.type]
 
         return (<Panel>
+            <div className="attributes-header">
+                    <div className="attr-link" onClick={this.addPath}>
+                        <span className="plus-icon" /><span className="text">Add Path</span> 
+                    </div>
+            </div>
             <div className="add-field-panel">
                 <div><SelectField options={attributeOptions} onChange={(e) => this.onChangeNewFact(e, 'name')}
                         value={addAttribute.name} error={addAttribute.error.name} label="Attribute"/></div>
@@ -279,6 +294,10 @@ class AddDecision extends Component {
                 <div><InputField onChange={(value) => this.onChangeNewFact(value, 'value')} value={addAttribute.value}
                         error={addAttribute.error.value} label="Value" placeholder={placeholder}/></div>
             </div>
+            {addPathflag && <div className="add-field-panel half-width">
+                <div><InputField onChange={(value) => this.onChangeNewFact(value, 'path')} value={addAttribute.path}
+                        label="Path" placeholder={"Enter path value - dont give prefix ' . ' "}/></div>
+            </div> }
             <div className="btn-group">
                     <Button label={'Add'} onConfirm={() => this.handleChildrenNode('Add fact node') } classname="btn-dark" type="submit" />
                     <Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-dark"/>
@@ -290,15 +309,15 @@ class AddDecision extends Component {
         const { outcome } = this.state;
         const { editDecision } = this.props;
         return (<Panel>
-            <div className="add-field-panel">
-                <div>
-                    <InputField onChange={(value) => this.onChangeOutcomeValue(value, 'value')} value={outcome.value}
-                        error={outcome.error && outcome.error.value} label="Value" readOnly={editDecision}/>
-                </div>
-                <div className="attributes-header">
+            <div className="attributes-header">
                     <div className="attr-link" onClick={this.addParams}>
                         <span className="plus-icon" /><span className="text">Add Params</span> 
                     </div>
+            </div>
+            <div className="add-field-panel half-width">
+                <div>
+                    <InputField onChange={(value) => this.onChangeOutcomeValue(value, 'value')} value={outcome.value}
+                        error={outcome.error && outcome.error.value} label="Value" readOnly={editDecision}/>
                 </div>
             </div>
             <div>

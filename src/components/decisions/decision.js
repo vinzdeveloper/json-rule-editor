@@ -45,7 +45,7 @@ class Decision extends Component {
         const decision = this.props.decisions[decisionIndex];
         const editCondition = transformRuleToTree(decision);
         let outputParams = [];
-        if (Object.keys(decision.event.params).length > 0) {
+        if (decision.event.params && Object.keys(decision.event.params).length > 0) {
              outputParams = Object.keys(decision.event.params).map(key => ({pkey: key, pvalue: decision.event.params[key]}))
         }
         

@@ -55,5 +55,9 @@
 
     .btn-container {
         margin-top: 27px;
-    }  
+    }
+
+    &.half-width {
+        width: 50%;
+    }
 }

@@ -31,8 +31,8 @@ class RulesetContainer extends Component {
 
     generateFile() {
       const { ruleset } = this.props;
-      const fileData = JSON.stringify(ruleset);
-      const blob = new Blob([fileData], {type: "text/plain"});
+      const fileData = JSON.stringify(ruleset, null,'\t');
+      const blob = new Blob([fileData], {type: "application/json"});
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.download = ruleset.name +'.json';
@@ -42,9 +42,10 @@ class RulesetContainer extends Component {
 
     render() {
       const { attributes, decisions, name } = this.props.ruleset;
-      const indexedDecisions = decisions.map((decision, index) => ({ ...decision, index }));
+      const indexedDecisions = decisions && decisions.length > 0 && 
+          decisions.map((decision, index) => ({ ...decision, index }));
       let outcomes;
-        if (indexedDecisions.length > 0) {
+        if (indexedDecisions && indexedDecisions.length > 0) {
             outcomes = groupBy(indexedDecisions, data => data.event.type);
         }
       const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;

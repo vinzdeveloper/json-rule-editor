@@ -2,6 +2,7 @@ $title-font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
 $title-bg-clr: #2A3F54;
 $title-color: #ECF0F1;
 
+
 $btn-color: #ECF0F1;
 $btn-bg-clr: rgba(255, 255, 255, 0.05);
 $btn-bg-clr-hover: rgba(255, 255, 255, 0.1);
@@ -10,8 +11,12 @@ $btn-font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
 $primary-btn-color: #1ABB9C;
 $cancel-btn-color: #73879C;
 $cancel-btn-color1: #545b62;
+$toobar-btn-color: #20a8d8;
+$button-dark: #404040;
 
 $border-left-color: #1ABB9C;
+
+$link-active-color: #1ABB9C;
 
 $sideNavWidth: 300px;
 $title-height: 30px;
@@ -25,10 +30,13 @@ $form-label-color: #73879C;
 
 $danger: #E74C3C;
 $warning: #f1c68e;
+$warning-dark: #f57826;
+$warning-btn: #d34836;
+$succees: #17b395; 
+
+
 
 $link-color: #6b5b95;
-
-$button-dark: #404040;
 
 $attribute-type: (
     "string": #2FA4E7,
@@ -36,4 +44,12 @@ $attribute-type: (
     "date": #73A839,
     "number": #9A1750,
     "array": #6610f2,
-)
+);
+
+$form-border-color: #2A3F54;
+
+$dark-color: #404040;
+
+$panel-bg-color: #F5F5F5;
+
+$icon-color: #b0c1d2;

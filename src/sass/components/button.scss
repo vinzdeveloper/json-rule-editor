@@ -39,7 +39,6 @@
   font-size: 16px;
   font-family: $form-font-family;
   height: 45px;
-  line-height: 45px;
   outline:none;
   padding-top: 0;
   width: 140px;
@@ -55,43 +54,75 @@
 
 .primary-btn {
   background-color: $primary-btn-color;
+  border: 1px solid $primary-btn-color;
 }
 
 .primary-btn:focus {
   background-color: #0f7965;
+  border: 1px solid #0f7965;
 }
 
 .cancel-btn {
   background-color: $cancel-btn-color;
+  border: 1px solid $cancel-btn-color;
 }
 
 .cancel-btn:focus {
   background-color: #405367;
+  border: 1px solid #405367;
 }
 
 .btn-success {
   background-color: $primary-btn-color;
+  border: 1px solid $primary-btn-color;
+  line-height: 45px;
   text-decoration: none;
 }
 
 .btn-link {
   background-color: $cancel-btn-color;
+  border: 1px solid $cancel-btn-color;
+  line-height: 45px;
   text-decoration: none;
 }
 
 .btn-danger {
   background-color: $danger;
+  border: 1px solid $danger;
+  line-height: 45px;
   text-decoration: none;
 }
 
 .btn-primary {
   background-color: $primary-btn-color;
+  border: 1px solid $primary-btn-color;
+  line-height: 45px;
   text-decoration: none;
 }
 
 .btn-dark {
   background-color: $button-dark;
-  border: none;
+  border: 1px solid $button-dark;
+}
+
+.btn-warning {
+  background-color: $warning-btn;
+  border: 1px solid $warning-btn;
+}
+
+.btn-warning:focus {
+  background-color: $danger;  
+}
+
+.btn-toolbar {
+    background-color: $toobar-btn-color;
+    border: 1px solid $toobar-btn-color;
+    width: 100px;
+    height: 35px;
+}
+
+.btn-toolbar:focus {
+    background-color: $form-field-color;
 }
 
 .btn-group-container {

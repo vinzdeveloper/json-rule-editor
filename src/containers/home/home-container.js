@@ -115,7 +115,7 @@ class HomeContainer extends Component {
     render() {
       return <div>
         <div className="single-panel-container">
-          <TitlePanel title="Upload Rulesets" titleClass="upload-icon">
+          <TitlePanel title="Upload Rulesets" titleClass="fa fa-cloud-upload">
             <div className="upload-panel">
               <div className="drop-section" onDrop={this.drop} onDragOver={this.allowDrop}>
                   <div><label htmlFor="uploadFile">Choose Ruleset directory<input id="uploadFile" type="file" onChange={this.chooseDirectory} webkitdirectory="true" multiple/></label> or Drag Files</div>
@@ -124,7 +124,7 @@ class HomeContainer extends Component {
             </div>
             <div className="btn-group">
               <Button label={"Upload"} onConfirm={this.handleUpload} classname="primary-btn" type="button" />
-              <Button label={"Create"} onConfirm={() => this.navigate('./create-ruleset')} classname="primary-btn" type="button" />
+              {!this.props.loggedIn && <Button label={"Create"} onConfirm={() => this.navigate('./create-ruleset')} classname="primary-btn" type="button" disabled={this.state.files.length > 0} />}
               </div>
           </TitlePanel>
         </div>
@@ -136,15 +136,18 @@ HomeContainer.propTypes = {
   ruleset: PropTypes.array,
   uploadRuleset: PropTypes.func,
   login: PropTypes.func,
+  loggedIn: PropTypes.bool,
 }
 
 HomeContainer.defaultProps = {
   ruleset: [],
   uploadRuleset: () => false,
   login: () => false,
+  loggedIn: false,
 }
 
-const mapStateToProps = () => ({
+const mapStateToProps = (state) => ({
+  loggedIn: state.app.loggedIn,
 });
 
 const mapDispatchToProps = (dispatch) => ({

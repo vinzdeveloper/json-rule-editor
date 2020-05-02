@@ -23,11 +23,11 @@
     margin-top: 5px;
 
     input {
-        border: 1px solid #aaa;
+        border: 1px solid $form-border-color;
         border-radius: 4px;
         color: $form-field-color;
         font-size: 16px;
-        height: 40px;
+        height: 35px;
         margin-top: 5px;
         padding-left: 10px;
         width: 90%;
@@ -35,11 +35,14 @@
 
     select {
         background-color: #fff;
+        border: 1px solid $form-border-color;
         font-size: 16px;
         color: $form-field-color;
-        height: 45px;
+        height: 40px;
         margin-top: 5px;
-        width: 90%; 
+        padding-left: 10px;
+        width: 90%;
+        -webkit-appearance: none;
     }
 
     .error {

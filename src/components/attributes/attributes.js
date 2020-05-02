@@ -11,7 +11,7 @@ class Attributes extends Component {
 
     constructor(props){
         super(props);
-        this.state={showAddAttr: false, message: Message.NO_ATTRIBUTE_MSG, searchCriteria: ''};
+        this.state={showAddAttr: false, message: Message.NO_ATTRIBUTE_MSG, searchCriteria: '', bannerflag: false };
         this.handleAdd = this.handleAdd.bind(this);
         this.cancelAddAttribute = this.cancelAddAttribute.bind(this);
         this.addAttribute = this.addAttribute.bind(this);
@@ -24,7 +24,7 @@ class Attributes extends Component {
     }
 
     handleAdd = () => {
-        this.setState({showAddAttr: true});
+        this.setState({showAddAttr: true, bannerflag: true });
     }
 
     addAttribute = (attribute) => {
@@ -37,7 +37,7 @@ class Attributes extends Component {
     }
 
     cancelAddAttribute = () => {
-        this.setState({showAddAttr: false});
+        this.setState({ showAddAttr: false, bannerflag: false });
     }
 
     filterAttribute = () => {
@@ -48,14 +48,14 @@ class Attributes extends Component {
     }
 
     render() {
-        const { searchCriteria } = this.state;
+        const { searchCriteria, bannerflag } = this.state;
         const buttonProps = { primaryLabel: 'Add Attribute', secondaryLabel: 'Cancel'};
         const filteredAttributes = searchCriteria ? this.filterAttribute() : this.props.attributes;
         return (<div className="attributes-container">
             { this.props.attributes.length > 0 && <ToolBar handleAdd={this.handleAdd} reset={this.handleReset} searchTxt={this.handleSearch}/>}
             {this.state.showAddAttr && <AddAttributes addAttribute={this.addAttribute} cancel={this.cancelAddAttribute} buttonProps={buttonProps} />}
             {<AttributeDetails attributes={filteredAttributes} updateAttribute={this.props.handleAttribute} removeAttribute={this.props.handleAttribute} />}
-            {this.props.attributes.length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
+            {!bannerflag && this.props.attributes.length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
 
       </div>);
     }

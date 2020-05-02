@@ -3,9 +3,9 @@
     font-family: $title-font-family;
     height: 100%;
     left: 0;
-    margin-top: -80px;
+    margin-top: -70px;
     position: fixed;
-    padding: 25px;
+    padding: 0 10px 25px;
 
     &.closed {
       width: 40px;
@@ -16,14 +16,26 @@
     }
 }
 
+.menu-bar {
+  cursor: pointer;
+  font-size: 19px;
+  margin-top: 30px;
+  margin-bottom: 25px;
+
+  a {
+    color: $title-color;
+  }
+}
+
 .link-container {
   list-style-type: none;
-  margin: 50px 0; 
+  margin-top: 5px;
   padding: 0;
 
   li {
-    font-family: $btn-font-family;
     color: $btn-color;
+    font-family: $btn-font-family;
+    font-size: 15px;
     height: 40px;
     line-height: 40px;
     padding: 5px 10px;
@@ -35,61 +47,84 @@
 
   a {
     color: $btn-color;
-    text-decoration: none;
-
-    .rules-icon {
-      background: url('../../assets/icons/rules.svg') no-repeat;
-      background-size: contain;
-      margin: 0 20px 0 0;
-      padding: 0;
-      padding-bottom: 15%;
-      position: absolute;
-      width: 100%;
-    }
-
-    span.text {
-      margin-left: 75px;
-    }
-
-  }
-
-  a::after {
-    content: '>';
-    float: right;
-    transition: transform 0.5s;
-  }
-
-  a.active::after {
-    transform: rotate(90deg);
-    transition: transform 0.5s;
   }
 
   .link-heading {
-    font-size: 18px;
-    text-transform: uppercase;
+    font-size: 20px;
+
+    a {
+      color: $btn-color;
+  
+      .rules-icon {
+        background: url('../../assets/icons/rules.svg') no-repeat;
+        background-size: contain;
+        margin: 0 20px 0 0;
+        padding: 0;
+        padding-bottom: 15%;
+        position: absolute;
+        width: 100%;
+      }
+  
+      span.text {
+        margin-left: 75px;
+      }
+  
+    }
+
+    a::after {
+      content: '>';
+      float: right;
+      transition: transform 0.5s;
+    }
+  
+    a.active::after {
+      transform: rotate(90deg);
+      transition: transform 0.5s;
+    }
+  }
+
+  .navmenu {
+    cursor: pointer;
+    padding-left: 30px;
+
+    a {
+      color: $btn-color;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    .icon {
+      font-size: 19px;
+    }
+
+    span.text {
+      margin-left: 40px;
+    }
   }
 
   .sublink-container {
+    display: none;
     list-style-type: none;
     top: 10px;
+
+    &.visible {
+      display: block;
+    }
 
     li {
       border-left: 3px solid $border-left-color;
       cursor: pointer;
-      height: 0;
-      opacity: 0;
-      transition: opacity .5s, height .5s, visibility .5s;
+      line-height: 20px;
       visibility: hidden;
+      height: auto;
 
       &.visible {
-        height: 40px;
-        opacity: 1; 
         visibility: visible;
-        transition: opacity .5s .5s, height .5s .5s, visibility .5s .5s;
+        padding: 10px;
       }
 
-      &.active {
-        background: $btn-bg-clr;
+      &.active a{
+        color: $link-active-color;
       }
     }
 

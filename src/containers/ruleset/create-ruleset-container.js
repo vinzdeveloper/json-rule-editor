@@ -38,7 +38,7 @@ class CreateRulesetContainer extends Component {
 
         return (
             <div className="single-panel-container">
-                <TitlePanel title="Add Ruleset" titleClass="add-icon">
+                <TitlePanel title="Add Ruleset" titleClass="fa fa-plus-square-o">
                     <form>
                         <div className="upload-panel">
                             <InputField label="Name" onChange={this.onChangeName} value={this.state.name} error={this.state.error.name} />

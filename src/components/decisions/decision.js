@@ -17,7 +17,8 @@ class Decision extends Component {
              editCaseFlag: false,
              editCondition: [],
              message: Message.NO_DECISION_MSG,
-             decisions: props.decisions || []};
+             decisions: props.decisions || [],
+             bannerflag: false };
         this.handleAdd = this.handleAdd.bind(this);
         this.updateCondition = this.updateCondition.bind(this);
         this.editCondition = this.editCondition.bind(this);
@@ -34,11 +35,11 @@ class Decision extends Component {
     }
 
     handleAdd = () => {
-        this.setState({showAddRuleCase: true});
+        this.setState({showAddRuleCase: true, bannerflag: true });
     }
 
     cancelAddAttribute = () => {
-        this.setState({showAddRuleCase: false, editCaseFlag: false});
+        this.setState({showAddRuleCase: false, editCaseFlag: false, bannerflag: false });
     }
 
     editCondition(decisionIndex) {
@@ -91,7 +92,7 @@ class Decision extends Component {
 
 
     render() {
-        const { searchCriteria } = this.state;
+        const { searchCriteria, bannerflag } = this.state;
         const buttonProps = { primaryLabel: 'Add Rulecase', secondaryLabel: 'Cancel'};
         const editButtonProps = { primaryLabel: 'Edit Rulecase', secondaryLabel: 'Cancel'};
         const filteredOutcomes = searchCriteria ? this.filterOutcomes() : this.props.outcomes;
@@ -103,7 +104,7 @@ class Decision extends Component {
             {this.state.editCaseFlag && <AddDecision attributes={this.props.attributes} editCondition={this.state.editCondition}
                  outcome={this.state.editOutcome} editDecision addCondition={this.updateCondition} cancel={this.cancelAddAttribute} buttonProps={editButtonProps} />}
             <DecisionDetails outcomes={filteredOutcomes} editCondition={this.editCondition} removeCase={this.removeCase} removeDecisions={this.removeDecisions} />
-            {Object.keys(outcomes).length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
+            {!bannerflag && Object.keys(outcomes).length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
       </div>);
     }
 }

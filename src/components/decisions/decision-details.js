@@ -152,7 +152,8 @@ class DecisionDetails extends Component {
                 <PanelBox className={'boolean'}>
                     <div className="index">{index + 1}</div>
                     <div className="name">{String(key)}</div>
-                    <div className="type">{`conditions(${outcomes[key].length})`}</div>
+                    {/*<div className="type">{`conditions(${outcomes[key].length})`}</div>*/}
+                    <div className="type">conditions <span className="type-badge">{outcomes[key].length}</span></div>
                     <div className="menu">
                         <a href="" onClick={(e) => this.handleExpand(e, index)}> { showCase[index].case ? 'Collapse' : 'View Conditions' }</a>
                         <a href="" onClick={((e) => this.handleRemoveConditions(e, String(key)))}>Remove</a>

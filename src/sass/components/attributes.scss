@@ -6,7 +6,7 @@
     flex-wrap: wrap;
     font-family: $tab-font-family;
     justify-content: flex-end;
-    margin: 20px 0;
+    margin: 0;
     width: 100%;
 
     .attr-link {
@@ -105,4 +105,5 @@ td.attributes-header {
 
 .view-params-container {
     width: 40%;
+    color: $dark-color;
 }

@@ -28,7 +28,7 @@ const nodeStyle ={
 const factsButton = [{label : 'Add Facts', disable: false },
                              {label : 'Add All', disable: false },
                              {label : 'Add Any', disable: false },
-                            {label : 'Remove', disable: false}];
+                            {label : 'Remove', disable: false }];
 const topLevelOptions = [{label : 'All', active: false, disable: false },
                          {label : 'Any', active: false, disable: false }];
 
@@ -50,8 +50,8 @@ class AddDecision extends Component {
              enableOutcomeView: false,
              node,
              topLevelOptions,
-             factsButton,
-             outcomeOptions,
+             factsButton: factsButton.map(f => ({ ...f, disable: true })),
+             outcomeOptions: outcomeOptions.map(f => ({ ...f, disable: true })),
              formError: '',
              addPathflag: false,
              activeNodeDepth: [activeNode] };
@@ -142,7 +142,11 @@ class AddDecision extends Component {
             return { ...option, active: false};
         })
 
-        this.setState({ enableTreeView: true, topNodeName: value, node: parentNode, activeNodeDepth: [activeNode], topLevelOptions });
+        const factsButton = this.state.factsButton.map(button => ({ ...button, disable: false }));
+        const outcomeOptions = this.state.outcomeOptions.map(button => ({ ...button, disable: false }));
+
+        this.setState({ enableTreeView: true, topNodeName: value, node: parentNode,
+             activeNodeDepth: [activeNode], topLevelOptions, factsButton, outcomeOptions });
     }
 
     mapNodeName(val) {
@@ -299,8 +303,8 @@ class AddDecision extends Component {
                         label="Path" placeholder={"Enter path value - dont give prefix ' . ' "}/></div>
             </div> }
             <div className="btn-group">
-                    <Button label={'Add'} onConfirm={() => this.handleChildrenNode('Add fact node') } classname="btn-dark" type="submit" />
-                    <Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-dark"/>
+                    <Button label={'Add'} onConfirm={() => this.handleChildrenNode('Add fact node') } classname="btn-toolbar" type="submit" />
+                    <Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar"/>
             </div>
         </Panel>)
     }
@@ -317,7 +321,7 @@ class AddDecision extends Component {
             <div className="add-field-panel half-width">
                 <div>
                     <InputField onChange={(value) => this.onChangeOutcomeValue(value, 'value')} value={outcome.value}
-                        error={outcome.error && outcome.error.value} label="Value" readOnly={editDecision}/>
+                        error={outcome.error && outcome.error.value} label="Type" readOnly={editDecision}/>
                 </div>
             </div>
             <div>

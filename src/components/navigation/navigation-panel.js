@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import NavButton from '../button/nav-button';
 import NavLinks from './navigation-link';
-// import links from '../../data-objects/nav-links.json';
 import PropTypes from 'prop-types';
 import { createHashHistory } from 'history';
 
+const navmenu = [{ name: 'Create Rules', navigate: './create-ruleset', iconClass: "icon fa fa-plus-square-o", linkClass: 'navmenu'},
+{ name: 'Upload Rules', navigate: './home', iconClass: "icon fa fa-cloud-upload", linkClass: 'navmenu' } ];
 class NavigationPanel extends Component {
 
     constructor(props) {
@@ -27,15 +27,21 @@ class NavigationPanel extends Component {
     }
 
     render() {
-        const { closedState } = this.props;
-        const rulesetLink = this.props.rulenames.length > 0 ?
-         {name: 'Ruleset', sublinks: this.props.rulenames, iconClass:"rules-icon"}: undefined;
+        const { closedState, loggedIn } = this.props;
+        let rulesetLink = this.props.rulenames.length > 0 ?
+         [{name: 'Ruleset', sublinks: this.props.rulenames, iconClass:"rules-icon", linkClass: 'link-heading'}] : [];
+
+        rulesetLink = rulesetLink.concat(navmenu);
+
+        let sideNav = loggedIn && closedState ? 'open' : 'closed';
 
         return (
-            <div className={`nav-container ${closedState || !rulesetLink ? 'closed': 'open'}`}>
-                {!closedState && rulesetLink && <React.Fragment>
-                    <NavLinks links={[rulesetLink]} onConfirm={this.handleNavLink}/>
-                    <NavButton label="Create Ruleset" onConfirm={this.handleNavBtn} classname={'nav-glass-btn'} />
+            <div className={`nav-container ${closedState ? 'closed': 'open'}`}>
+                <div className="menu-bar">
+                       <a href="" onClick={(e) => { e.preventDefault();  this.props.updateState(sideNav)}}> <span className="close-icon fa fa-reorder" ></span></a>
+                </div>
+                {!closedState && <React.Fragment>
+                    <NavLinks links={rulesetLink} onConfirm={this.handleNavLink} activeIndex={this.props.activeIndex}/>
                  </React.Fragment>
                 }
             </div>
@@ -47,12 +53,18 @@ NavigationPanel.defaultProps = {
     closedState: false,
     rulenames: [],
     setActiveRulesetIndex: () => false,
+    loggedIn: false,
+    updateState: () => false,
+    activeIndex: 0,
 };
 
 NavigationPanel.propTypes = {
     closedState: PropTypes.bool,
     rulenames: PropTypes.array,
     setActiveRulesetIndex: PropTypes.func,
+    loggedIn: PropTypes.bool,
+    updateState: PropTypes.func,
+    activeIndex: PropTypes.number,
 }
 
 export default NavigationPanel;

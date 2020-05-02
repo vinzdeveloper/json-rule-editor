@@ -24,8 +24,8 @@ h1 {
     }
 
     &.open {
-        left: $sideNavWidth + 60px;
-        width: calc(100% - 380px);
+        left: $sideNavWidth + 40px;
+        width: calc(100% - 360px);
     }   
 }
 
@@ -46,4 +46,8 @@ body {
 hr {
     margin: 20px 0px 10px;
     border: 1px dashed #aaa;
+}
+
+a {
+    text-decoration: none;
 }

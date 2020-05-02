@@ -1,10 +1,11 @@
 .header-container {
-    background-color: $title-bg-clr;
-    color: $title-color;
+    background-color: $title-color;
+    color: $title-bg-clr;
+    display: flex;
     font-family: $title-font-family;
-    font-size: 25px;
-    padding: 20px;
-    text-align: right;
+    justify-content: flex-end;
+    font-size: 22px;
+    padding: 15px;
 }
 
 .rule-icon {
@@ -22,11 +23,10 @@
 
     h1 {
         color: $page-title-color;
-        font-size: 1.75rem;
+        font-size: 1.5rem;
         font-family: $title-font-family;
-        font-weight: 500;
+        font-weight: 400;
         margin-top: 5px;
-        margin-left: 20px;
     }
 }
 
@@ -36,8 +36,9 @@
 
 
 .icon-card {
-    height: 60px;
-    width: 60px;
+    color: $icon-color;
+    font-size: 45px;
+    margin-right: 10px;
 }
 
 

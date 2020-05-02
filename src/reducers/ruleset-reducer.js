@@ -1,13 +1,12 @@
 import * as ActionTypes from '../actions/action-types';
  import { cloneDeep } from 'lodash/lang';
  import { findIndex } from 'lodash/array';
-import mockruleset from '../mock/ruleset1.json';
 
 const initialState = {
-    //rulesets : cloneDeep(mockruleset),
     rulesets: [],
     activeRuleset: 0,
     updatedFlag: false,
+    uploadedRules: [],
 }
 
 
@@ -23,14 +22,15 @@ function ruleset(state = initialState, action='') {
         case ActionTypes.UPLOAD_RULESET: {
 
             const { ruleset } = action.payload;
-             return { ...state, rulesets: ruleset }
+            const rulesets = state.rulesets.concat(ruleset);
+             return { ...state, rulesets: cloneDeep(rulesets),  uploadedRules: cloneDeep(rulesets)}
         }
 
         case ActionTypes.ADD_RULESET: {
 
             const { name } = action.payload;
             const rulset = { name, attributes: [], decisions: []};
-            const count = state.rulesets.length === 0 ? 0 : state.activeRuleset + 1
+            const count = state.rulesets.length === 0 ? 0 : state.rulesets.length;
              return { ...state, rulesets: state.rulesets.concat(rulset),  activeRuleset: count}
         }
 
@@ -120,18 +120,24 @@ function ruleset(state = initialState, action='') {
 
         case ActionTypes.RESET_ATTRIBUTE: {
             const activeRuleSet =  { ...state.rulesets[state.activeRuleset] };
-            activeRuleSet.attributes = cloneDeep(mockruleset[state.activeRuleset].attributes);
+            if(state.uploadedRules[state.activeRuleset] && state.uploadedRules[state.activeRuleset].attributes) {
+                activeRuleSet.attributes = cloneDeep(state.uploadedRules[state.activeRuleset].attributes);
 
             return { ...state,
                 rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
+            }
+            return { ...state };
         }
 
         case ActionTypes.RESET_DECISION: {
             const activeRuleSet =  { ...state.rulesets[state.activeRuleset] };
-            activeRuleSet.decisions = cloneDeep(mockruleset[state.activeRuleset].decisions);
+            if(state.uploadedRules[state.activeRuleset] && state.uploadedRules[state.activeRuleset].decisions) {
+                activeRuleSet.decisions = cloneDeep(state.uploadedRules[state.activeRuleset].decisions);
 
             return { ...state,
                 rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)}
+            }
+            return { ...state };
         }
 
 

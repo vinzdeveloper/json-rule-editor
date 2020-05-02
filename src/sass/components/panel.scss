@@ -51,7 +51,16 @@
     }
  
     .type {
-         width: 10%;
+         width: 15%;
+    }
+    
+    .type-badge {
+        background-color: map-get($attribute-type, "boolean");
+        border-radius: 5px;
+        color: white;
+        font-size: 14px;
+        padding: 4px 8px;
+        
     }
 
     .menu {
@@ -76,9 +85,9 @@
 .title-panel {
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 3px 6px 6px 3px #eee;
+    box-shadow: 0px 0px 6px 3px #eee;
     font-family: $title-font-family;
-    height: 40vh;
+    height: 300px;
     padding: 20px;
     width: 80vh;
 
@@ -125,14 +134,15 @@
 }
 
 .submit-panel {
-    background-color: $primary-btn-color;
-    color: #fff;
+    background-color: $panel-bg-color;
+    border: 2px dashed $succees;
+    color: $form-field-color;
 }
 
 .warning-panel {
-    background-color: $warning;
-    border: 1px dashed #000;
-    color: #404040;
+    background-color: $panel-bg-color;
+    border: 2px dashed $warning-dark;
+    color: $form-field-color;
 }
 
 .banner-container {

@@ -21,6 +21,7 @@ class ValidateRules extends Component {
              message: Message.NO_VALIDATION_MSG,
              loading: false,
              outcomes: [],
+             error: false,
             };
         this.handleAttribute = this.handleAttribute.bind(this);
         this.handleValue = this.handleValue.bind(this);
@@ -59,12 +60,14 @@ class ValidateRules extends Component {
            }
         })
         validateRuleset(facts, decisions).then(outcomes => {
-            this.setState({loading: false, outcomes,  result: true});
+            this.setState({loading: false, outcomes,  result: true, error: false, errorMessage: '',});
+        }).catch((e) => {
+            this.setState({loading: false, error: true, errorMessage: e.error, result: true, });
         });
     }
 
     attributeItems = () => {
-        const { conditions, loading, outcomes, result } = this.state;
+        const { conditions, loading, outcomes, result, error, errorMessage } = this.state;
         const { attributes } = this.props;
         const options = attributes.map(att => att.name);
 
@@ -76,13 +79,21 @@ class ValidateRules extends Component {
             </tr>)
         );
 
-        const noResults = outcomes && outcomes.length < 1 && result ? <div>No results found</div> : undefined;
-        
-        const outcome = outcomes && outcomes.length > 0 ? (<div className="view-params-container">
-                <h4>Outcomes  </h4>
-                <ViewOutcomes  items={outcomes}/>
-            </div>) : noResults;
-
+        let message;
+        if (result) {
+            if (error) {
+                message = <div className="form-error">Problem occured when processing the rules. Reason is {errorMessage}</div>
+            } else if (outcomes && outcomes.length < 1) {
+                message = <div>No results found</div>
+            } else if (outcomes && outcomes.length > 0) {
+                message = (<div className="view-params-container">
+                                <h4>Outcomes  </h4>
+                                <ViewOutcomes  items={outcomes}/>
+                            </div>)
+            } else {
+                message = undefined;
+            }
+        }
         return (
         <React.Fragment>
             <Table columns={['Name', 'Value']}>
@@ -93,17 +104,17 @@ class ValidateRules extends Component {
            </div>
             <hr/>
                 { loading && <Loader /> }
-                { !loading && outcome }
+                { !loading && message }
         </React.Fragment>)
     }
 
     render() {
         return (<React.Fragment>
         {this.props.decisions.length < 1 && <Banner message={this.state.message}/> }
-        {
+        {this.props.decisions.length > 0 &&
         <Panel>
             <form>
-                <div className="add-rulecase-wrapper">
+                <div>
                     {this.attributeItems()}
                 </div>
             </form>

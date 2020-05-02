@@ -32,8 +32,9 @@
         width: 100%;
 
         label {
-            color: $title-bg-clr;
+            color: $link-color;
             margin-right: 0px;
+            text-decoration: underline;
         }
 
         label:hover {

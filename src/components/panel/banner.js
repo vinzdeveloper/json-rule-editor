@@ -8,9 +8,22 @@ class Banner extends Component {
         super(props);
     }
 
+    getButtonClass() {
+        const { message } = this.props;
+        switch (message.type) {
+            case 'warning-panel':
+                return 'btn-warning';
+            case 'submit-panel':
+                return 'btn-primary';
+            default:
+                return 'btn-dark';
+        }
+        
+    }
+
     render() {
         const { message } = this.props;
-
+        const btnClass = this.getButtonClass();
         return (<div className="banner-container">
                 <div className={`banner ${message.type}`}>
                     <React.Fragment>
@@ -18,7 +31,7 @@ class Banner extends Component {
                         <header><b>{message.header}</b></header>
                             <p>{message.body}</p>
                         </div>
-                        {message.buttonProps && <div><Button label={message.buttonProps.label} classname="btn-dark" onConfirm={this.props.onConfirm} /></div>}
+                        {message.buttonProps && <div><Button label={message.buttonProps.label} classname={btnClass} onConfirm={this.props.onConfirm} /></div>}
                     </React.Fragment>
                 </div>
         </div>)

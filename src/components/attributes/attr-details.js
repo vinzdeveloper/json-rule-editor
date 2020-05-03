@@ -28,17 +28,17 @@ class AttributeDetails extends Component {
     }
 
     remove() {
-        const {activeAttribute, activeAttributeIndex} = this.state;
+        const { activeAttribute, activeAttributeIndex } = this.state;
         this.props.removeAttribute('REMOVE', activeAttribute, activeAttributeIndex);
         this.setState({ successAlert: true});
     }
 
     cancelAlert() {
-        this.setState({removeAlert: false, successAlert: false, showRuleIndex: -1});
+        this.setState({ removeAlert: false, successAlert: false, showRuleIndex: -1 });
     }
 
     updateAttribute(attribute) {
-        this.setState({showRuleIndex: -1});
+        this.setState({ showRuleIndex: -1 });
         this.props.updateAttribute('UPDATE', attribute, this.state.showRuleIndex);
     }
 

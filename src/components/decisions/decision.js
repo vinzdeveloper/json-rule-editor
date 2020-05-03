@@ -39,7 +39,7 @@ class Decision extends Component {
     }
 
     cancelAddAttribute = () => {
-        this.setState({showAddRuleCase: false, editCaseFlag: false, bannerflag: false });
+        this.setState({ showAddRuleCase: false, editCaseFlag: false, bannerflag: false });
     }
 
     editCondition(decisionIndex) {
@@ -47,23 +47,23 @@ class Decision extends Component {
         const editCondition = transformRuleToTree(decision);
         let outputParams = [];
         if (decision.event.params && Object.keys(decision.event.params).length > 0) {
-             outputParams = Object.keys(decision.event.params).map(key => ({pkey: key, pvalue: decision.event.params[key]}))
+             outputParams = Object.keys(decision.event.params).map(key => ({ pkey: key, pvalue: decision.event.params[key] }))
         }
         
         this.setState({ editCaseFlag: true, editCondition, 
             editDecisionIndex: decisionIndex, 
-            editOutcome: {value: decision.event.type, params: outputParams }});
+            editOutcome: { value: decision.event.type, params: outputParams }});
     }
 
     addCondition(condition) {
         this.props.handleDecisions('ADD', { condition });
-        this.setState({showAddRuleCase: false});
+        this.setState({ showAddRuleCase: false });
     }
 
     updateCondition(condition) {
         this.props.handleDecisions('UPDATE', { condition, 
             decisionIndex: this.state.editDecisionIndex });
-        this.setState({editCaseFlag: false});
+        this.setState({ editCaseFlag: false });
     }
 
     removeCase(decisionIndex) {
@@ -99,12 +99,17 @@ class Decision extends Component {
         const { outcomes } = this.props;
 
         return (<div className="rulecases-container">
-            { Object.keys(outcomes).length > 0 && <ToolBar handleAdd={this.handleAdd} submit={this.props.submit} reset={this.handleReset} searchTxt={this.handleSearch} /> }
-            {this.state.showAddRuleCase && <AddDecision attributes={this.props.attributes} addCondition={this.addCondition} cancel={this.cancelAddAttribute} buttonProps={buttonProps} />}
-            {this.state.editCaseFlag && <AddDecision attributes={this.props.attributes} editCondition={this.state.editCondition}
-                 outcome={this.state.editOutcome} editDecision addCondition={this.updateCondition} cancel={this.cancelAddAttribute} buttonProps={editButtonProps} />}
+
+            { Object.keys(outcomes).length > 0 && <ToolBar handleAdd={this.handleAdd} reset={this.handleReset} searchTxt={this.handleSearch} /> }
+
+            { this.state.showAddRuleCase && <AddDecision attributes={this.props.attributes} addCondition={this.addCondition} cancel={this.cancelAddAttribute} buttonProps={buttonProps} /> }
+            
+            { this.state.editCaseFlag && <AddDecision attributes={this.props.attributes} editCondition={this.state.editCondition}
+                 outcome={this.state.editOutcome} editDecision addCondition={this.updateCondition} cancel={this.cancelAddAttribute} buttonProps={editButtonProps} /> }
+            
             <DecisionDetails outcomes={filteredOutcomes} editCondition={this.editCondition} removeCase={this.removeCase} removeDecisions={this.removeDecisions} />
-            {!bannerflag && Object.keys(outcomes).length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
+            
+            { !bannerflag && Object.keys(outcomes).length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
       </div>);
     }
 }

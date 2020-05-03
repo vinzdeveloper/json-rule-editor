@@ -23,8 +23,6 @@ class RulesetContainer extends Component {
         this.generateFile = this.generateFile.bind(this);
     }
 
-    
-
     handleTab = (tabName) => {
         this.setState({activeTab: tabName});
     }
@@ -42,13 +40,17 @@ class RulesetContainer extends Component {
 
     render() {
       const { attributes, decisions, name } = this.props.ruleset;
+
       const indexedDecisions = decisions && decisions.length > 0 && 
           decisions.map((decision, index) => ({ ...decision, index }));
+  
       let outcomes;
-        if (indexedDecisions && indexedDecisions.length > 0) {
-            outcomes = groupBy(indexedDecisions, data => data.event.type);
-        }
+      if (indexedDecisions && indexedDecisions.length > 0) {
+          outcomes = groupBy(indexedDecisions, data => data.event.type);
+      }
+
       const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
+  
       return <div>
         <PageTitle name={name} />
         <Tabs tabs={tabs} onConfirm={this.handleTab} activeTab={this.state.activeTab} />
@@ -79,12 +81,10 @@ RulesetContainer.defaultProps = {
   updatedFlag: false,
 }
 
-const mapStateToProps = (state) => {
-
-  return ({
+const mapStateToProps = (state) => ({
   ruleset: state.ruleset.rulesets[state.ruleset.activeRuleset],
   updatedFlag: state.ruleset.updatedFlag,
-})};
+});
 
 const mapDispatchToProps = (dispatch) => ({
   handleAttribute: (operation, attribute, index) => dispatch(handleAttribute(operation, attribute, index)),

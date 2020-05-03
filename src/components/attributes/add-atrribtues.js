@@ -5,10 +5,9 @@ import InputField from '../forms/input-field';
 import SelectField from '../forms/selectmenu-field';
 import Button from '../button/button';
 import attributeValidations from '../../validations/attribute-validations';
+import dataTypes from '../../data-objects/operator.json';
 
 class AddAttributes extends Component {
-
-    options = ['string', 'number', 'array'];
 
     constructor(props) {
         super(props);
@@ -43,18 +42,18 @@ class AddAttributes extends Component {
     
     render() {
         const { buttonProps } = this.props;
+        const attribute_types = Object.keys(dataTypes);
         return (<Panel>
             <form>
                 <div className="add-attribute-wrapper">
                     <div className='form-groups-inline'>
                         <InputField label="Name" onChange={this.onChangeName} value={this.props.attribute.name} error={this.state.error.name} />
-                        <SelectField label="Type" options={this.options} onChange={this.onChangeType} value={this.props.attribute.type} error={this.state.error.type} />
+                        <SelectField label="Type" options={attribute_types} onChange={this.onChangeType} value={this.props.attribute.type} error={this.state.error.type} />
                     </div>
                     <div className="btn-group">
-                    <Button label={buttonProps.primaryLabel} onConfirm={this.handleAdd} classname="primary-btn" type="submit" />
-                    <Button label={buttonProps.secondaryLabel} onConfirm={this.handleCancel} classname="cancel-btn"/>
+                        <Button label={buttonProps.primaryLabel} onConfirm={this.handleAdd} classname="primary-btn" type="submit" />
+                        <Button label={buttonProps.secondaryLabel} onConfirm={this.handleCancel} classname="cancel-btn"/>
                     </div>
-                    
                 </div>
             </form>
         </Panel>);

@@ -49,13 +49,20 @@ class Attributes extends Component {
 
     render() {
         const { searchCriteria, bannerflag } = this.state;
+
         const buttonProps = { primaryLabel: 'Add Attribute', secondaryLabel: 'Cancel'};
+
         const filteredAttributes = searchCriteria ? this.filterAttribute() : this.props.attributes;
+        
         return (<div className="attributes-container">
-            { this.props.attributes.length > 0 && <ToolBar handleAdd={this.handleAdd} reset={this.handleReset} searchTxt={this.handleSearch}/>}
-            {this.state.showAddAttr && <AddAttributes addAttribute={this.addAttribute} cancel={this.cancelAddAttribute} buttonProps={buttonProps} />}
-            {<AttributeDetails attributes={filteredAttributes} updateAttribute={this.props.handleAttribute} removeAttribute={this.props.handleAttribute} />}
-            {!bannerflag && this.props.attributes.length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
+            
+            { this.props.attributes.length > 0 && <ToolBar handleAdd={this.handleAdd} reset={this.handleReset} searchTxt={this.handleSearch}/> }
+            
+            { this.state.showAddAttr && <AddAttributes addAttribute={this.addAttribute} cancel={this.cancelAddAttribute} buttonProps={buttonProps} /> }
+            
+            { <AttributeDetails attributes={filteredAttributes} updateAttribute={this.props.handleAttribute} removeAttribute={this.props.handleAttribute} /> }
+            
+            { !bannerflag && this.props.attributes.length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
 
       </div>);
     }

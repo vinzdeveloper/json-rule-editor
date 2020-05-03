@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import Search from '../search/search';
@@ -6,17 +6,11 @@ import Search from '../search/search';
 class ToolBar extends Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.reset = this.reset.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-
-        this.state={submitAlert: false, resetAlert:false, successAlert: false};
-    }
-
-    handleSubmit() {
-        this.setState({submitAlert: true});
+        this.state={ submitAlert: false, resetAlert:false, successAlert: false };
     }
 
     handleReset() {
@@ -31,11 +25,6 @@ class ToolBar extends Component {
         this.setState({submitAlert: false, resetAlert: false, successAlert: false});
     }
 
-    submit = () => {
-        this.props.submit();
-        this.setState({submitAlert: false, successAlert: true, successMsg: 'Your changes are submiited'});
-    }
-
     reset = () => {
         this.props.reset();
         this.setState({resetAlert: false, successAlert: true, successMsg: 'Your changes are reset'});
@@ -43,25 +32,9 @@ class ToolBar extends Component {
 
     alert = () => {
        return (<div>
-            {this.state.submitAlert && this.submitAlert()}
             {this.state.resetAlert && this.resetAlert()}
             {this.state.successAlert && this.successAlert()}
         </div>);
-    }
-
-    submitAlert = () => {
-        return (<SweetAlert
-            warning
-            showCancel
-            confirmBtnText="Yes, Submit it!"
-            confirmBtnBsStyle="success"
-            title="Submit your changes?"
-            onConfirm={this.submit}
-            onCancel={this.cancelAlert}
-            focusCancelBtn
-          >
-            Your changes will be generated as ruleset files in your directory!!
-          </SweetAlert>)
     }
 
     successAlert = () => {
@@ -108,14 +81,12 @@ class ToolBar extends Component {
 
 ToolBar.defaultProps = ({
     handleAdd: () => false,
-    submit: () =>  false,
     reset: () =>  false,
     searchTxt: () => false,
 });
 
 ToolBar.propTypes = ({
     handleAdd: PropTypes.func,
-    submit: PropTypes.func,
     reset: PropTypes.func,
     searchTxt: PropTypes.func,
 });

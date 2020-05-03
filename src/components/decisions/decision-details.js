@@ -52,31 +52,31 @@ class DecisionDetails extends Component {
         let updateCase  = cases[index];
         updateCase = { ...updateCase, case: !updateCase.case}
         cases[index] = { ...updateCase };
-        this.setState({showCase: cases});
+        this.setState({ showCase: cases });
     }
 
     handleRemoveCondition(e, decisionIndex) {
         e.preventDefault();
-        this.setState({removeAlert: true, removeDecisionIndex: decisionIndex});
+        this.setState({ removeAlert: true, removeDecisionIndex: decisionIndex });
     }
 
     handleRemoveConditions(e, outcome) {
         e.preventDefault();
-        this.setState({removeDecisionAlert: true, removeOutcome: outcome});
+        this.setState({ removeDecisionAlert: true, removeOutcome: outcome });
     }
 
     cancelAlert = () => {
-        this.setState({removeAlert: false, successAlert: false, removeDecisionAlert: false});
+        this.setState({ removeAlert: false, successAlert: false, removeDecisionAlert: false });
     }
 
     removeCase = () => {
         this.props.removeCase(this.state.removeDecisionIndex);
-        this.setState({removeAlert: false, successAlert: true, successMsg: 'Selected Case is removed'});
+        this.setState({ removeAlert: false, successAlert: true, successMsg: 'Selected condition is removed' });
     }
 
     removeDecisions = () => {
         this.props.removeDecisions(this.state.removeOutcome);
-        this.setState({removeDecisionAlert: false, successAlert: true, successMsg: 'Selected Decision is removed', removeOutcome: ''});
+        this.setState({ removeDecisionAlert: false, successAlert: true, successMsg: 'Selected conditions are removed', removeOutcome: ''});
     }
 
     removeCaseAlert = () => {
@@ -128,19 +128,20 @@ class DecisionDetails extends Component {
 
     renderConditions = (conditions, decisionIndex) => {
         const transformedData = transformRuleToTree(conditions);
+
         return (<div className="rule-flex-container">
-         { transformedData && transformedData.map((data, caseIndex) => (<div className="decision-box" key={`case - ${caseIndex} - ${decisionIndex}`}>
-                <div className="tool-flex">
-                    <div><a href="" onClick={(e) => this.editCondition(e, data.index)}><span className="fa fa-edit" /></a></div>
-                    <div><a href="" onClick={((e) => this.handleRemoveCondition(e, data.index))}><span className="fa fa-trash-o" /></a></div>
-                </div>
-                <Tree treeData={data.node} count={data.depthCount}/>
-                { data.event.params && <div className="view-params-container">
-                        <h4>Params  </h4>
-                        <ViewAttribute  items={data.event.params}/>
-                    </div>}
-            </div>))}
-        </div>)
+                { transformedData && transformedData.map((data, caseIndex) => (<div className="decision-box" key={`case - ${caseIndex} - ${decisionIndex}`}>
+                    <div className="tool-flex">
+                        <div><a href="" onClick={(e) => this.editCondition(e, data.index)}><span className="fa fa-edit" /></a></div>
+                        <div><a href="" onClick={((e) => this.handleRemoveCondition(e, data.index))}><span className="fa fa-trash-o" /></a></div>
+                    </div>
+                    <Tree treeData={data.node} count={data.depthCount}/>
+                    { data.event.params && <div className="view-params-container">
+                            <h4>Params  </h4>
+                            <ViewAttribute  items={data.event.params}/>
+                        </div> }
+                 </div>))}
+            </div>)
     }
 
     render() {
@@ -152,7 +153,6 @@ class DecisionDetails extends Component {
                 <PanelBox className={'boolean'}>
                     <div className="index">{index + 1}</div>
                     <div className="name">{String(key)}</div>
-                    {/*<div className="type">{`conditions(${outcomes[key].length})`}</div>*/}
                     <div className="type">conditions <span className="type-badge">{outcomes[key].length}</span></div>
                     <div className="menu">
                         <a href="" onClick={(e) => this.handleExpand(e, index)}> { showCase[index].case ? 'Collapse' : 'View Conditions' }</a>

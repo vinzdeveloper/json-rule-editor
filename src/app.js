@@ -2,9 +2,9 @@
 import { AppContainer } from 'react-hot-loader';
 import React from 'react';
 import { render } from 'react-dom';
-import MainContainer from './containers/app/main-container';
 import configureStore from './store';
 import { Provider } from 'react-redux';
+import ApplicationContainer from './containers/app/app-container';
 
 
 const store = configureStore();
@@ -17,11 +17,11 @@ const component = (Root) =>
         </AppContainer>, document.getElementById('root'));
 
 
-component(MainContainer);
+component(ApplicationContainer);
 
 if (module.hot) {
-    module.hot.accept('./containers/app/main-container.js', () => {
-    component(MainContainer);
+    module.hot.accept('./containers/app/app-container.js', () => {
+    component(ApplicationContainer);
     });
 }
 

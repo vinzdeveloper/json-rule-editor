@@ -6,6 +6,7 @@ import {NotificationContainer, NotificationManager} from 'react-notifications';
 const Notification = (props) => {
 
     console.log("testing pre hook commit");
+    console.log("testing pre hook commit2");
     useEffect(() => {
         NotificationManager[props.type](props.body, props.heading, 5000);
     })

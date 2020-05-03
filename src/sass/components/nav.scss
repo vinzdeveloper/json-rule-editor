@@ -4,6 +4,7 @@
     height: 100%;
     left: 0;
     margin-top: -70px;
+    overflow-y: auto;
     position: fixed;
     padding: 0 10px 25px;
 
@@ -26,6 +27,14 @@
     color: $title-color;
   }
 }
+
+
+.links-section {
+    display: flex;
+    height: 90vh;
+    flex-direction: column;
+    justify-content: space-between;
+} 
 
 .link-container {
   list-style-type: none;

@@ -6,6 +6,8 @@ import { uploadRuleset } from '../../actions/ruleset';
 import { TitlePanel } from '../../components/panel/panel';
 import Button from '../../components/button/button';
 import { createHashHistory } from 'history';
+import FooterLinks from '../../components/footer/footer';
+import footerLinks from '../../data-objects/footer-links.json';
 
 
 function readFile(file, cb) {
@@ -113,7 +115,7 @@ class HomeContainer extends Component {
     }
 
     render() {
-      return <div>
+      return <div className="home-container">
         <div className="single-panel-container">
           <TitlePanel title="Upload Rulesets" titleClass="fa fa-cloud-upload">
             <div className="upload-panel">
@@ -128,6 +130,9 @@ class HomeContainer extends Component {
               </div>
           </TitlePanel>
         </div>
+        {!this.props.loggedIn && <div className='footer-container home-page'>
+           <FooterLinks links={footerLinks} />
+        </div>}
       </div>
     }
 }

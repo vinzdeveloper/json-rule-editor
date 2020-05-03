@@ -69,3 +69,37 @@
     text-align: center;
     width: 140px;
 }
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    justify-content: space-between;
+}
+
+.footer-container {
+    display: flex;
+
+    &.home-page {
+        flex-direction: row-reverse;
+
+        a {
+            font-size: 14px;
+        }
+    }
+
+    &.sidenav {
+        flex-direction: column-reverse;
+
+        a {
+            color: $btn-color;
+            font-size: 14px;
+        }
+    }
+
+    div {
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
+    
+}

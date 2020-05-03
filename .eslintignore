@@ -1,3 +1,3 @@
-/src/data-objects/**
-/src/mock/**
-/src/sass/**
+src/**/*.json
+src/**/*.scss
+node_modules/*

@@ -6,14 +6,16 @@
     "eslint:recommended",
     "plugin:react/recommended"
   ],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true
+  },
   "globals": {
     "process": true,
-    "document": true,
     "webpack": true,
     "module": true,
-    "require": true,
-    "__dirname": true,
-    "window": true
+    "__dirname": true
   },
   "parser": "babel-eslint",
   "settings": {
@@ -28,5 +30,8 @@
       {"property": "freeze", "object": "Object"},
       {"property": "myFavoriteWrapper"}
     ]
+  },
+  "rules": {
+    "no-console": ["error", { "allow": ["warn", "error"] }]
   }
 }

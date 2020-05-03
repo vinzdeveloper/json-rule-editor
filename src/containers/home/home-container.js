@@ -8,15 +8,21 @@ import Button from '../../components/button/button';
 import { createHashHistory } from 'history';
 import FooterLinks from '../../components/footer/footer';
 import footerLinks from '../../data-objects/footer-links.json';
+import { includes } from 'lodash/collection';
+import Notification from '../../components/notification/notification';
+import { RULE_AVAILABLE_UPLOAD, RULE_UPLOAD_ERROR } from '../../constants/messages';
 
 
 function readFile(file, cb) {
   // eslint-disable-next-line no-undef
   var reader = new FileReader();
   reader.onload = () => {
-    cb(JSON.parse(reader.result), file.name)
+    try {
+      cb(JSON.parse(reader.result), file.name);
+    } catch (e) {
+      cb(undefined, undefined, e.message);
+    }
   }
-
   return reader.readAsText(file);
 }
 
@@ -24,12 +30,11 @@ class HomeContainer extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {uploadedFilesCount: 0, files: [], ruleset: []};
+        this.state = { uploadedFilesCount: 0, files: [], ruleset: [], uploadError: false, fileExist: false, message: {}};
         this.drop = this.drop.bind(this);
         this.allowDrop = this.allowDrop.bind(this);
         this.printFile = this.printFile.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
-        this.chooseFile = this.chooseFile.bind(this);
         this.chooseDirectory = this.chooseDirectory.bind(this);
     }
 
@@ -37,13 +42,21 @@ class HomeContainer extends Component {
       e.preventDefault();
     }
 
-    printFile(file, name) {
-      const isFileAdded = this.state.files.some(fname => fname === name);
-      if (!isFileAdded) {
-        const files = this.state.files.concat([name]);
-        const ruleset = this.state.ruleset.concat(file);
-        this.setState({files, ruleset});
+    printFile(file, name, error) {
+      if (error) {
+        this.setState({ uploadError: true, fileExist: false, message: RULE_UPLOAD_ERROR });
+      } else {
+        const isFileAdded = this.state.files.some(fname => fname === name) || includes(this.props.rulenames, file.name);
+        if (!isFileAdded) {
+          const files = this.state.files.concat([name]);
+          const ruleset = this.state.ruleset.concat(file);
+          this.setState({files, ruleset, fileExist: false });
+        } else {
+          const message = { ...RULE_AVAILABLE_UPLOAD, heading: RULE_AVAILABLE_UPLOAD.heading.replace('<name>', file.name) };
+          this.setState({ fileExist: true, message });
+        }
       }
+      
     }
 
     uploadFile(items, index) {
@@ -66,14 +79,15 @@ class HomeContainer extends Component {
       });
    }
 
-   chooseFile() {
+   // this method is not required. its to select files from local disk.
+   /* chooseFile() {
     const file = document.getElementById("uploadFile");
     if (file && file.files) {
       for (let i = 0; i < file.files.length; i++) {
         readFile(file.files[i], this.printFile);
       }
     }
-   }
+   } */
 
    chooseDirectory(e) {
     const files = e.target.files;
@@ -115,8 +129,10 @@ class HomeContainer extends Component {
     }
 
     render() {
+      const { fileExist, uploadError, message } = this.state;
       return <div className="home-container">
         <div className="single-panel-container">
+        { (fileExist || uploadError) && <Notification body={message.body} heading={message.heading} type={message.type} /> }
           <TitlePanel title="Upload Rulesets" titleClass="fa fa-cloud-upload">
             <div className="upload-panel">
               <div className="drop-section" onDrop={this.drop} onDragOver={this.allowDrop}>
@@ -127,7 +143,7 @@ class HomeContainer extends Component {
             <div className="btn-group">
               <Button label={"Upload"} onConfirm={this.handleUpload} classname="primary-btn" type="button" />
               {!this.props.loggedIn && <Button label={"Create"} onConfirm={() => this.navigate('./create-ruleset')} classname="primary-btn" type="button" disabled={this.state.files.length > 0} />}
-              </div>
+            </div>
           </TitlePanel>
         </div>
         {!this.props.loggedIn && <div className='footer-container home-page'>
@@ -142,9 +158,11 @@ HomeContainer.propTypes = {
   uploadRuleset: PropTypes.func,
   login: PropTypes.func,
   loggedIn: PropTypes.bool,
+  rulenames: PropTypes.array,
 }
 
 HomeContainer.defaultProps = {
+  rulenames: [],
   ruleset: [],
   uploadRuleset: () => false,
   login: () => false,
@@ -152,6 +170,7 @@ HomeContainer.defaultProps = {
 }
 
 const mapStateToProps = (state) => ({
+  rulenames: state.ruleset.rulesets.map(r => r.name),
   loggedIn: state.app.loggedIn,
 });
 

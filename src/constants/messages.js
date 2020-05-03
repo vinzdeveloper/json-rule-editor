@@ -25,3 +25,9 @@ export const NO_DECISION_MSG = {header: NO_DECISION_HEADER, body: NO_DECISION_BO
 
 const NO_VALIDATION_BODY = 'There is no decisions available in the selected ruleset to validate.'
 export const NO_VALIDATION_MSG = {header: NO_DECISION_HEADER, body: NO_VALIDATION_BODY, type: 'warning-panel'};
+
+export const RULE_AVAILABLE_CREATE = { type: 'warning', heading: 'This rule name is already exist' };
+
+export const RULE_AVAILABLE_UPLOAD = { type: 'warning', heading: 'Couldnt upload the filename <name>' };
+
+export const RULE_UPLOAD_ERROR = { type: 'error', heading: 'Problem occured when uploading the files. Try again!!'};

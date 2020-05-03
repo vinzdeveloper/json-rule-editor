@@ -15,7 +15,6 @@ class ApplicationContainer extends Component {
         if (!this.props.loggedIn) {
             history.push('./home');
         }
-
     }
 
     componentWillUnmount() {

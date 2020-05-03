@@ -6,12 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --hot",
-    "lint": "eslint src/*"
+    "lint": "eslint src/**"
   },
   "author": "vinzbrucedeveloper@gmail.com",
   "license": "ISC",
   "husky": {
     "hooks": {
+      "pre-commit": "npm run lint",
       "pre-push": "npm run lint"
     }
   },

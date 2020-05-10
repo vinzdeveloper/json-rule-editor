@@ -14,12 +14,12 @@ import Banner from '../../components/panel/banner';
 import * as Message from '../../constants/messages';
 import { groupBy } from 'lodash/collection';
 
-const tabs = [{name: 'Attributes'}, {name: 'Decisions'}, {name: 'Validate'}, {name: 'Generate'}];
+const tabs = [{name: 'Facts'}, {name: 'Decisions'}, {name: 'Validate'}, {name: 'Generate'}];
 class RulesetContainer extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {activeTab: 'Attributes'};
+        this.state = {activeTab: 'Facts'};
         this.generateFile = this.generateFile.bind(this);
     }
 
@@ -55,7 +55,7 @@ class RulesetContainer extends Component {
         <PageTitle name={name} />
         <Tabs tabs={tabs} onConfirm={this.handleTab} activeTab={this.state.activeTab} />
         <div className="tab-page-container">
-            {this.state.activeTab === 'Attributes' && <Attributes attributes={attributes} 
+            {this.state.activeTab === 'Facts' && <Attributes attributes={attributes} 
               handleAttribute={this.props.handleAttribute }/>}
             {this.state.activeTab === 'Decisions' && <Decisions decisions={indexedDecisions} attributes={attributes}
              handleDecisions={this.props.handleDecisions} outcomes={outcomes}/>}

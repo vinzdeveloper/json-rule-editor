@@ -15,7 +15,7 @@ class ValidateRules extends Component {
 
     constructor(props) {
         super(props);
-        const conditions = props.attributes.map(attr => ({ name: attr.name, value: ''}))
+        const conditions = props.attributes.filter(attr => attr.type !== 'object' && ({ name: attr.name, value: ''}))
         this.state = { attributes: [],
              conditions,
              message: Message.NO_VALIDATION_MSG,

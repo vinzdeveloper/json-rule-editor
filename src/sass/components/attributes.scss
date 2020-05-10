@@ -87,8 +87,8 @@ td.attributes-header {
     
 }
 
-.date {
-    @include attr-linktype(map-get($attribute-type, "date"));
+.object {
+    @include attr-linktype(map-get($attribute-type, "object"));
 }
 
 .number {

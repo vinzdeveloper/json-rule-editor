@@ -42,11 +42,11 @@ class CreateRulesetContainer extends Component {
         return (
             <div className="single-panel-container">
                 { fileExist && <Notification body={message.body} heading={message.heading} type={message.type} /> }
-                <TitlePanel title="Add Ruleset" titleClass="fa fa-plus-square-o">
+                <TitlePanel title="Create Rules" titleClass="fa fa-plus-square-o">
                     <form>
                         <div className="upload-panel">
                             <InputField label="Name" onChange={this.onChangeName} value={this.state.name} error={this.state.error.name} />
-                            <Button label={'Add ruleset'} onConfirm={this.handleAdd} classname="primary-btn" type="submit" />
+                            <Button label={'Create'} onConfirm={this.handleAdd} classname="primary-btn" type="submit" />
                         </div>
                     </form>
                 </TitlePanel>

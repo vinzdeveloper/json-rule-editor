@@ -19,6 +19,12 @@ class Attributes extends Component {
         this.handleSearch = this.handleSearch.bind(this);
     }
 
+    getDerivedStateFromProps(props) {
+        if (props.attributes.length < 1) {
+            return { bannerflag: false };
+        }
+    }
+
     handleSearch = (value) => {
         this.setState({ searchCriteria: value})
     }
@@ -50,7 +56,7 @@ class Attributes extends Component {
     render() {
         const { searchCriteria, bannerflag } = this.state;
 
-        const buttonProps = { primaryLabel: 'Add Attribute', secondaryLabel: 'Cancel'};
+        const buttonProps = { primaryLabel: 'Add Facts', secondaryLabel: 'Cancel'};
 
         const filteredAttributes = searchCriteria ? this.filterAttribute() : this.props.attributes;
         

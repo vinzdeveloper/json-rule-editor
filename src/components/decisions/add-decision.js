@@ -237,7 +237,8 @@ class AddDecision extends Component {
         });
         
         const facts = node.name === 'all' || node.name === 'any' ? parentNodeMenu : factsNodemenu;
-        this.setState({ activeNodeDepth: sortedArr, factsButton: facts });
+        const outcomeMenus = outcomeOptions.map(option => ({ ...option, disable: false }));
+        this.setState({ activeNodeDepth: sortedArr, factsButton: facts, outcomeOptions: outcomeMenus });
     }
 
     handleFieldCancel() {
@@ -297,7 +298,7 @@ class AddDecision extends Component {
 
             <div className="add-field-panel">
                 <div><SelectField options={attributeOptions} onChange={(e) => this.onChangeNewFact(e, 'name')}
-                        value={addAttribute.name} error={addAttribute.error.name} label="Attribute"/></div>
+                        value={addAttribute.name} error={addAttribute.error.name} label="Facts"/></div>
                 <div><SelectField options={operatorOptions} onChange={(e) => this.onChangeNewFact(e, 'operator')}
                         value={addAttribute.operator} error={addAttribute.error.operator} label="Operator"/></div>
                 <div><InputField onChange={(value) => this.onChangeNewFact(value, 'value')} value={addAttribute.value}
@@ -306,8 +307,10 @@ class AddDecision extends Component {
 
             { addPathflag && <div className="add-field-panel half-width">
                 <div>
-                    <InputField onChange={(value) => this.onChangeNewFact(value, 'path')} value={addAttribute.path}
-                        label="Path" placeholder={"Enter path value - dont give prefix ' . ' "}/>
+                    {/*<InputField onChange={(value) => this.onChangeNewFact(value, 'path')} value={addAttribute.path}
+                        label="Path" placeholder={"Enter path value - dont give prefix ' . ' "}/> */}
+                    <SelectField options={attributeOptions} onChange={(e) => this.onChangeNewFact(e, 'path')}
+                        value={addAttribute.path} label="Path"/>
                 </div>
             </div> }
 

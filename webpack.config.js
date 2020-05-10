@@ -1,15 +1,16 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer-sunburst').BundleAnalyzerPlugin;
 
 
-module.exports = {
+module.exports = (env, arg) => ({
     entry: ['./src/app.js','./src/sass/base.scss'],
     output: {
       filename: "main.bundle.js",
       path: path.resolve(__dirname, 'dist')
     },
-    devtool: 'eval-source-map',
+    devtool: arg.mode != 'production' ? 'eval-source-map': 'nosources-source-map',
     module: {
         rules: [{ 
           test: /\.(js|jsx)$/, 
@@ -46,11 +47,15 @@ module.exports = {
     },
     plugins: [
         new HtmlWebPackPlugin({
-            template: 'index.html'
+            template: 'index.html',
+            favicon: "./assets/icons/rule.ico"
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[id].css'
-        })
+        }),
+        /* new BundleAnalyzerPlugin({
+            analyzerMode: 'static',
+        }), */
     ]
-};
+});

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --hot",
-    "lint": "eslint 'src/**/*.js' -f table --max-warnings 0"
+    "lint": "eslint 'src/**/*.js' -f table --max-warnings 0",
+    "build": "webpack --mode=production"
   },
   "author": "vinzdeveloper@gmail.com",
   "license": "ISC",
@@ -16,10 +17,13 @@
     }
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/vinzdeveloper/json-rule-editor.git"
+    "type": "git",
+    "url": "https://github.com/vinzdeveloper/json-rule-editor.git"
   },
-  "engines" : { "node" : ">=10.15.3", "npm": ">=6.4.1" },
+  "engines": {
+    "node": ">=10.15.3",
+    "npm": ">=6.4.1"
+  },
   "dependencies": {
     "@babel/core": "7.7.7",
     "@babel/plugin-transform-runtime": "7.9.6",

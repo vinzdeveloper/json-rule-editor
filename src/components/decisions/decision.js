@@ -120,7 +120,7 @@ Decision.defaultProps = ({
     reset: () =>  false,
     decisions: [],
     attributes: [],
-    outcomes: [],
+    outcomes: {},
 });
 
 Decision.propTypes = ({
@@ -129,7 +129,7 @@ Decision.propTypes = ({
     reset: PropTypes.func,
     decisions: PropTypes.array,
     attributes: PropTypes.array,
-    outcomes: PropTypes.array,
+    outcomes: PropTypes.object,
 });
 
 export default Decision;

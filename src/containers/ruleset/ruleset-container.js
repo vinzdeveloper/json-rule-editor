@@ -14,14 +14,16 @@ import Banner from '../../components/panel/banner';
 import * as Message from '../../constants/messages';
 import { groupBy } from 'lodash/collection';
 import RuleErrorBoundary from '../../components/error/ruleset-error';
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 const tabs = [{name: 'Facts'}, {name: 'Decisions'}, {name: 'Validate'}, {name: 'Generate'}];
 class RulesetContainer extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {activeTab: 'Facts'};
+        this.state = {activeTab: 'Facts', generateFlag: false };
         this.generateFile = this.generateFile.bind(this);
+        this.cancelAlert = this.cancelAlert.bind(this);
     }
 
     handleTab = (tabName) => {
@@ -31,13 +33,28 @@ class RulesetContainer extends Component {
     generateFile() {
       const { ruleset } = this.props;
       const fileData = JSON.stringify(ruleset, null,'\t');
-      const blob = new Blob([fileData], {type: "application/json"});
+      const blob = new Blob([fileData], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.download = ruleset.name +'.json';
       link.href = url;
       link.click();
-  }
+      this.setState({ generateFlag: true });
+    }
+
+    cancelAlert() {
+      this.setState({ generateFlag: false })
+    }
+
+    successAlert = () => {
+      const { name } = this.props.ruleset;
+      return (<SweetAlert
+          success
+          title={"File generated!"}
+          onConfirm={this.cancelAlert}
+        > {`${name} rule is succefully generated at your default download location`}
+        </SweetAlert>);
+    }
 
     render() {
       const { attributes, decisions, name } = this.props.ruleset;
@@ -59,10 +76,11 @@ class RulesetContainer extends Component {
           <div className="tab-page-container">
               {this.state.activeTab === 'Facts' && <Attributes attributes={attributes} 
                 handleAttribute={this.props.handleAttribute }/>}
-              {this.state.activeTab === 'Decisions' && <Decisions decisions={indexedDecisions} attributes={attributes}
+              {this.state.activeTab === 'Decisions' && <Decisions decisions={indexedDecisions || []} attributes={attributes}
               handleDecisions={this.props.handleDecisions} outcomes={outcomes}/>}
               {this.state.activeTab === 'Validate' && <ValidateRules attributes={attributes} decisions={decisions} />}
               {this.state.activeTab === 'Generate' && <Banner message={message} ruleset={this.props.ruleset} onConfirm={this.generateFile}/> }
+              {this.state.generateFlag && this.successAlert()}
           </div>
         </RuleErrorBoundary>
       </div>

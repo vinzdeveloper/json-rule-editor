@@ -31,3 +31,5 @@ export const RULE_AVAILABLE_CREATE = { type: 'warning', heading: 'This rule name
 export const RULE_AVAILABLE_UPLOAD = { type: 'warning', heading: 'Couldnt upload the filename <name>' };
 
 export const RULE_UPLOAD_ERROR = { type: 'error', heading: 'Problem occured when uploading the files. Try again!!'};
+
+export const RULE_ERROR = { type: 'error', heading: 'Sorry!, some problem occured. Please try again'};

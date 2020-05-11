@@ -100,7 +100,7 @@ class Decision extends Component {
 
         return (<div className="rulecases-container">
 
-            { Object.keys(outcomes).length > 0 && <ToolBar handleAdd={this.handleAdd} reset={this.handleReset} searchTxt={this.handleSearch} /> }
+            { <ToolBar handleAdd={this.handleAdd} reset={this.handleReset} searchTxt={this.handleSearch} /> }
 
             { this.state.showAddRuleCase && <AddDecision attributes={this.props.attributes} addCondition={this.addCondition} cancel={this.cancelAddAttribute} buttonProps={buttonProps} /> }
             

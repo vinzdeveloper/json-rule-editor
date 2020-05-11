@@ -13,6 +13,7 @@ import { handleDecision } from '../../actions/decisions';
 import Banner from '../../components/panel/banner';
 import * as Message from '../../constants/messages';
 import { groupBy } from 'lodash/collection';
+import RuleErrorBoundary from '../../components/error/ruleset-error';
 
 const tabs = [{name: 'Facts'}, {name: 'Decisions'}, {name: 'Validate'}, {name: 'Generate'}];
 class RulesetContainer extends Component {
@@ -52,16 +53,18 @@ class RulesetContainer extends Component {
       const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
   
       return <div>
-        <PageTitle name={name} />
-        <Tabs tabs={tabs} onConfirm={this.handleTab} activeTab={this.state.activeTab} />
-        <div className="tab-page-container">
-            {this.state.activeTab === 'Facts' && <Attributes attributes={attributes} 
-              handleAttribute={this.props.handleAttribute }/>}
-            {this.state.activeTab === 'Decisions' && <Decisions decisions={indexedDecisions} attributes={attributes}
-             handleDecisions={this.props.handleDecisions} outcomes={outcomes}/>}
-            {this.state.activeTab === 'Validate' && <ValidateRules attributes={attributes} decisions={decisions} />}
-            {this.state.activeTab === 'Generate' && <Banner message={message} ruleset={this.props.ruleset} onConfirm={this.generateFile}/> }
-        </div>
+        <RuleErrorBoundary>
+          <PageTitle name={name} />
+          <Tabs tabs={tabs} onConfirm={this.handleTab} activeTab={this.state.activeTab} />
+          <div className="tab-page-container">
+              {this.state.activeTab === 'Facts' && <Attributes attributes={attributes} 
+                handleAttribute={this.props.handleAttribute }/>}
+              {this.state.activeTab === 'Decisions' && <Decisions decisions={indexedDecisions} attributes={attributes}
+              handleDecisions={this.props.handleDecisions} outcomes={outcomes}/>}
+              {this.state.activeTab === 'Validate' && <ValidateRules attributes={attributes} decisions={decisions} />}
+              {this.state.activeTab === 'Generate' && <Banner message={message} ruleset={this.props.ruleset} onConfirm={this.generateFile}/> }
+          </div>
+        </RuleErrorBoundary>
       </div>
     }
 }

@@ -1,10 +1,10 @@
 [
     {
         "label": "Report issue",
-        "src": ""
+        "src": "https://github.com/vinzdeveloper/vinz-editor/issues"
     },
     {
-        "label": "Documentation",
-        "src": ""
+        "label": "Docs",
+        "src": "https://vinzdeveloper.github.io/vinz-editor/"
     }
 ]

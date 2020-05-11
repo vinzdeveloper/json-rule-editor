@@ -19,12 +19,6 @@ class Attributes extends Component {
         this.handleSearch = this.handleSearch.bind(this);
     }
 
-    getDerivedStateFromProps(props) {
-        if (props.attributes.length < 1) {
-            return { bannerflag: false };
-        }
-    }
-
     handleSearch = (value) => {
         this.setState({ searchCriteria: value})
     }
@@ -62,7 +56,7 @@ class Attributes extends Component {
         
         return (<div className="attributes-container">
             
-            { this.props.attributes.length > 0 && <ToolBar handleAdd={this.handleAdd} reset={this.handleReset} searchTxt={this.handleSearch}/> }
+            { <ToolBar handleAdd={this.handleAdd} reset={this.handleReset} searchTxt={this.handleSearch}/> }
             
             { this.state.showAddAttr && <AddAttributes addAttribute={this.addAttribute} cancel={this.cancelAddAttribute} buttonProps={buttonProps} /> }
             

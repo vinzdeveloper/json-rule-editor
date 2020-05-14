@@ -17,12 +17,27 @@ module.exports = (env, arg) => ({
           use: ['babel-loader'],
           exclude: /node_modules/,
         }, {
-          test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg|png)(\?.*$|$)/,
+          test: /\.(jpe|jpg|png)(\?.*$|$)/,
           loader: 'file-loader',
           options: {
             name: '[path][name].[ext]',
           }
-        }, {
+        }, 
+        {
+           test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+           loader: "url-loader?limit=10000&minetype=application/font-woff",
+           options: {
+            name: '[path][name].[ext]',
+          }
+        },
+        { 
+          test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
+          loader: "file-loader",
+          options: {
+            name: '[path][name].[ext]',
+          }
+        },
+        {
           test: /\.scss$/,
           use: [
           { loader: MiniCssExtractPlugin.loader }, 

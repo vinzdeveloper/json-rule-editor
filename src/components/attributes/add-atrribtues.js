@@ -26,7 +26,8 @@ class AddAttributes extends Component {
         this.setState({type: e.target.value});
     }
 
-    handleAdd() {
+    handleAdd(e) {
+        e.preventDefault();
         const error = attributeValidations({name: this.state.name, type: this.state.type});
         
         if (Object.keys(error).length > 0) {

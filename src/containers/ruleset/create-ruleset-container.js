@@ -23,7 +23,8 @@ class CreateRulesetContainer extends Component {
         this.setState({name:e.target.value});
     }
 
-    handleAdd(){
+    handleAdd(e){
+        e.preventDefault();
         const history = createHashHistory();
         if (!this.state.name || !this.state.name.trim()) {
             this.setState({error: {name: 'Please specify value'}});

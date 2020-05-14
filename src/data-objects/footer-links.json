@@ -1,4 +1,8 @@
 [
+
+    {
+        "label": "v1.0.0"
+    },
     {
         "label": "Report issue",
         "src": "https://github.com/vinzdeveloper/vinz-editor/issues"

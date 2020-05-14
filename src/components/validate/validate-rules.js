@@ -45,7 +45,8 @@ class ValidateRules extends Component {
         this.setState({ conditions: this.state.conditions.concat([{name: ''}])});
     }
 
-    validateRules() {
+    validateRules(e) {
+        e.preventDefault();
         let facts = {};
         const { decisions, attributes } = this.props;
         this.setState({loading: true});

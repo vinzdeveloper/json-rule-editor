@@ -72,7 +72,8 @@ class AddDecision extends Component {
         this.addPath = this.addPath.bind(this);
     }
 
-    handleAdd() {
+    handleAdd(e) {
+        e.preventDefault();
         const error = decisionValidations(this.state.node, this.state.outcome);
 
         if (error.formError) {

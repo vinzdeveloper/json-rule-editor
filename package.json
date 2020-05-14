@@ -56,6 +56,7 @@
     "sass-loader": "8.0.2",
     "selectn": "1.1.2",
     "style-loader": "1.1.2",
+    "url-loader": "^4.1.0",
     "webpack": "4.41.5",
     "webpack-cli": "3.3.10"
   },

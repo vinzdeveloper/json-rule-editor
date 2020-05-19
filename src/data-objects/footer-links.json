@@ -5,10 +5,10 @@
     },
     {
         "label": "Report issue",
-        "src": "https://github.com/vinzdeveloper/vinz-editor/issues"
+        "src": "https://github.com/vinzdeveloper/json-rule-editor/issues"
     },
     {
         "label": "Docs",
-        "src": "https://vinzdeveloper.github.io/vinz-editor/"
+        "src": "https://vinzdeveloper.github.io/json-rule-editor/"
     }
 ]

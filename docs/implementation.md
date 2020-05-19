@@ -12,9 +12,7 @@
 
 1. Place the generated rule file (as generated in [previous section](https://vinzdeveloper.github.io/json-rule-editor/docs/create-rules.html)) in your `src/` directory
 
-for ex:
-
-   `src/rules/Employee-Salary.json`
+for ex:   `src/rules/Employee-Salary.json`
 
 ***Step3: Pass json rule and input into json-rules-engine library***
 

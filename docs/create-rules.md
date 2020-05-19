@@ -10,17 +10,17 @@ Its an entity or attribute helps to build your business decisions. It supports f
 
 ***Decisions***
 
-It is actually business rule conditions which contains the possible facts values and associated outcome type. Here you can define any number of business decision outcomes under single rule.
+It is actually business rule conditions which contains the possible facts values and associated outcome type. You can define any number of business decision outcomes under single rule file.
 
 *Note:*
 
-> Its good practise to separate your business rules into different ruleset files based on the use cases.
+> Its good practise to separate your business rules into different files based on the use cases.
 
 Lets see the step by step process starting from creating facts to generating the ruleset file.  
 
 ***Step1: Create new ruleset file***
 
-1. Launch [json rule editor](www.json-rule-editor.com) or install locally via npm
+1. Launch [json rule editor](https://www.json-rule-editor.com) or install locally via git clone
 2. Click **Create button** (Note: Upload functioanlity is explained in next section)
 
     ![create new rule](https://vinzdeveloper.github.io/json-rule-editor/docs/images/create-upload.png)
@@ -35,11 +35,11 @@ Lets see the step by step process starting from creating facts to generating the
 
 1. Click **Create Facts** button at information message panel
 
-    ![rule name](https://vinzdeveloper.github.io/json-rule-editor/docs/images/facts1.png)
+    ![rule name](https://vinzdeveloper.github.io/json-rule-editor/docs/images/fact1.png)
 
 2. Give fact name and data type such as string, number or array
 
-    ![rule name](https://vinzdeveloper.github.io/json-rule-editor/docs/images/facts2.png)
+    ![rule name](https://vinzdeveloper.github.io/json-rule-editor/docs/images/fact2.png)
 
 3. Add as many as fact you need to build your decisions
 
@@ -50,7 +50,7 @@ Lets see the step by step process starting from creating facts to generating the
 
 Go to Decisions tab
 
-1. Click **Create Decisions** button at information message panel
+1. Click **Create Decision** button at information message panel
 
     ![rule name](https://vinzdeveloper.github.io/json-rule-editor/docs/images/decision1.png)
 

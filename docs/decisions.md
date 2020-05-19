@@ -2,7 +2,7 @@
 
 ### More examples in Decisions
 
-We have seen simple rule structure example before which has just one top node *"all"*. However, Json rules engine offers many features which will be really useful to manage business decisions effectively.
+We have seen simple rule structure example before which has just one top node *"all"*. However, Json rules engine offers many features which will be useful to manage business decisions effectively.
 
 ***Nested ‘all’ or ‘any’***
 
@@ -10,7 +10,7 @@ You can configure the decisions with nested all or any combination as mentioned 
 
 We will use the same rule file Employee-Salary created before for this section. 
 
-Previously, we have configured facts such as designation, type and experience to derive *salary* for just one designation **Manager** for simplicity. However, in real time, we might have other designation roles and facts to consider. Lets see a example below to understand much better
+Previously, we have configured facts such as designation, type and experience to derive *salary* for couple of designations **Manager** and **Contractor** to get better understandings. However, in real time, we might have other designation roles and facts to consider. Lets see a example below to understand much better
 
 For ex:
 
@@ -59,7 +59,7 @@ Lets explore the second solution to understand how nested conditions can be crea
 
 That's it!!!
 
-Likewise, you can add any number of nested nodes under single conditions. Both solution 1 and solution 2 are doing same thing, depends on business requirement and number of facts, decide the pattern whichver it suits better.
+Likewise, you can add any number of nested nodes under single conditions. Both solution 1 and solution 2 are doing the same thing, depends on business requirement and number of facts, decide the pattern whichver it suits better.
 
 [Next section - Advanced examples](https://vinzdeveloper.github.io/json-rule-editor/docs/advanced.html)
 

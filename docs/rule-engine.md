@@ -16,10 +16,11 @@ It’s obvious that coupling your business rules along with your application cod
 
 ### What is Json Rule Engine and Json rule editor?
 
-It is really important to understand the basic and fundamental difference between json rule editor and json rules engine.
+It is really important to understand the basic and fundamental differences between json rule editor and json rules engine.
 
-- json rule editor is an web based tool to create / manage  / view the business rules. Primarily to generate business rules as a proper json file. It **doesn’t need** to be added your application code.
-- And, json rules engine should be imported into your application and you should pass the json file (generated from json rule editor app) along with input parameters to determine the outcomes.
+- **json rule editor** is a web based tool to create / manage  / view the business rules. Primarily to generate business rules into json file. It **doesn’t need** to be added into your application code.
+
+- And, **json rules engine** should be imported into your application and eventually you should pass the json file (generated from json rule editor app) along with input parameters to determine the outcomes.
 
 It is fairly straight forward process to incorporate the json rules in your application. Its completely fine if you are bit struggling to catch up how it’s actually works in real world. It would make more sense if you go through the further sections - explained in detail.
 

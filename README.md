@@ -38,3 +38,4 @@ This documentation covers,
 6. [Advanced examples](https://vinzdeveloper.github.io/json-rule-editor/docs/advanced.html)
 
 
+

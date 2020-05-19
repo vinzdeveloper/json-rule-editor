@@ -62,4 +62,4 @@ lets create the file called rule-validation.js under src/validation/
 
 [Go back to previous page](https://vinzdeveloper.github.io/json-rule-editor/docs/create-rules.html)
 
-[Go Home](https://vinzdeveloper.github.io/json-rule-editor/)
+[Go Home](https://vinzdeveloper.github.io/json-rule-editor/docs/)

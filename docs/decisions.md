@@ -65,7 +65,7 @@ Likewise, you can add any number of nested nodes under single conditions. Both s
 
 [Go back to previous page](https://vinzdeveloper.github.io/json-rule-editor/docs/manage-rules.html)
 
-[Go Home](https://vinzdeveloper.github.io/json-rule-editor/)
+[Go Home](https://vinzdeveloper.github.io/json-rule-editor/docs/)
 
 
 

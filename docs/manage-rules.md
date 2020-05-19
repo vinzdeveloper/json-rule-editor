@@ -103,4 +103,4 @@ Go to Generate tab
 
 [Go back to previous page](https://vinzdeveloper.github.io/json-rule-editor/docs/implementation.html)
 
-[Go Home](https://vinzdeveloper.github.io/json-rule-editor/)
+[Go Home](https://vinzdeveloper.github.io/json-rule-editor/docs/)

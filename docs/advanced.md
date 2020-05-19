@@ -50,4 +50,4 @@ Feel free to raise issues or concerns in [github](https://github.com/vinzdevelop
 
 [Go back to previous page](https://vinzdeveloper.github.io/json-rule-editor/docs/decisions.html)
 
-[Go Home](https://vinzdeveloper.github.io/json-rule-editor/)
+[Go Home](https://vinzdeveloper.github.io/json-rule-editor/docs)

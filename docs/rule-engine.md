@@ -28,6 +28,6 @@ Lets see how to create json rule file using this tool in next section
 
 [Next section - Create decisions using rule editor](https://vinzdeveloper.github.io/json-rule-editor/docs/create-rules.html)
 
-[Go back to previous page](https://vinzdeveloper.github.io/json-rule-editor/)
+[Go back to previous page](https://vinzdeveloper.github.io/json-rule-editor/docs/)
 
 

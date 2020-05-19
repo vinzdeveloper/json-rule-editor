@@ -16,7 +16,8 @@ Facinating feature it implies is, we can validate the business decisions instant
 
 To launch the json rule editor tool, you can do either of the below 
 1. 	Click [json rule editor](https://www.json-rule-editor.com) 
-2.  or install it locally via npm `npm install json-rule-editor`
+2.  or install it locally via `git clone https://github.com/vinzdeveloper/json-rule-editor.git`
+     - start the application by `npm install` and `npm start`
 
 The detailed steps to create json rule file using this tool in [next section](https://vinzdeveloper.github.io/json-rule-editor/docs/create-rules.html).
 

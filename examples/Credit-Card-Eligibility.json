@@ -1,17 +1,17 @@
 {
-    "name": "Credit Card Eligibility",
+    "name": "Credit-Card-Eligibility",
     "attributes": [{ "name": "nationality", "type": "string" },
                    { "name": "age", "type": "number"},
                    { "name": "creditScore", "type": "number" },
                    { "name": "income", "type": "number"},
-                   { "name": "residentInUK", "type": "string" }],
+                   { "name": "job", "type": "string" }],
 
     "decisions": [{
                     "conditions": {
                         "all": [{
                             "fact": "nationality",
                             "operator": "equal",
-                            "value": "United Kingdom"
+                            "value": "France"
                         },
                         {
                             "fact": "income",
@@ -19,7 +19,7 @@
                             "value": 1000
                         },
                         {
-                            "fact": "residentInUK",
+                            "fact": "job",
                             "operator": "equal",
                             "value": "Yes"
                         },
@@ -38,11 +38,11 @@
                         "all": [{
                             "fact": "nationality",
                             "operator": "notEqual",
-                            "value": "United Kingdom"
+                            "value": "France"
                         },
                         
                         {
-                            "fact": "residentInUK",
+                            "fact": "job",
                             "operator": "equal",
                             "value": "Yes"
                         },
@@ -68,11 +68,11 @@
                         "all": [{
                         "fact": "nationality",
                         "operator": "notEqual",
-                        "value": "United Kingdom"
+                        "value": "France"
                     },
                     
                     {
-                        "fact": "residentInUK",
+                        "fact": "job",
                         "operator": "equal",
                         "value": "Yes"
                     },
@@ -104,11 +104,11 @@
                         "all": [{
                         "fact": "nationality",
                         "operator": "notEqual",
-                        "value": "United Kingdom"
+                        "value": "France"
                     },
                     
                     {
-                        "fact": "residentInUK",
+                        "fact": "job",
                         "operator": "notEqual",
                         "value": "Yes"
                     }

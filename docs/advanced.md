@@ -46,6 +46,11 @@ Sometimes, it would make sense to add more values along with output value. In or
 
 ![create path decision](https://vinzdeveloper.github.io/json-rule-editor/docs/images/output-params.png)
 
+
+### Examples
+
+Couple of sample examples are available [here](https://github.com/vinzdeveloper/json-rule-editor) under **examples** folder. Play with these files by importing it into rule editor.
+
 Feel free to raise issues or concerns in [github](https://github.com/vinzdeveloper/json-rule-editor/issues) or contact here <vinzdeveloper@gmail.com>. Happy to look into your concerns!!
 
 [Go back to previous page](https://vinzdeveloper.github.io/json-rule-editor/docs/decisions.html)

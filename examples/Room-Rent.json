@@ -1,5 +1,5 @@
 {
-    "name": "Room Rent Category",
+    "name": "Room-Rent",
     "attributes": [{ "name": "rooms", "type": "number" },
                    { "name": "bathroom", "type": "number"},
                    { "name": "floor", "type": "number" },

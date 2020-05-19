@@ -13,7 +13,7 @@ We will take the same example *"Employee Salary"* for this section, lets assume 
 
 ***Step1: Upload existing rules***
 
-1. Launch [json rule editor](www.json-rule-editor.com) or install locally via npm
+1. Launch [json rule editor](https://www.json-rule-editor.com) or install locally via git clone
 2. Select the *‘Choose ruleset directory’* to select directory or drag and drop the rule files.
 3. Click **Upload** button
 
@@ -95,9 +95,9 @@ Go to Generate tab
 
 
 **Caution:**
-> Please be careful when you remove / edit fact name in the existing rule file.
-> The updated changes of facts wouldn't be reflected into the decisions section.
-> Hence, it might impact the validation as well as existing decisison functionalities.
+> Please be careful when you remove / edit fact name under Facts tab in the existing rule file.
+> The updated changes of facts wouldn't be reflected into the decision conditions.
+> Also, it might impact the validation functionality as well as existing decisison functionalities.
 
 [Next section - More examples in Decisions](https://vinzdeveloper.github.io/json-rule-editor/docs/decisions.html)
 

@@ -15,7 +15,7 @@ const ViewAttributes = ({items}) => {
     );
 };
 
-ViewAttributes.defautProps = {
+ViewAttributes.defaultProps = {
     items: {},
 };
 

@@ -20,7 +20,7 @@ Panel.defaultProps = {
   
 Panel.propTypes = {
     title: PropTypes.string,
-    children: PropTypes.object,
+    children: PropTypes.any,
 };
 
 

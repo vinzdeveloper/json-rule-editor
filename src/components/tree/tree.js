@@ -101,7 +101,7 @@ class TreeView extends Component {
     }
 }
 
-TreeView.defautProps = {
+TreeView.defaultProps = {
     treeData: {},
     count: 0,
     onConfirm: () => false,

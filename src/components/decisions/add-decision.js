@@ -5,7 +5,7 @@ import InputField from '../forms/input-field';
 import SelectField from '../forms/selectmenu-field';
 import Button from '../button/button';
 import ButtonGroup from '../button/button-groups';
-import operator from '../../data-objects/operator.json';
+import operator from '../../constants/operators.json';
 import decisionValidations from '../../validations/decision-validation';
 import Tree from '../tree/tree';
 import { has } from 'lodash/object';
@@ -18,7 +18,7 @@ import { PLACEHOLDER } from '../../constants/data-types';
 const nodeStyle = {
 	shape: 'circle',
 	shapeProps: {
-		fill: '#1ABB9C',
+		fill: '#4574c3',
 		r: 10
 	}
 };
@@ -49,9 +49,11 @@ class AddDecision extends Component {
 		// const node = props.editDecision ? props.editCondition.node : {};
 		const activeNode = { index: 0, depth: 0 };
 		const node = { name: 'all', nodeSvgShape: nodeStyle, children: [] };
+		const expression = { error: {}, name: '', operator: '', value: '' };
 
 		this.state = {
 			attributes: props.attributes,
+			expression,
 			outcome,
 			addAttribute,
 			enableTreeView: true,
@@ -67,7 +69,7 @@ class AddDecision extends Component {
 		};
 		this.handleAdd = this.handleAdd.bind(this);
 		this.handleCancel = this.handleCancel.bind(this);
-		this.onChangeNewFact = this.onChangeNewFact.bind(this);
+		this.onChangeField = this.onChangeField.bind(this);
 		this.onChangeOutcomeValue = this.onChangeOutcomeValue.bind(this);
 		this.handleTopNode = this.handleTopNode.bind(this);
 		this.handleActiveNode = this.handleActiveNode.bind(this);
@@ -101,12 +103,13 @@ class AddDecision extends Component {
 	handleCancel() {
 		this.props.cancel();
 	}
+	onChangeField(e, name) {
+		const expression = { ...this.state.expression };
 
-	onChangeNewFact(e, name) {
-		const addAttribute = { ...this.state.addAttribute };
-		addAttribute[name] = e.target.value;
-		this.setState({ addAttribute });
+		expression[name] = e.target.value;
+		this.setState({ expression });
 	}
+	// onChangeField(e, name) {}
 
 	onChangeOutcomeValue(e, type) {
 		const outcome = { ...this.state.outcome };
@@ -331,89 +334,121 @@ class AddDecision extends Component {
 	}
 
 	fieldPanel() {
-		const { attributes, addAttribute, addPathflag } = this.state;
+		const { attributes, expression } = this.state;
 		const attributeOptions = attributes.map((attr) => attr.name);
-		const attribute =
-			addAttribute.name && attributes.find((attr) => attr.name === addAttribute.name);
+		const attribute = expression.name && attributes.find((attr) => attr.name === expression.name);
+
 		const operatorOptions = attribute && operator[attribute.type];
 
 		const placeholder =
-			addAttribute.operator === 'contains' || addAttribute.operator === 'doesNotContain'
+			expression.operator === 'contains' || expression.operator === 'doesNotContain'
 				? PLACEHOLDER['string']
 				: PLACEHOLDER[attribute.type];
 
 		return (
 			<Panel>
 				<div className="attributes-header">
-					<div className="attr-link" onClick={this.addPath}>
+					{/* Add Path  <div className="attr-link" onClick={this.addPath}>
 						<span className="plus-icon" />
 						<span className="text">Add Path</span>
-					</div>
+					</div> */}
 				</div>
 
 				<div className="add-field-panel">
-					<div>
+					<div className="add-field-panel-row">
 						<InputField
-							onChange={(value) => this.onChangeNewFact(value, 'value')}
-							value={addAttribute.value}
-							error={addAttribute.error.value}
-							label="Value"
+							onChange={(e) => this.onChangeField(e, 'note')}
+							note={expression.value}
+							error={expression.error.value}
+							label="Note"
 							placeholder={placeholder}
 						/>
 					</div>
-					<div>
-						<SelectField
-							options={attributeOptions}
-							onChange={(e) => this.onChangeNewFact(e, 'name')}
-							value={addAttribute.name}
-							error={addAttribute.error.name}
-							label="Fields"
-						/>
-					</div>
-					<div>
-						<SelectField
-							options={operatorOptions}
-							onChange={(e) => this.onChangeNewFact(e, 'operator')}
-							value={addAttribute.operator}
-							error={addAttribute.error.operator}
-							label="Operator"
-						/>
-					</div>
-					<div>
-						<InputField
-							onChange={(value) => this.onChangeNewFact(value, 'value')}
-							value={addAttribute.value}
-							error={addAttribute.error.value}
-							label="Value"
-							placeholder={placeholder}
-						/>
-					</div>
-				</div>
-
-				{addPathflag && (
-					<div className="add-field-panel half-width">
-						<div>
-							{/*<InputField onChange={(value) => this.onChangeNewFact(value, 'path')} value={addAttribute.path}
-                        label="Path" placeholder={"Enter path value - dont give prefix ' . ' "}/> */}
+					<div className="add-field-panel-row">
+						<div className="field">
 							<SelectField
 								options={attributeOptions}
-								onChange={(e) => this.onChangeNewFact(e, 'path')}
-								value={addAttribute.path}
-								label="Path"
+								onChange={(e) => this.onChangeField(e, 'name')}
+								value={expression.name}
+								error={expression.error.name}
+								label="Expressions"
+							/>
+						</div>
+						<div>
+							<SelectField
+								options={operatorOptions}
+								onChange={(e) => this.onChangeField(e, 'operator')}
+								value={expression.operator}
+								error={expression.error.operator}
+								label="Operator"
+							/>
+						</div>
+						<div>
+							<InputField
+								onChange={(value) => this.onChangeField(value, 'value')}
+								value={expression.value}
+								error={expression.error.value}
+								label="Value"
+								placeholder={placeholder}
 							/>
 						</div>
 					</div>
-				)}
-
-				<div className="btn-group">
-					<Button
-						label={'Add'}
-						onConfirm={() => this.handleChildrenNode('Add fact node')}
-						classname="btn-toolbar"
-						type="submit"
-					/>
-					<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
+					<div className="add-field-panel-row ">
+						<Button
+							label={'Add Expression'}
+							onConfirm={() => this.handleChildrenNode('Add fact node')}
+							classname="btn-toolbar"
+							type="submit"
+						/>
+						<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
+					</div>
+					<div className="add-field-panel-row">
+						<div>
+							<SelectField
+								options={operatorOptions}
+								onChange={(e) => this.onChangeField(e, 'yields')}
+								value={expression.yields}
+								error={expression.error.operator}
+								label="Yields"
+							/>
+						</div>
+						<div>
+							<InputField
+								onChange={(value) => this.onChangeField(value, 'weight')}
+								value={expression.weight}
+								error={expression.error.value}
+								label="Weight"
+								placeholder={placeholder}
+							/>
+						</div>
+					</div>
+					<div className="add-field-panel-row ">
+						<Button
+							label={'Add Yield'}
+							onConfirm={() => this.handleChildrenNode('Add fact node')}
+							classname="btn-toolbar"
+							type="submit"
+						/>
+						<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
+					</div>
 				</div>
+
+				{
+					// addPathflag && (
+					// 	<div className="add-field-panel half-width">
+					// 		<div>
+					// 			{/*<InputField onChange={(value) => this.onChangeNewFact(value, 'path')} value={addAttribute.path}
+					//         label="Path" placeholder={"Enter path value - dont give prefix ' . ' "}/> */}
+					// 			<SelectField
+					// 				options={attributeOptions}
+					// 				onChange={(e) => this.onChangeField(e, 'path')}
+					// 				value={addAttribute.path}
+					// 				label="Path"
+					// 			/>
+					// 		</div>
+					// 	</div>
+					// )
+				}
 			</Panel>
 		);
 	}

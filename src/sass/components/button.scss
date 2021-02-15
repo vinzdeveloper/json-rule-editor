@@ -1,179 +1,178 @@
-
 .nav-btn {
-  margin: 30px 0;
+	margin: 30px 0;
 }
 
 .nav-glass-btn {
-  @include link;
-  font-size: $btn-font-size;
-  height: 50px;
-  width: 300px;
+	@include link;
+	font-size: $btn-font-size;
+	height: 50px;
+	width: 300px;
 
-  &:hover {
-    background: $btn-bg-clr-hover;  
-  }
+	&:hover {
+		background: $btn-bg-clr-hover;
+	}
 }
 
 .btn-container {
-  display: flex;
-  margin: {
-    right: 20px;
-    top: 20px;
-  }
+	display: flex;
+	margin: {
+		right: 20px;
+		top: 20px;
+	}
 }
 
 .upload-panel {
-  .btn-container {
-    margin-top: 30px;
-  }
+	.btn-container {
+		margin-top: 30px;
+	}
 }
 
 .btn-group {
-  display: flex;
-  margin-top: 10px;
+	display: flex;
+	margin-top: 10px;
 }
 
 .btn {
-  border-radius: 5px;
-  color: $btn-color;
-  font-size: 16px;
-  font-family: $form-font-family;
-  height: 45px;
-  outline:none;
-  padding-top: 0;
-  width: 140px;
+	border-radius: 5px;
+	color: $btn-color;
+	font-size: 16px;
+	font-family: $form-font-family;
+	height: 45px;
+	outline: none;
+	padding-top: 0;
+	width: 140px;
 }
 
 a.btn.btn-lg.btn-primary {
-  border: 0;
+	border: 0;
 }
 
 .btn:hover {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .btn:focus {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .primary-btn {
-  background-color: $primary-btn-color;
-  border: 1px solid $primary-btn-color;
+	background-color: $primary-btn-color;
+	border: 1px solid $primary-btn-color;
 }
 
 .primary-btn:focus {
-  background-color: #0f7965;
-  border: 1px solid #0f7965;
+	background-color: #3c67ad;
+	border: 1px solid #3c67ad;
 }
 
 .cancel-btn {
-  background-color: $cancel-btn-color;
-  border: 1px solid $cancel-btn-color;
+	background-color: $cancel-btn-color;
+	border: 1px solid $cancel-btn-color;
 }
 
 .cancel-btn:focus {
-  background-color: #405367;
-  border: 1px solid #405367;
+	background-color: #405367;
+	border: 1px solid #405367;
 }
 
 .btn-success {
-  background-color: $primary-btn-color;
-  border: 1px solid $primary-btn-color;
-  line-height: 45px;
-  text-decoration: none;
+	background-color: $primary-btn-color;
+	border: 1px solid $primary-btn-color;
+	line-height: 45px;
+	text-decoration: none;
 }
 
 .btn-link {
-  background-color: $cancel-btn-color;
-  border: 1px solid $cancel-btn-color;
-  line-height: 45px;
-  text-decoration: none;
+	background-color: $cancel-btn-color;
+	border: 1px solid $cancel-btn-color;
+	line-height: 45px;
+	text-decoration: none;
 }
 
 .btn-danger {
-  background-color: $danger;
-  border: 1px solid $danger;
-  line-height: 45px;
-  text-decoration: none;
+	background-color: $danger;
+	border: 1px solid $danger;
+	line-height: 45px;
+	text-decoration: none;
 }
 
 .btn-primary {
-  background-color: $primary-btn-color;
-  border: 1px solid $primary-btn-color;
-  line-height: 45px;
-  text-decoration: none;
+	background-color: $primary-btn-color;
+	border: 1px solid $primary-btn-color;
+	line-height: 45px;
+	text-decoration: none;
 }
 
 .btn-dark {
-  background-color: $button-dark;
-  border: 1px solid $button-dark;
+	background-color: $button-dark;
+	border: 1px solid $button-dark;
 }
 
 .btn-warning {
-  background-color: $warning-btn;
-  border: 1px solid $warning-btn;
+	background-color: $warning-btn;
+	border: 1px solid $warning-btn;
 }
 
 .btn-warning:focus {
-  background-color: $danger;  
+	background-color: $danger;
 }
 
 .btn-toolbar {
-    background-color: $toobar-btn-color;
-    border: 1px solid $toobar-btn-color;
-    width: 100px;
-    height: 35px;
+	background-color: $toobar-btn-color;
+	border: 1px solid $toobar-btn-color;
+	width: 100px;
+	height: 35px;
 }
 
 .btn-toolbar:focus {
-    background-color: $form-field-color;
+	background-color: #3c67ad;
 }
 
 .btn-group-container {
-  display: flex;
-  flex-direction: row;
+	display: flex;
+	flex-direction: row;
 
-  .btn-grp {
-    border: 1px solid $form-field-color;
-    cursor: pointer;
-  }
+	.btn-grp {
+		border: 1px solid $form-field-color;
+		cursor: pointer;
+	}
 
-  .btn-grp:first-child {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
+	.btn-grp:first-child {
+		border-top-left-radius: 5px;
+		border-bottom-left-radius: 5px;
+	}
 
-  .btn-grp:last-child {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
+	.btn-grp:last-child {
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
 
-  button {
-    border: none;
-    border-radius: 5px;
-    background-color: #fff;
-    cursor: pointer;
-    font-family: $form-font-family;
-    font-size: 13px;
-    height: 35px;
-    margin: 0;
-    outline:none;
-    padding: 10px;
-  }
+	button {
+		border: none;
+		border-radius: 5px;
+		background-color: #fff;
+		cursor: pointer;
+		font-family: $form-font-family;
+		font-size: 13px;
+		height: 35px;
+		margin: 0;
+		outline: none;
+		padding: 10px;
+	}
 
-  button:hover {
-    background-color: $form-field-color;
-    border-radius: 0;
-    color: #fff;
-  }
-  button:focus {
-    background-color: $form-field-color;
-    border-radius: 0;
-    color: #fff;
-  }
-  button.active {
-    background-color: $form-field-color;
-    border-radius: 0;
-    color: #fff;
-  }
+	button:hover {
+		background-color: $form-field-color;
+		border-radius: 0;
+		color: #fff;
+	}
+	button:focus {
+		background-color: $form-field-color;
+		border-radius: 0;
+		color: #fff;
+	}
+	button.active {
+		background-color: $form-field-color;
+		border-radius: 0;
+		color: #fff;
+	}
 }

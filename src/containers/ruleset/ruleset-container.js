@@ -15,7 +15,8 @@ import { groupBy } from 'lodash/collection';
 import RuleErrorBoundary from '../../components/error/ruleset-error';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
-import { FIELDS as attributes } from '../../constants/attributes';
+import attributes from '../../constants/attributes.json';
+
 const tabs = [{ name: 'Fields' }, { name: 'Rulesets' }, { name: 'Validate' }, { name: 'Generate' }];
 class RulesetContainer extends Component {
 	constructor(props) {

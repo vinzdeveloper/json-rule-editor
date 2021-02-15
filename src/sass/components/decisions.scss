@@ -1,70 +1,83 @@
 .rule-flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 50px;
-    margin-left: 50px;
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 50px;
+	margin-left: 50px;
 
-    .decision-box {
-        border-bottom: 2px solid #ccc;
-        margin-bottom: 30px;
-        padding-bottom: 20px;
-        width: 100%;
-    }
+	.decision-box {
+		border-bottom: 2px solid #ccc;
+		margin-bottom: 30px;
+		padding-bottom: 20px;
+		width: 100%;
+	}
 
-    .tool-flex {
-        display: flex;
-        justify-content: flex-end;
-        width: 100%;
+	.tool-flex {
+		display: flex;
+		justify-content: flex-end;
+		width: 100%;
 
-        div {
-            width: 30px;
-        }
-    }
+		div {
+			width: 30px;
+		}
+	}
 }
 
 .add-rulecase-wrapper {
-    border-bottom: 2px dashed $form-label-color;
-    border-top: 2px dashed $form-label-color;
-    margin-top: 20px;
-    padding: 20px 0;
+	border-bottom: 2px dashed $form-label-color;
+	border-top: 2px dashed $form-label-color;
+	margin-top: 20px;
+	padding: 20px 0;
 }
 
 .add-decision-step {
-    display: flex;
-    color: $form-label-color;
-    font-family: $form-font-family;
-    flex-wrap: wrap;
+	display: flex;
+	color: $form-label-color;
+	font-family: $form-font-family;
+	flex-wrap: wrap;
 
-    .step1 {
-        margin-right: 10%;
-    }
+	.step1 {
+		margin-right: 10%;
+	}
 
-    .step2 {
-        margin-right: 10%;
-    }
+	.step2 {
+		margin-right: 10%;
+	}
 
-    div {
-        margin-bottom: 10px;
-    }
+	div {
+		margin-bottom: 10px;
+	}
 }
 
 .add-field-panel {
-    display: flex;
-    flex-direction: row;
-    font-family: $form-font-family;
-    justify-content: space-between;
-    margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	font-family: $form-font-family;
+	justify-content: space-between;
+	margin-top: 20px;
+	.add-field-panel-row {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		& .form-field {
+			min-width: 300px;
+			max-width: 500px;
+			padding: 12px 0px;
+			flex-grow: 1;
+		}
+	}
 
-    div {
-        flex-grow: 1;
-        width: 100%;
-    }
+	.btn-container {
+		flex-grow: 0;
+		width: 160px;
+		// margin-top: 12px;
+		margin-bottom: 24px;
+		& .btn-toolbar {
+			width: 160px;
+			height: 46px;
+		}
+	}
 
-    .btn-container {
-        margin-top: 27px;
-    }
-
-    &.half-width {
-        width: 50%;
-    }
+	&.half-width {
+		width: 50%;
+	}
 }

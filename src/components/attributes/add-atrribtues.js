@@ -5,7 +5,7 @@ import InputField from '../forms/input-field';
 import SelectField from '../forms/selectmenu-field';
 import Button from '../button/button';
 import attributeValidations from '../../validations/attribute-validations';
-import dataTypes from '../../data-objects/operator.json';
+import dataTypes from '../../constants/operators.json';
 
 class AddAttributes extends Component {
 	constructor(props) {

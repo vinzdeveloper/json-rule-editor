@@ -57,13 +57,12 @@ class RulesetContainer extends Component {
 	};
 
 	render() {
-		const { decisions, name } = this.props.ruleset;
+		const { decisions, name, data: { expressions = [] } = {} } = this.props.ruleset;
 
 		const indexedDecisions =
 			decisions &&
 			decisions.length > 0 &&
 			decisions.map((decision, index) => ({ ...decision, index }));
-
 		let outcomes;
 		if (indexedDecisions && indexedDecisions.length > 0) {
 			outcomes = groupBy(indexedDecisions, (data) => data.event.type);
@@ -91,7 +90,11 @@ class RulesetContainer extends Component {
 							/>
 						)}
 						{this.state.activeTab === 'Validate' && (
-							<ValidateRules attributes={attributes} decisions={decisions} />
+							<ValidateRules
+								attributes={attributes}
+								decisions={decisions}
+								expressions={expressions}
+							/>
 						)}
 						{this.state.activeTab === 'Generate' && (
 							<Banner

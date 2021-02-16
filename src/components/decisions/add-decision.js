@@ -136,6 +136,7 @@ class AddDecision extends Component {
 
 	onChangeNote(e) {
 		this.setState({ note: e.target.value });
+		this.props.addCondition({ note: e.target.value });
 	}
 
 	onChangeOutcomeValue(e, type) {

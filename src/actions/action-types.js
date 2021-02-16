@@ -12,3 +12,4 @@ export const ADD_RULESET = 'ADD_RULESET';
 export const UPDATE_RULESET_INDEX = 'UPDATE_RULESET_INDEX';
 export const UPDATE_NAV_STATE = 'UPDATE_NAV_STATE';
 export const LOG_IN = 'LOG_IN';
+export const ADD_RULESET_DATA = 'ADD_RULESET_DATA';

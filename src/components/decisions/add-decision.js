@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Panel from '../panel/panel';
@@ -6,11 +7,13 @@ import SelectField from '../forms/selectmenu-field';
 import Button from '../button/button';
 import ButtonGroup from '../button/button-groups';
 import operator from '../../constants/operators.json';
-import decisionValidations from '../../validations/decision-validation';
+import partnerOptions from '../../constants/yeildTypes.json';
+
+import { rulesetValidation } from '../../validations/decision-validation';
 import Tree from '../tree/tree';
 import { has } from 'lodash/object';
 import { getNodeDepthDetails, getNodeDepth } from '../../utils/treeutils';
-import { transformTreeToRule } from '../../utils/transform';
+// import { transformTreeToRule } from '../../utils/transform';
 import { sortBy } from 'lodash/collection';
 import { validateAttribute } from '../../validations/decision-validation';
 import { PLACEHOLDER } from '../../constants/data-types';
@@ -39,6 +42,8 @@ const outcomeOptions = [
 	{ label: 'Add Outcome', active: false, disable: false },
 	{ label: 'Edit Conditions', active: false, disable: false }
 ];
+const defaultExpression = { error: {}, name: '', operator: '', value: '' };
+const defaultYield = { error: {}, partner: '', weight: '' };
 
 class AddDecision extends Component {
 	constructor(props) {
@@ -49,11 +54,14 @@ class AddDecision extends Component {
 		// const node = props.editDecision ? props.editCondition.node : {};
 		const activeNode = { index: 0, depth: 0 };
 		const node = { name: 'all', nodeSvgShape: nodeStyle, children: [] };
-		const expression = { error: {}, name: '', operator: '', value: '' };
 
 		this.state = {
+			note: '',
 			attributes: props.attributes,
-			expression,
+			expression: defaultExpression,
+			yield: defaultYield,
+			expressions: [],
+			yields: [],
 			outcome,
 			addAttribute,
 			enableTreeView: true,
@@ -70,10 +78,16 @@ class AddDecision extends Component {
 		this.handleAdd = this.handleAdd.bind(this);
 		this.handleCancel = this.handleCancel.bind(this);
 		this.onChangeField = this.onChangeField.bind(this);
+		this.onChangeYield = this.onChangeYield.bind(this);
+		this.onChangeNote = this.onChangeNote.bind(this);
 		this.onChangeOutcomeValue = this.onChangeOutcomeValue.bind(this);
 		this.handleTopNode = this.handleTopNode.bind(this);
 		this.handleActiveNode = this.handleActiveNode.bind(this);
 		this.handleChildrenNode = this.handleChildrenNode.bind(this);
+
+		this.handleAddRule = this.handleAddRule.bind(this);
+		this.handleAddYield = this.handleAddYield.bind(this);
+
 		this.handleFieldCancel = this.handleFieldCancel.bind(this);
 		this.handleOutputPanel = this.handleOutputPanel.bind(this);
 		this.handleOutputParams = this.handleOutputParams.bind(this);
@@ -83,21 +97,23 @@ class AddDecision extends Component {
 
 	handleAdd(e) {
 		e.preventDefault();
-		const error = decisionValidations(this.state.node, this.state.outcome);
+		const { expressions, yields, note } = this.state;
+		const error = rulesetValidation({ expressions, yields });
 
 		if (error.formError) {
 			this.setState({
-				formError: error.formError,
-				outcome: { ...this.state.outcome, error: error.outcome }
+				formError: error.formError
 			});
-		} else {
-			let outcomeParams = {};
-			this.state.outcome.params.forEach((param) => {
-				outcomeParams[param.pkey] = param.pvalue;
-			});
-			const condition = transformTreeToRule(this.state.node, this.state.outcome, outcomeParams);
-			this.props.addCondition(condition);
 		}
+		this.props.addCondition({ expressions, yields, note });
+		// else {
+		// 	let outcomeParams = {};
+		// 	this.state.outcome.params.forEach((param) => {
+		// 		outcomeParams[param.pkey] = param.pvalue;
+		// 	});
+		// 	const condition = transformTreeToRule(this.state.node, this.state.outcome, outcomeParams);
+		// 	this.props.addCondition(condition);
+		// }
 	}
 
 	handleCancel() {
@@ -110,6 +126,17 @@ class AddDecision extends Component {
 		this.setState({ expression });
 	}
 	// onChangeField(e, name) {}
+
+	onChangeYield(e, name) {
+		const yieldV = { ...this.state.yield };
+
+		yieldV[name] = e.target.value;
+		this.setState({ yield: yieldV });
+	}
+
+	onChangeNote(e) {
+		this.setState({ note: e.target.value });
+	}
 
 	onChangeOutcomeValue(e, type) {
 		const outcome = { ...this.state.outcome };
@@ -200,7 +227,44 @@ class AddDecision extends Component {
 		}
 		return node;
 	}
+	handleAddYield() {
+		const ys = Array.from(this.state.yields);
+		ys.push({ yield: this.state.yield });
+		this.setState(
+			{
+				yields: ys
+			},
+			() => {
+				this.setState({
+					yield: defaultYield
+				});
+			}
+		);
+		const { error: _, ...Yield } = this.state.yield;
+		this.props.addCondition({ yields: [{ ...Yield }] });
+	}
 
+	handleAddRule() {
+		const { attributes } = this.state;
+
+		const error = validateAttribute(this.state.expression, attributes);
+		if (Object.keys(error).length > 0) {
+			let expression = this.state.expression;
+			expression.error = error;
+			this.setState({ expression });
+			return undefined;
+		}
+
+		const exprs = Array.from(this.state.expressions);
+		const { operator, value, name } = this.state.expression;
+		exprs.push({ operator, value, name });
+		this.setState({
+			expressions: exprs,
+			expression: defaultExpression
+		});
+		const { error: _, ...expression } = this.state.expression;
+		this.props.addCondition({ expressions: [{ ...expression }] });
+	}
 	handleChildrenNode(value) {
 		let factOptions = [...factsButton];
 		if (value === 'Add Fields') {
@@ -323,7 +387,7 @@ class AddDecision extends Component {
 				</div>
 				<div className="step2">
 					<div> Step 2: Add / Remove facts</div>
-					<ButtonGroup buttons={factsButton} onConfirm={this.handleChildrenNode} />
+					<ButtonGroup buttons={factsButton} onConfirm={this.handleAddRule} />
 				</div>
 				<div className="step3">
 					<div> Step 3: Add Outcome</div>
@@ -334,11 +398,11 @@ class AddDecision extends Component {
 	}
 
 	fieldPanel() {
-		const { attributes, expression } = this.state;
+		const { note, attributes, expression, yield: Yield } = this.state;
 		const attributeOptions = attributes.map((attr) => attr.name);
 		const attribute = expression.name && attributes.find((attr) => attr.name === expression.name);
 
-		const operatorOptions = attribute && operator[attribute.type];
+		const opertorOptions = attribute && operator[attribute.type];
 
 		const placeholder =
 			expression.operator === 'contains' || expression.operator === 'doesNotContain'
@@ -357,9 +421,8 @@ class AddDecision extends Component {
 				<div className="add-field-panel">
 					<div className="add-field-panel-row">
 						<InputField
-							onChange={(e) => this.onChangeField(e, 'note')}
-							note={expression.value}
-							error={expression.error.value}
+							onChange={this.onChangeNote}
+							note={note}
 							label="Note"
 							placeholder={placeholder}
 						/>
@@ -376,7 +439,7 @@ class AddDecision extends Component {
 						</div>
 						<div>
 							<SelectField
-								options={operatorOptions}
+								options={opertorOptions}
 								onChange={(e) => this.onChangeField(e, 'operator')}
 								value={expression.operator}
 								error={expression.error.operator}
@@ -396,7 +459,7 @@ class AddDecision extends Component {
 					<div className="add-field-panel-row ">
 						<Button
 							label={'Add Expression'}
-							onConfirm={() => this.handleChildrenNode('Add fact node')}
+							onConfirm={() => this.handleAddRule('Add fact node')}
 							classname="btn-toolbar"
 							type="submit"
 						/>
@@ -405,18 +468,18 @@ class AddDecision extends Component {
 					<div className="add-field-panel-row">
 						<div>
 							<SelectField
-								options={operatorOptions}
-								onChange={(e) => this.onChangeField(e, 'yields')}
-								value={expression.yields}
-								error={expression.error.operator}
+								options={partnerOptions}
+								onChange={(e) => this.onChangeYield(e, 'partner')}
+								value={Yield.partner}
+								error={Yield.error.operator}
 								label="Yields"
 							/>
 						</div>
 						<div>
 							<InputField
-								onChange={(value) => this.onChangeField(value, 'weight')}
-								value={expression.weight}
-								error={expression.error.value}
+								onChange={(value) => this.onChangeYield(value, 'weight')}
+								value={Yield.weight}
+								error={Yield.error.value}
 								label="Weight"
 								placeholder={placeholder}
 							/>
@@ -425,7 +488,7 @@ class AddDecision extends Component {
 					<div className="add-field-panel-row ">
 						<Button
 							label={'Add Yield'}
-							onConfirm={() => this.handleChildrenNode('Add fact node')}
+							onConfirm={() => this.handleAddYield('Add fact node')}
 							classname="btn-toolbar"
 							type="submit"
 						/>

@@ -8,7 +8,7 @@ import Attributes from '../../components/attributes/attributes';
 import Decisions from '../../components/decisions/decision';
 import ValidateRules from '../../components/validate/validate-rules';
 import { handleAttribute } from '../../actions/attributes';
-import { handleDecision } from '../../actions/decisions';
+import { handleDecision, addRulesetData } from '../../actions/decisions';
 import Banner from '../../components/panel/banner';
 import * as Message from '../../constants/messages';
 import { groupBy } from 'lodash/collection';
@@ -85,7 +85,9 @@ class RulesetContainer extends Component {
 								decisions={indexedDecisions || []}
 								attributes={attributes}
 								handleDecisions={this.props.handleDecisions}
+								handleAddRulesetData={this.props.handleAddRulesetData}
 								outcomes={outcomes}
+								ruleset={this.props.ruleset}
 							/>
 						)}
 						{this.state.activeTab === 'Validate' && (
@@ -110,6 +112,7 @@ RulesetContainer.propTypes = {
 	ruleset: PropTypes.object,
 	handleAttribute: PropTypes.func,
 	handleDecisions: PropTypes.func,
+	handleAddRulesetData: PropTypes.func,
 	updatedFlag: PropTypes.bool,
 	runRules: PropTypes.func
 };
@@ -129,7 +132,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	handleAttribute: (operation, attribute, index) =>
 		dispatch(handleAttribute(operation, attribute, index)),
-	handleDecisions: (operation, decision) => dispatch(handleDecision(operation, decision))
+	handleDecisions: (operation, decision) => dispatch(handleDecision(operation, decision)),
+	handleAddRulesetData: (payload) => dispatch(addRulesetData(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RulesetContainer);

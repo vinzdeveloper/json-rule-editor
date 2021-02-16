@@ -62,9 +62,10 @@ class Decision extends Component {
 		});
 	}
 
-	addCondition(condition) {
-		this.props.handleDecisions('ADD', { condition });
-		this.setState({ showAddRuleCase: false });
+	addCondition(payload) {
+		// console.log('addCondition', payload);
+		this.props.handleAddRulesetData(payload);
+		// this.setState({ showAddRuleCase: false });
 	}
 
 	updateCondition(condition) {
@@ -142,6 +143,7 @@ class Decision extends Component {
 					editCondition={this.editCondition}
 					removeCase={this.removeCase}
 					removeDecisions={this.removeDecisions}
+					ruleset={this.props.ruleset}
 				/>
 
 				{!bannerflag && Object.keys(outcomes).length < 1 && (
@@ -167,7 +169,9 @@ Decision.propTypes = {
 	reset: PropTypes.func,
 	decisions: PropTypes.array,
 	attributes: PropTypes.array,
-	outcomes: PropTypes.object
+	outcomes: PropTypes.object,
+	handleAddRulesetData: PropTypes.func,
+	ruleset: PropTypes.object
 };
 
 export default Decision;

@@ -6,7 +6,6 @@ export const processEngine = (fact, conditions) => {
 	return engine
 		.run(fact)
 		.then((results) => {
-			// console.log('results', results);
 			return results.events;
 		})
 		.catch((e) => {
@@ -19,9 +18,9 @@ export const validateRuleset = async (facts, conditions) => {
 	let result;
 	try {
 		result = await processEngine(facts, conditions);
-		// console.log('result', result);
 	} catch (err) {
-		// console.log('err', err);
+		// eslint-disable-next-line no-console
+		console.log('err', err);
 	}
 	return result;
 };

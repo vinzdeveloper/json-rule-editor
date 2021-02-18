@@ -13,6 +13,7 @@
 
 	.tool-flex {
 		display: flex;
+		padding-top: 28;
 		justify-content: flex-end;
 		width: 100%;
 
@@ -59,9 +60,22 @@
 		flex-direction: row;
 		justify-content: flex-start;
 		& .form-field {
-			min-width: 300px;
-			max-width: 500px;
+			min-width: 200px;
+			max-width: 300px;
 			padding: 12px 0px;
+			flex-grow: 1;
+		}
+	}
+	.view-field-panel-row {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		width: 800;
+
+		& .form-field {
+			min-width: 200px;
+			max-width: 300px;
 			flex-grow: 1;
 		}
 	}

@@ -115,8 +115,8 @@ class ValidateRules extends Component {
 						Problem occured when processing the rules. Reason is {errorMessage}
 					</div>
 				);
-			} else if (outcomes && outcomes.length < 1) {
-				message = <div>No results found</div>;
+			} else if (outcomes && outcomes.length === 0) {
+				message = <div>Not Valid</div>;
 			} else if (outcomes && outcomes.length > 0) {
 				message = (
 					<div className="view-params-container">

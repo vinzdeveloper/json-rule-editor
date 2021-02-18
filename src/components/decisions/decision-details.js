@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// import SelectField from '../forms/selectmenu-field';
+import InputField from '../forms/input-field';
+
 // import Tree from '../tree/tree';
 // import { PanelBox } from '../panel/panel';
 import 'font-awesome/css/font-awesome.min.css';
@@ -146,11 +149,6 @@ class DecisionDetails extends Component {
 
 		return (
 			<div className="rule-flex-container">
-				{JSON.stringify(this.props.ruleset)}
-				<label>Note</label>
-				{note}
-
-				<label>Expression</label>
 				{/* {expressions.map((expr) => (
 					<div>{JSON.stringify(expr)}</div>
 				))}
@@ -160,20 +158,123 @@ class DecisionDetails extends Component {
 				))} */}
 
 				<div className="decision-box" key={`case - `}>
-					{expressions.map((expr, index) => (
-						<div key={expr.field} className="tool-flex">
-							<div>
-								<a href="" onClick={(e) => this.editCondition(e, index)}>
-									<span className="fa fa-edit" />
-								</a>
+					<div className="add-field-panel">
+						<label>Note: </label>
+						{note}
+					</div>
+					<div className="add-field-panel">
+						{expressions.map((expression, index) => (
+							<div
+								key={expression.name}
+								className="view-field-panel-row"
+								style={{ alignItems: 'center' }}
+							>
+								<div className="field">
+									{/* <SelectField
+								options={attributeOptions}
+								onChange={(e) => this.onChangeField(e, 'name')}
+								value={expression.name}
+								error={expression.error.name}
+								label="Expressions"
+							/> */}
+									<InputField
+										// onChange={(value) => this.onChangeField(value, 'value')}
+										value={expression.name}
+										// error={expression.error.value}
+										label={index === 0 && 'Expressions'}
+										readOnly
+										// placeholder={placeholder}
+									/>
+								</div>
+								<div>
+									{/* <SelectField
+								options={opertorOptions}
+								onChange={(e) => this.onChangeField(e, 'operator')}
+								value={expression.operator}
+								error={expression.error.operator}
+								label={index===0 && "Operator"}
+							/> */}
+									<InputField
+										// onChange={(value) => this.onChangeField(value, 'value')}
+										value={expression.operator}
+										// error={expression.error.operator}
+										label={index === 0 && 'Operator'}
+										readOnly
+										// placeholder={placeholder}
+									/>
+								</div>
+								<div>
+									<InputField
+										// onChange={(value) => this.onChangeField(value, 'value')}
+										value={expression.value}
+										// error={expression.error.value}
+										label={index === 0 && 'Value'}
+										readOnly
+										// placeholder={placeholder}
+									/>
+								</div>
+								<div className="tool-flex">
+									<div>
+										<a href="" onClick={(e) => this.editCondition(e, index)}>
+											<span className="fa fa-edit" />
+										</a>
+									</div>
+									<div>
+										<a href="" onClick={(e) => this.handleRemoveCondition(e, index)}>
+											<span className="fa fa-trash-o" />
+										</a>
+									</div>
+								</div>
 							</div>
-							<div>
-								<a href="" onClick={(e) => this.handleRemoveCondition(e, index)}>
-									<span className="fa fa-trash-o" />
-								</a>
+						))}
+					</div>
+					<div className="add-field-panel">
+						{yields.map((yld, index) => (
+							<div key={yld.name} className="view-field-panel-row" style={{ alignItems: 'center' }}>
+								<div className="field">
+									{/* <SelectField
+								options={attributeOptions}
+								onChange={(e) => this.onChangeField(e, 'name')}
+								value={expression.name}
+								error={expression.error.name}
+								label="Expressions"
+							/> */}
+									<InputField
+										// onChange={(value) => this.onChangeField(value, 'value')}
+										value={yld.partner}
+										// error={yld.error.value}
+										label={index === 0 && 'Yields'}
+										readOnly
+										// placeholder={placeholder}
+									/>
+								</div>
+
+								<div>
+									<InputField
+										// onChange={(value) => this.onChangeField(value, 'value')}
+										value={yld.weight}
+										// error={expression.error.value}
+										label={index === 0 && 'Weight'}
+										readOnly
+										// placeholder={placeholder}
+									/>
+								</div>
+								<div className="tool-flex">
+									<div>
+										<a href="" onClick={(e) => this.editCondition(e, index)}>
+											<span className="fa fa-edit" />
+										</a>
+									</div>
+									<div>
+										<a href="" onClick={(e) => this.handleRemoveCondition(e, index)}>
+											<span className="fa fa-trash-o" />
+										</a>
+									</div>
+								</div>
 							</div>
-						</div>
-					))}
+						))}
+					</div>
+
 					{/* <Tree treeData={data.node} count={data.depthCount} /> */}
 					{/* {data.event.params && (
 								<div className="view-params-container">

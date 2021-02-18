@@ -13,7 +13,7 @@
 	},
 	{
 		"name": "custom_envelope.id",
-		"type": "number"
+		"type": "string"
 	},
 	{
 		"name": "return_envelope.id",

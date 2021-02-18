@@ -150,6 +150,7 @@ class Decision extends Component {
 					removeCase={this.removeCase}
 					removeDecisions={this.removeDecisions}
 					ruleset={this.props.ruleset}
+					attributes={this.props.attributes}
 				/>
 
 				{/* {!bannerflag && Object.keys(outcomes).length < 1 && (

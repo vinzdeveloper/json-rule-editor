@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import ToolBar from '../toolbar/toolbar';
 import AddDecision from './add-decision';
 import DecisionDetails from './decision-details';
-import Banner from '../panel/banner';
+// import Banner from '../panel/banner';
 import * as Message from '../../constants/messages';
-import { transformRuleToTree } from '../../utils/transform';
+// import { transformRuleToTree } from '../../utils/transform';
 import { isContains } from '../../utils/stringutils';
 
 class Decision extends Component {
@@ -44,21 +44,22 @@ class Decision extends Component {
 	};
 
 	editCondition(decisionIndex) {
-		const decision = this.props.decisions[decisionIndex];
-		const editCondition = transformRuleToTree(decision);
-		let outputParams = [];
-		if (decision.event.params && Object.keys(decision.event.params).length > 0) {
-			outputParams = Object.keys(decision.event.params).map((key) => ({
-				pkey: key,
-				pvalue: decision.event.params[key]
-			}));
-		}
+		// const decision = this.props.ruleset.data.expressions[decisionIndex];
+		// const decision = this.props.decisions[decisionIndex];
+		// const editCondition = transformRuleToTree(decision);
+		// let outputParams = [];
+		// if (decision.event.params && Object.keys(decision.event.params).length > 0) {
+		// 	outputParams = Object.keys(decision.event.params).map((key) => ({
+		// 		pkey: key,
+		// 		pvalue: decision.event.params[key]
+		// 	}));
+		// }
 
 		this.setState({
 			editCaseFlag: true,
-			editCondition,
-			editDecisionIndex: decisionIndex,
-			editOutcome: { value: decision.event.type, params: outputParams }
+			// editCondition,
+			editDecisionIndex: decisionIndex
+			// editOutcome: { value: decision.event.type, params: outputParams }
 		});
 	}
 
@@ -101,11 +102,16 @@ class Decision extends Component {
 	};
 
 	render() {
-		const { searchCriteria, bannerflag } = this.state;
+		const {
+			searchCriteria
+			//  bannerflag
+		} = this.state;
 		const buttonProps = { primaryLabel: 'Add Rulecase', secondaryLabel: 'Cancel' };
 		const editButtonProps = { primaryLabel: 'Edit Rulecase', secondaryLabel: 'Cancel' };
 		const filteredOutcomes = searchCriteria ? this.filterOutcomes() : this.props.outcomes;
-		const { outcomes } = this.props;
+		// const {
+		// 	outcomes
+		// } = this.props;
 
 		return (
 			<div className="rulecases-container">
@@ -146,9 +152,9 @@ class Decision extends Component {
 					ruleset={this.props.ruleset}
 				/>
 
-				{!bannerflag && Object.keys(outcomes).length < 1 && (
+				{/* {!bannerflag && Object.keys(outcomes).length < 1 && (
 					<Banner message={this.state.message} onConfirm={this.handleAdd} />
-				)}
+				)} */}
 			</div>
 		);
 	}

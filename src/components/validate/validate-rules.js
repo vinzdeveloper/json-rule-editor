@@ -59,6 +59,7 @@ class ValidateRules extends Component {
 		e.preventDefault();
 		let facts = {};
 		const { decisions, attributes } = this.props;
+		// console.log('expressions', expressions);
 		this.setState({ loading: true });
 		this.state.conditions.forEach((condition) => {
 			const attrProps = attributes.find((attr) => attr.name === condition.name);

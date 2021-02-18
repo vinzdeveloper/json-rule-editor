@@ -51,9 +51,11 @@ class AddDecision extends Component {
 
 		const outcome = props.editDecision ? props.outcome : { value: '', error: {}, params: [] };
 		const addAttribute = { error: {}, name: '', operator: '', value: '' };
-		// const node = props.editDecision ? props.editCondition.node : {};
+		const node = props.editDecision
+			? props.editCondition.node
+			: { name: 'all', nodeSvgShape: nodeStyle, children: [] };
 		const activeNode = { index: 0, depth: 0 };
-		const node = { name: 'all', nodeSvgShape: nodeStyle, children: [] };
+		// const node = ;
 
 		this.state = {
 			note: '',
@@ -580,6 +582,7 @@ class AddDecision extends Component {
 			<div>
 				{/* {this.topPanel()} */}
 				{enableFieldView && this.fieldPanel()}
+				{/* {this.outputPanel()} */}
 				{/* {enableOutcomeView && this.outputPanel()}
 				{enableTreeView && this.treePanel()} */}
 			</div>

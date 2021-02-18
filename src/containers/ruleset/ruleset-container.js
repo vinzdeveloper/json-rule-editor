@@ -32,7 +32,18 @@ class RulesetContainer extends Component {
 
 	generateFile() {
 		const { ruleset } = this.props;
-		const fileData = JSON.stringify(ruleset, null, '\t');
+
+		const expressions = ruleset.data.expressions.map(({ name: lhs, operator, value: rhs }) => ({
+			lhs,
+			operator,
+			rhs
+		}));
+		const exportedObj = {
+			note: ruleset.data.note,
+			expressions,
+			yields: ruleset.data.yields
+		};
+		const fileData = JSON.stringify(exportedObj, null, '\t');
 		const blob = new Blob([fileData], { type: 'application/json' });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement('a');

@@ -152,7 +152,7 @@ class ValidateRules extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				{this.props.decisions.length < 1 && <Banner message={this.state.message} />}
+				{this.props.expressions.length < 1 && <Banner message={this.state.message} />}
 				{this.props.expressions.length > 0 && (
 					<Panel>
 						<form>

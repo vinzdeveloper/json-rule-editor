@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ToolBar from '../toolbar/toolbar';
 import AddDecision from './add-decision';
 import DecisionDetails from './decision-details';
-// import Banner from '../panel/banner';
+import Banner from '../panel/banner';
 import * as Message from '../../constants/messages';
 // import { transformRuleToTree } from '../../utils/transform';
 import { isContains } from '../../utils/stringutils';
@@ -102,10 +102,7 @@ class Decision extends Component {
 	};
 
 	render() {
-		const {
-			searchCriteria
-			//  bannerflag
-		} = this.state;
+		const { searchCriteria, bannerflag } = this.state;
 		const buttonProps = { primaryLabel: 'Add Rulecase', secondaryLabel: 'Cancel' };
 		const editButtonProps = { primaryLabel: 'Edit Rulecase', secondaryLabel: 'Cancel' };
 		const filteredOutcomes = searchCriteria ? this.filterOutcomes() : this.props.outcomes;
@@ -153,9 +150,9 @@ class Decision extends Component {
 					attributes={this.props.attributes}
 				/>
 
-				{/* {!bannerflag && Object.keys(outcomes).length < 1 && (
+				{!bannerflag && !this.props.ruleset.data && (
 					<Banner message={this.state.message} onConfirm={this.handleAdd} />
-				)} */}
+				)}
 			</div>
 		);
 	}

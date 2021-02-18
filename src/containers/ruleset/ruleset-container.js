@@ -16,7 +16,14 @@ import RuleErrorBoundary from '../../components/error/ruleset-error';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 import attributes from '../../constants/attributes.json';
-
+const operatorsMap = {
+	equal: '==',
+	notEqual: '!=',
+	lessThanInclusive: '<=',
+	lessThan: '<',
+	greaterThan: '>',
+	greaterThanInclusive: '>='
+};
 const tabs = [{ name: 'Fields' }, { name: 'Rulesets' }, { name: 'Validate' }, { name: 'Generate' }];
 class RulesetContainer extends Component {
 	constructor(props) {
@@ -33,9 +40,10 @@ class RulesetContainer extends Component {
 	generateFile() {
 		const { ruleset } = this.props;
 
+		// converting from  name,value format to  lhs,rhs format
 		const expressions = ruleset.data.expressions.map(({ name: lhs, operator, value: rhs }) => ({
 			lhs,
-			operator,
+			operator: operatorsMap[operator] || operator,
 			rhs
 		}));
 		const exportedObj = {

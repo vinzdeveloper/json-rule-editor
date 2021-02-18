@@ -146,22 +146,15 @@ class DecisionDetails extends Component {
 		// const transformedData = transformRuleToTree(conditions);
 		// eslint-disable-next-line no-unused-vars
 		const { data: { expressions = [], yields = [], note = '' } = {} } = this.props.ruleset;
-
 		return (
 			<div className="rule-flex-container">
-				{/* {expressions.map((expr) => (
-					<div>{JSON.stringify(expr)}</div>
-				))}
-				<label>Yields</label>
-				{yields.map((expr) => (
-					<div>{JSON.stringify(expr)}</div>
-				))} */}
-
 				<div className="decision-box" key={`case - `}>
-					<div className="add-field-panel">
-						<label>Note: </label>
-						{note}
-					</div>
+					{note && (
+						<div className="add-field-panel">
+							<label>Note: </label>
+							{note}
+						</div>
+					)}
 					<div className="add-field-panel">
 						{expressions.map((expression, index) => (
 							<div

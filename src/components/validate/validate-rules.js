@@ -76,7 +76,10 @@ class ValidateRules extends Component {
 			operator,
 			value
 		}));
-		const decisions = [{ conditions: { all: [...expressions2] }, event: { type: 'Valid' } }];
+		const decisions = [
+			{ conditions: { all: [...expressions2] }, event: { type: 'Valid' } }
+			// { conditions: { all: [...expressions2] }, event: { type: '2 isValid' } }
+		];
 		validateRuleset(facts, decisions)
 			.then((outcomes) => {
 				this.setState({ loading: false, outcomes, result: true, error: false, errorMessage: '' });

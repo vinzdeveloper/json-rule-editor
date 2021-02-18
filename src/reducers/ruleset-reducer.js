@@ -12,12 +12,41 @@ const initialState = {
 const replaceRulesetByIndex = (rulesets, targetset, index) => {
 	return [...rulesets.slice(0, index), targetset, ...rulesets.slice(index + 1)];
 };
-
+const reverseOperatorsMap = {
+	'==': 'equal',
+	'!=': 'notEqual',
+	'<=': 'lessThanInclusive',
+	'<': 'lessThan',
+	'>': 'greaterThan',
+	'>=': 'greaterThanInclusive'
+};
 function ruleset(state = initialState, action = '') {
 	switch (action.type) {
 		case ActionTypes.UPLOAD_RULESET: {
 			const { ruleset } = action.payload;
-			const rulesets = state.rulesets.concat(ruleset);
+			let rulesets;
+			const [{ note, expressions: exps, yields }] = ruleset;
+
+			// converting from our lhs,rhs format to name,value format
+			const expressions = exps.map(({ lhs: name, operator, rhs: value }) => ({
+				name,
+				operator: reverseOperatorsMap[operator] || operator,
+				value
+			}));
+
+			if (state.rulesets && state.rulesets.length > 0) {
+				rulesets = state.rulesets.concat({
+					name: `Ruleset-${state.rulesets.length + 1}`,
+					atrribtues: [],
+					decisions: [],
+					data: { note, expressions, yields }
+				});
+			} else {
+				rulesets = [
+					{ name: `Ruleset`, atrribtues: [], decisions: [], data: { note, expressions, yields } }
+				];
+			}
+			// console.log('state.rulesets', state.rulesets);
 			return { ...state, rulesets: cloneDeep(rulesets), uploadedRules: cloneDeep(rulesets) };
 		}
 

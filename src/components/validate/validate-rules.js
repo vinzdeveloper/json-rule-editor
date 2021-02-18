@@ -58,7 +58,7 @@ class ValidateRules extends Component {
 	validateRules(e) {
 		e.preventDefault();
 		let facts = {};
-		const { decisions, attributes } = this.props;
+		const { attributes, expressions } = this.props;
 		// console.log('expressions', expressions);
 		this.setState({ loading: true });
 		this.state.conditions.forEach((condition) => {
@@ -71,6 +71,12 @@ class ValidateRules extends Component {
 				facts[condition.name] = condition.value;
 			}
 		});
+		const expressions2 = expressions.map(({ name: fact, operator, value }) => ({
+			fact,
+			operator,
+			value
+		}));
+		const decisions = [{ conditions: { all: [...expressions2] }, event: { type: 'Validate' } }];
 		validateRuleset(facts, decisions)
 			.then((outcomes) => {
 				this.setState({ loading: false, outcomes, result: true, error: false, errorMessage: '' });

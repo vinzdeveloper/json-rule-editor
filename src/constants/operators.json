@@ -2,20 +2,20 @@
 	"string": ["equal", "notEqual"],
 	"number": [
 		"equal",
-		"lessThan",
-		"lessThanInclusive",
-		"greaterThan",
-		"greaterThanInclusive",
-		"notEqual"
-	],
-	"array": ["contains", "doesNotContain", "in", "notIn"],
-	"object": [
-		"equal",
 		"notEqual",
 		"lessThan",
 		"lessThanInclusive",
 		"greaterThan",
+		"greaterThanInclusive"
+	],
+	"array": ["contains", "doesNotContain", "in", "notIn", "equal", "notEqual"],
+	"object": [
+		"equal",
+		"lessThan",
+		"lessThanInclusive",
+		"greaterThan",
 		"greaterThanInclusive",
+		"notEqual",
 		"contains",
 		"doesNotContain",
 		"in",

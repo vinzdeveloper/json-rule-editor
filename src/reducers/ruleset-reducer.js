@@ -140,13 +140,14 @@ function ruleset(state = initialState, action = '') {
 		}
 
 		case ActionTypes.REMOVE_DECISIONS: {
+			// here outcome is an index
 			const { outcome } = action.payload;
 			const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
-
-			activeRuleSet.decisions = activeRuleSet.decisions.filter(
-				(decision) => decision.event && decision.event.type !== outcome
-			);
-
+			activeRuleSet.data.splice(outcome, 1);
+			// activeRuleSet.decisions = activeRuleSet.decisions.filter(
+			// 	(decision) => decision.event && decision.event.type !== outcome
+			// );
+			// activeRuleSet.data;
 			return {
 				...state,
 				updatedFlag: true,

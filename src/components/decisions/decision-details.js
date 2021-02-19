@@ -74,9 +74,9 @@ class DecisionDetails extends Component {
 		this.setState({ removeAlert: true, removeDecisionIndex: decisionIndex });
 	}
 
-	handleRemoveConditions(e, outcome) {
+	handleRemoveConditions(e, index) {
 		e.preventDefault();
-		this.setState({ removeDecisionAlert: true, removeOutcome: outcome });
+		this.setState({ removeDecisionAlert: true, removeOutcome: index });
 	}
 
 	cancelAlert = () => {
@@ -362,7 +362,7 @@ class DecisionDetails extends Component {
 						<a href="" onClick={(e) => this.handleExpand(e, index)}>
 							{showCase[index].case ? 'Collapse' : 'View Conditions'}
 						</a>
-						<a href="" onClick={(e) => this.handleRemoveConditions(e, String(note))}>
+						<a href="" onClick={(e) => this.handleRemoveConditions(e, /*String(note)*/ index)}>
 							Remove
 						</a>
 					</div>

@@ -102,6 +102,7 @@ class Decision extends Component {
 	};
 
 	render() {
+		// eslint-disable-next-line no-unused-vars
 		const { searchCriteria, bannerflag } = this.state;
 		const buttonProps = { primaryLabel: 'Add Rulecase', secondaryLabel: 'Cancel' };
 		const editButtonProps = { primaryLabel: 'Edit Rulecase', secondaryLabel: 'Cancel' };
@@ -150,7 +151,7 @@ class Decision extends Component {
 					attributes={this.props.attributes}
 				/>
 
-				{!bannerflag && !this.props.ruleset.data && (
+				{(!this.props.ruleset.data || this.props.ruleset.data.length === 0) && (
 					<Banner message={this.state.message} onConfirm={this.handleAdd} />
 				)}
 			</div>

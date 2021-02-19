@@ -80,6 +80,10 @@ class AddDecision extends Component {
 		this.handleAdd = this.handleAdd.bind(this);
 		this.handleCancel = this.handleCancel.bind(this);
 		this.onChangeField = this.onChangeField.bind(this);
+		this.onEditField = this.onEditField.bind(this);
+		this.onChangeYield = this.onChangeYield.bind(this);
+		this.onEditYield = this.onEditYield.bind(this);
+
 		this.onChangeYield = this.onChangeYield.bind(this);
 		this.onChangeNote = this.onChangeNote.bind(this);
 		this.onChangeOutcomeValue = this.onChangeOutcomeValue.bind(this);
@@ -108,6 +112,8 @@ class AddDecision extends Component {
 			});
 		}
 		this.props.addCondition({ expressions, yields, note });
+		this.props.cancel();
+
 		// else {
 		// 	let outcomeParams = {};
 		// 	this.state.outcome.params.forEach((param) => {
@@ -121,6 +127,11 @@ class AddDecision extends Component {
 	handleCancel() {
 		this.props.cancel();
 	}
+	onEditField(e, name, index) {
+		const expressions = [...this.state.expressions];
+		expressions[index][name] = e.target.value;
+		this.setState({ expressions });
+	}
 	onChangeField(e, name) {
 		const expression = { ...this.state.expression };
 
@@ -128,7 +139,11 @@ class AddDecision extends Component {
 		this.setState({ expression });
 	}
 	// onChangeField(e, name) {}
-
+	onEditYield(e, name, index) {
+		const yields = [...this.state.yields];
+		yields[index][name] = e.target.value;
+		this.setState({ yields });
+	}
 	onChangeYield(e, name) {
 		const yieldV = { ...this.state.yield };
 
@@ -232,7 +247,8 @@ class AddDecision extends Component {
 	}
 	handleAddYield() {
 		const ys = Array.from(this.state.yields);
-		ys.push({ yield: this.state.yield });
+		const { partner, weight } = this.state.yield;
+		ys.push({ partner, weight });
 		this.setState(
 			{
 				yields: ys
@@ -243,8 +259,8 @@ class AddDecision extends Component {
 				});
 			}
 		);
-		const { error: _, ...Yield } = this.state.yield;
-		this.props.addCondition({ yields: [{ ...Yield }] });
+		// const { error: _, ...Yield } = this.state.yield;
+		// this.props.addCondition({ yields: [{ ...Yield }] });
 	}
 
 	handleAddRule() {
@@ -266,7 +282,7 @@ class AddDecision extends Component {
 			expression: defaultExpression
 		});
 		const { error: _, ...expression } = this.state.expression;
-		this.props.addCondition({ expressions: [{ ...expression }] });
+		// this.props.addCondition({ expressions: [{ ...expression }] });
 	}
 	handleChildrenNode(value) {
 		let factOptions = [...factsButton];
@@ -401,7 +417,14 @@ class AddDecision extends Component {
 	}
 
 	fieldPanel() {
-		const { note, attributes, expression, yield: Yield } = this.state;
+		const {
+			note,
+			attributes,
+			expression,
+			expressions = [],
+			yields = [],
+			yield: Yield
+		} = this.state;
 		const attributeOptions = attributes.map((attr) => attr.name);
 		const attribute = expression.name && attributes.find((attr) => attr.name === expression.name);
 
@@ -411,7 +434,11 @@ class AddDecision extends Component {
 			expression.operator === 'contains' || expression.operator === 'doesNotContain'
 				? PLACEHOLDER['string']
 				: PLACEHOLDER[attribute.type];
-
+		const getOperators = (eName) => {
+			const attribute = attributes.find((attr) => attr.name === eName);
+			const opertorOptions = attribute && operator[attribute.type];
+			return opertorOptions;
+		};
 		return (
 			<Panel>
 				<div className="attributes-header">
@@ -430,6 +457,38 @@ class AddDecision extends Component {
 							placeholder={placeholder}
 						/>
 					</div>
+					{expressions &&
+						expressions.map((expression, index) => (
+							<div key={`${expression.name}${expression.value}`} className="add-field-panel-row">
+								<div className="field">
+									<SelectField
+										options={attributeOptions}
+										onChange={(e) => this.onEditField(e, 'name', index)}
+										value={expression.name}
+										// error={expression.error.name}
+										label="Expressions"
+									/>
+								</div>
+								<div>
+									<SelectField
+										options={getOperators(expression.name)}
+										onChange={(e) => this.onEditField(e, 'operator', index)}
+										value={expression.operator}
+										// error={expression.error.operator}
+										label="Operator"
+									/>
+								</div>
+								<div>
+									<InputField
+										onChange={(value) => this.onEditField(value, 'value', index)}
+										value={expression.value}
+										// error={expression.error.value}
+										label="Value"
+										placeholder={placeholder}
+									/>
+								</div>
+							</div>
+						))}
 					<div className="add-field-panel-row">
 						<div className="field">
 							<SelectField
@@ -455,10 +514,11 @@ class AddDecision extends Component {
 								value={expression.value}
 								error={expression.error.value}
 								label="Value"
-								placeholder={placeholder}
+								placeholder={PLACEHOLDER.number}
 							/>
 						</div>
 					</div>
+
 					<div className="add-field-panel-row ">
 						<Button
 							label={'Add Expression'}
@@ -484,10 +544,11 @@ class AddDecision extends Component {
 								value={Yield.weight}
 								error={Yield.error.value}
 								label="Weight"
-								placeholder={placeholder}
+								placeholder={PLACEHOLDER.number}
 							/>
 						</div>
 					</div>
+
 					<div className="add-field-panel-row ">
 						<Button
 							label={'Add Yield'}
@@ -497,6 +558,28 @@ class AddDecision extends Component {
 						/>
 						<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
 					</div>
+					{yields.map((yld) => (
+						<div key={`${yld.partner}${yld.weight}`} className="add-field-panel-row">
+							<div>
+								<SelectField
+									options={partnerOptions}
+									onChange={(e) => this.onChangeYield(e, 'partner')}
+									value={yld.partner}
+									// error={yld.error.operator}
+									label="Yields"
+								/>
+							</div>
+							<div>
+								<InputField
+									onChange={(value) => this.onChangeYield(value, 'weight')}
+									value={yld.weight}
+									// error={yld.error.value}
+									label="Weight"
+									placeholder={PLACEHOLDER.number}
+								/>
+							</div>
+						</div>
+					))}
 				</div>
 
 				{

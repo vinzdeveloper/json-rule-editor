@@ -8,17 +8,6 @@
 		"greaterThan",
 		"greaterThanInclusive"
 	],
-	"array": ["contains", "doesNotContain", "in", "notIn", "equal", "notEqual"],
-	"object": [
-		"equal",
-		"lessThan",
-		"lessThanInclusive",
-		"greaterThan",
-		"greaterThanInclusive",
-		"notEqual",
-		"contains",
-		"doesNotContain",
-		"in",
-		"notIn"
-	]
+	"array": ["equal", "notEqual"],
+	"object": ["equal", "notEqual"]
 }

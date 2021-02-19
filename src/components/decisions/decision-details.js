@@ -4,13 +4,17 @@ import PropTypes from 'prop-types';
 import InputField from '../forms/input-field';
 
 // import Tree from '../tree/tree';
-// import { PanelBox } from '../panel/panel';
+import { PanelBox } from '../panel/panel';
 import 'font-awesome/css/font-awesome.min.css';
 import SweetAlert from 'react-bootstrap-sweetalert';
 class DecisionDetails extends Component {
 	static getDerivedStateFromProps(props, state) {
-		if (Object.keys(props.outcomes).length !== state.showCase.length) {
-			const showCase = Object.keys(props.outcomes).map((key, index) => {
+		const { data: { note = '' } = {} } = props.ruleset;
+
+		const outcomes = { note };
+
+		if (Object.keys(outcomes).length !== state.showCase.length) {
+			const showCase = Object.keys(outcomes).map((key, index) => {
 				return { case: false, edit: false, index };
 			});
 			return { showCase };
@@ -20,7 +24,11 @@ class DecisionDetails extends Component {
 
 	constructor(props) {
 		super(props);
-		const showCase = Object.keys(props.outcomes).map((key, index) => {
+		const { data: { note = '' } = {} } = props.ruleset;
+
+		const outcomes = { note };
+
+		const showCase = Object.keys(outcomes).map((key, index) => {
 			return { case: false, edit: false, index };
 		});
 
@@ -331,13 +339,37 @@ class DecisionDetails extends Component {
 	// );
 	render() {
 		// const { outcomes } = this.props;
-		// const { showCase } = this.state;
+		const { showCase } = this.state;
 		// eslint-disable-next-line no-unused-vars
+		const { data: { expressions = [], yields = [], note = '' } = {} } = this.props.ruleset;
+		const outcomes = { note };
+		const conditions = Object.keys(outcomes).map((key, index) => (
+			<div key={key}>
+				<PanelBox className={'boolean'}>
+					<div className="index">{index + 1}</div>
+					<div className="name">{String(key)}</div>
+					<div className="type">
+						conditions <span className="type-badge">{expressions.length}</span>
+					</div>
+					<div className="menu">
+						<a href="" onClick={(e) => this.handleExpand(e, index)}>
+							{showCase[index].case ? 'Collapse' : 'View Conditions'}
+						</a>
+						<a href="" onClick={(e) => this.handleRemoveConditions(e, String(key))}>
+							Remove
+						</a>
+					</div>
+				</PanelBox>
+
+				{showCase[index].case && this.renderConditions(outcomes[key], index)}
+			</div>
+		));
 
 		return (
 			<div className="">
 				{this.alert()}
-				{this.renderConditions()}
+				{/* {this.renderConditions()} */}
+				{conditions}
 			</div>
 		);
 	}

@@ -84,7 +84,7 @@ class RulesetContainer extends Component {
 			decisions.map((decision, index) => ({ ...decision, index }));
 		let outcomes;
 		if (indexedDecisions && indexedDecisions.length > 0) {
-			outcomes = groupBy(indexedDecisions, (data) => data.event.type);
+			outcomes = groupBy(indexedDecisions, (data) => data && data.event && data.event.type);
 		}
 
 		const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;

@@ -113,6 +113,7 @@ class RulesetContainer extends Component {
 								attributes={attributes}
 								decisions={decisions}
 								expressions={expressions}
+								ruleset={this.props.ruleset}
 							/>
 						)}
 						{this.state.activeTab === 'Generate' && (

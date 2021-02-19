@@ -457,38 +457,7 @@ class AddDecision extends Component {
 							placeholder={placeholder}
 						/>
 					</div>
-					{expressions &&
-						expressions.map((expression, index) => (
-							<div key={`${expression.name}${expression.value}`} className="add-field-panel-row">
-								<div className="field">
-									<SelectField
-										options={attributeOptions}
-										onChange={(e) => this.onEditField(e, 'name', index)}
-										value={expression.name}
-										// error={expression.error.name}
-										label="Expressions"
-									/>
-								</div>
-								<div>
-									<SelectField
-										options={getOperators(expression.name)}
-										onChange={(e) => this.onEditField(e, 'operator', index)}
-										value={expression.operator}
-										// error={expression.error.operator}
-										label="Operator"
-									/>
-								</div>
-								<div>
-									<InputField
-										onChange={(value) => this.onEditField(value, 'value', index)}
-										value={expression.value}
-										// error={expression.error.value}
-										label="Value"
-										placeholder={placeholder}
-									/>
-								</div>
-							</div>
-						))}
+
 					<div className="add-field-panel-row">
 						<div className="field">
 							<SelectField
@@ -528,6 +497,38 @@ class AddDecision extends Component {
 						/>
 						<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
 					</div>
+					{expressions &&
+						expressions.map((expression, index) => (
+							<div key={`${expression.name}${expression.value}`} className="add-field-panel-row">
+								<div className="field">
+									<SelectField
+										options={attributeOptions}
+										onChange={(e) => this.onEditField(e, 'name', index)}
+										value={expression.name}
+										// error={expression.error.name}
+										label={index === 0 && 'Expressions'}
+									/>
+								</div>
+								<div>
+									<SelectField
+										options={getOperators(expression.name)}
+										onChange={(e) => this.onEditField(e, 'operator', index)}
+										value={expression.operator}
+										// error={expression.error.operator}
+										label={index === 0 && 'Operator'}
+									/>
+								</div>
+								<div>
+									<InputField
+										onChange={(value) => this.onEditField(value, 'value', index)}
+										value={expression.value}
+										// error={expression.error.value}
+										label={index === 0 && 'Value'}
+										placeholder={placeholder}
+									/>
+								</div>
+							</div>
+						))}
 					<div className="add-field-panel-row">
 						<div>
 							<SelectField
@@ -558,7 +559,7 @@ class AddDecision extends Component {
 						/>
 						<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
 					</div>
-					{yields.map((yld) => (
+					{yields.map((yld, index) => (
 						<div key={`${yld.partner}${yld.weight}`} className="add-field-panel-row">
 							<div>
 								<SelectField
@@ -566,7 +567,7 @@ class AddDecision extends Component {
 									onChange={(e) => this.onChangeYield(e, 'partner')}
 									value={yld.partner}
 									// error={yld.error.operator}
-									label="Yields"
+									label={index === 0 && 'Yields'}
 								/>
 							</div>
 							<div>
@@ -574,7 +575,7 @@ class AddDecision extends Component {
 									onChange={(value) => this.onChangeYield(value, 'weight')}
 									value={yld.weight}
 									// error={yld.error.value}
-									label="Weight"
+									label={index === 0 && 'Weight'}
 									placeholder={PLACEHOLDER.number}
 								/>
 							</div>

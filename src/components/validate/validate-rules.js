@@ -58,7 +58,7 @@ class ValidateRules extends Component {
 	validateRules(e) {
 		e.preventDefault();
 		let facts = {};
-		const { attributes, expressions } = this.props;
+		const { attributes } = this.props;
 		// console.log('expressions', expressions);
 		this.setState({ loading: true });
 		this.state.conditions.forEach((condition) => {
@@ -71,15 +71,29 @@ class ValidateRules extends Component {
 				facts[condition.name] = condition.value;
 			}
 		});
-		const expressions2 = expressions.map(({ name: fact, operator, value }) => ({
-			fact,
-			operator,
-			value
-		}));
-		const decisions = [
-			{ conditions: { all: [...expressions2] }, event: { type: 'Valid' } }
-			// { conditions: { all: [...expressions2] }, event: { type: '2 isValid' } }
-		];
+		// const expressions2 = expressions.map(({ name: fact, operator, value }) => ({
+		// 	fact,
+		// 	operator,
+		// 	value
+		// }));
+		const decisions = this.props.ruleset.data.map(({ expressions, note }) => {
+			return {
+				conditions: {
+					all: expressions.map(({ name: fact, operator, value }) => ({
+						fact,
+						operator,
+						value
+					}))
+				},
+				event: { type: note }
+			};
+		});
+		// conditionsBeforeParsing
+		// console.log('conditionsBeforeParsing', conditionsBeforeParsing);
+		// const decisions = [
+		// 	{ conditions: { all: [...expressions2] }, event: { type: 'Valid' } }
+		// 	// { conditions: { all: [...expressions2] }, event: { type: '2 isValid' } }
+		// ];
 		validateRuleset(facts, decisions)
 			.then((outcomes) => {
 				this.setState({ loading: false, outcomes, result: true, error: false, errorMessage: '' });
@@ -119,11 +133,16 @@ class ValidateRules extends Component {
 					</div>
 				);
 			} else if (outcomes && outcomes.length === 0) {
-				message = <div>Not Valid</div>;
+				message = (
+					<div className="view-params-container">
+						<h4>Outcomes (Valid Rulecases) </h4>
+						<div>No Rulecases were valid</div>
+					</div>
+				);
 			} else if (outcomes && outcomes.length > 0) {
 				message = (
 					<div className="view-params-container">
-						<h4>Outcomes </h4>
+						<h4>Outcomes (Valid Rulecases) </h4>
 						<ViewOutcomes items={outcomes} />
 					</div>
 				);
@@ -152,8 +171,8 @@ class ValidateRules extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				{this.props.expressions.length < 1 && <Banner message={this.state.message} />}
-				{this.props.expressions.length > 0 && (
+				{this.props.ruleset.data.length < 1 && <Banner message={this.state.message} />}
+				{this.props.ruleset.data.length > 0 && (
 					<Panel>
 						<form>
 							<div>{this.attributeItems()}</div>
@@ -173,7 +192,8 @@ ValidateRules.defaultProps = {
 ValidateRules.propTypes = {
 	attributes: PropTypes.array,
 	decisions: PropTypes.array,
-	expressions: PropTypes.array
+	expressions: PropTypes.array,
+	ruleset: PropTypes.array
 };
 
 export default ValidateRules;

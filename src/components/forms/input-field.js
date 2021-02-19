@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const InputField = (props) => {
-	const { label, onChange, error, value, required, readOnly, placeholder } = props;
+	const { label, onChange, error, value, required, readOnly, placeholder, type = 'text' } = props;
 	const [fieldValue, setFieldValue] = useState(value);
 
 	useEffect(() => {
@@ -24,7 +24,7 @@ const InputField = (props) => {
 		<div className="form-field">
 			{label && <label>{label}</label>}
 			<input
-				type="text"
+				type={type}
 				onChange={change}
 				value={fieldValue}
 				className={`${errorClass} ${readOnlyClass}`}
@@ -52,7 +52,8 @@ InputField.propTypes = {
 	value: PropTypes.any,
 	required: PropTypes.bool,
 	readOnly: PropTypes.bool,
-	placeholder: PropTypes.string
+	placeholder: PropTypes.string,
+	type: PropTypes.string
 };
 
 export default InputField;

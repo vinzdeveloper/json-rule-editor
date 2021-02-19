@@ -85,7 +85,7 @@ class AddDecision extends Component {
 		this.onChangeYield = this.onChangeYield.bind(this);
 		this.onEditYield = this.onEditYield.bind(this);
 
-		this.onChangeYield = this.onChangeYield.bind(this);
+		// this.onChangeYield = this.onChangeYield.bind(this);
 		this.onChangeNote = this.onChangeNote.bind(this);
 		this.onChangeOutcomeValue = this.onChangeOutcomeValue.bind(this);
 		this.handleTopNode = this.handleTopNode.bind(this);
@@ -147,9 +147,16 @@ class AddDecision extends Component {
 	}
 	onChangeYield(e, name) {
 		const yieldV = { ...this.state.yield };
-
+		const error = {};
 		yieldV[name] = e.target.value;
-		this.setState({ yield: yieldV });
+
+		if (name == 'weight' && !isNaN(e.target.value)) {
+			yieldV[name] = parseFloat(e.target.value);
+		} else {
+			error.weight = 'only numbers';
+		}
+
+		this.setState({ yield: { ...yieldV, error } });
 	}
 
 	onChangeNote(e) {
@@ -483,6 +490,7 @@ class AddDecision extends Component {
 								value={expression.value}
 								error={expression.error.value}
 								label="Value"
+								type={expression.operator === 'number' ? 'number' : 'text'}
 								placeholder={PLACEHOLDER.number}
 							/>
 						</div>
@@ -535,7 +543,7 @@ class AddDecision extends Component {
 								options={partnerOptions}
 								onChange={(e) => this.onChangeYield(e, 'partner')}
 								value={Yield.partner}
-								error={Yield.error.operator}
+								error={Yield.error.partner}
 								label="Yields"
 							/>
 						</div>
@@ -543,7 +551,7 @@ class AddDecision extends Component {
 							<InputField
 								onChange={(value) => this.onChangeYield(value, 'weight')}
 								value={Yield.weight}
-								error={Yield.error.value}
+								error={Yield.error.weight}
 								label="Weight"
 								placeholder={PLACEHOLDER.number}
 							/>
@@ -577,6 +585,7 @@ class AddDecision extends Component {
 									// error={yld.error.value}
 									label={index === 0 && 'Weight'}
 									placeholder={PLACEHOLDER.number}
+									type="number"
 								/>
 							</div>
 						</div>

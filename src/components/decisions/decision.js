@@ -70,6 +70,9 @@ class Decision extends Component {
 	}
 
 	updateCondition(condition) {
+		// console.log('this.state.editDecisionIndex', this.state.editDecisionIndex);
+
+		// console.log('condition', condition);
 		this.props.handleDecisions('UPDATE', {
 			condition,
 			decisionIndex: this.state.editDecisionIndex

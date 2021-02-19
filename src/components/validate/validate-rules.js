@@ -169,10 +169,11 @@ class ValidateRules extends Component {
 	};
 
 	render() {
+		const { data = [] } = this.props.ruleset;
 		return (
 			<React.Fragment>
-				{this.props.ruleset.data.length < 1 && <Banner message={this.state.message} />}
-				{this.props.ruleset.data.length > 0 && (
+				{data.length < 1 && <Banner message={this.state.message} />}
+				{data.length > 0 && (
 					<Panel>
 						<form>
 							<div>{this.attributeItems()}</div>

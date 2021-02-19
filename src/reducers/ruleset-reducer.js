@@ -25,26 +25,34 @@ function ruleset(state = initialState, action = '') {
 		case ActionTypes.UPLOAD_RULESET: {
 			const { ruleset } = action.payload;
 			let rulesets;
-			const [{ note, expressions: exps, yields }] = ruleset;
+			const [{ rules: rawRules }] = ruleset;
 
 			// converting from our lhs,rhs format to name,value format
-			const expressions = exps.map(({ lhs: name, operator, rhs: value }) => ({
-				name,
-				operator: reverseOperatorsMap[operator] || operator,
-				value
-			}));
+			const rules = rawRules.map(({ expressions, ...others }) => {
+				return {
+					expressions: expressions.map(({ lhs: name, operator, rhs: value }) => ({
+						name,
+						operator: reverseOperatorsMap[operator] || operator,
+						value
+					})),
+					...others
+				};
+			});
+			// const expressions = exps.map(({ lhs: name, operator, rhs: value }) => ({
+			// 	name,
+			// 	operator: reverseOperatorsMap[operator] || operator,
+			// 	value
+			// }));
 
 			if (state.rulesets && state.rulesets.length > 0) {
 				rulesets = state.rulesets.concat({
 					name: `Ruleset-${state.rulesets.length + 1}`,
 					atrribtues: [],
 					decisions: [],
-					data: { note, expressions, yields }
+					data: rules
 				});
 			} else {
-				rulesets = [
-					{ name: `Ruleset`, atrribtues: [], decisions: [], data: { note, expressions, yields } }
-				];
+				rulesets = [{ name: `Ruleset-1`, atrribtues: [], decisions: [], data: rules }];
 			}
 			// console.log('state.rulesets', state.rulesets);
 			return { ...state, rulesets: cloneDeep(rulesets), uploadedRules: cloneDeep(rulesets) };

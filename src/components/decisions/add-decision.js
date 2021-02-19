@@ -59,6 +59,7 @@ class AddDecision extends Component {
 
 		this.state = {
 			note: '',
+			name: '',
 			attributes: props.attributes,
 			expression: defaultExpression,
 			yield: defaultYield,
@@ -103,7 +104,7 @@ class AddDecision extends Component {
 
 	handleAdd(e) {
 		e.preventDefault();
-		const { expressions, yields, note } = this.state;
+		const { expressions, yields, note, name } = this.state;
 		const error = rulesetValidation({ expressions, yields });
 
 		if (error.formError) {
@@ -111,7 +112,7 @@ class AddDecision extends Component {
 				formError: error.formError
 			});
 		}
-		this.props.addCondition({ expressions, yields, note });
+		this.props.addCondition({ expressions, yields, note, name });
 		this.props.cancel();
 
 		// else {
@@ -153,7 +154,7 @@ class AddDecision extends Component {
 
 	onChangeNote(e) {
 		this.setState({ note: e.target.value });
-		this.props.addCondition({ note: e.target.value });
+		// this.props.addCondition({ note: e.target.value });
 	}
 
 	onChangeOutcomeValue(e, type) {
@@ -282,7 +283,6 @@ class AddDecision extends Component {
 			expression: defaultExpression
 		});
 		const { error: _, ...expression } = this.state.expression;
-		// this.props.addCondition({ expressions: [{ ...expression }] });
 	}
 	handleChildrenNode(value) {
 		let factOptions = [...factsButton];

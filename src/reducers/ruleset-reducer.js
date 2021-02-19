@@ -62,7 +62,7 @@ function ruleset(state = initialState, action = '') {
 			const { note: oldNote, expressions: oldExpressions = [], yields: oldYields = [] } =
 				activeRuleSet.data || {};
 			// activeRuleSet.data = [...dt, { ...action.payload }];
-			let { note, expressions, yields } = action.payload;
+			let { note, expressions, yields, name } = action.payload;
 
 			if (!note) {
 				note = oldNote;
@@ -79,12 +79,16 @@ function ruleset(state = initialState, action = '') {
 			} else {
 				yields = [...oldYields, ...yields];
 			}
-
-			activeRuleSet.data = {
-				note,
-				expressions,
-				yields
-			};
+			if (activeRuleSet.data) {
+				activeRuleSet.data.push({ note, expressions, yields, name });
+			} else {
+				activeRuleSet.data = [{ note, expressions, yields, name }];
+			}
+			// activeRuleSet.data = {
+			// 	note,
+			// 	expressions,
+			// 	yields
+			// };
 			return {
 				...state,
 				updatedFlag: true,

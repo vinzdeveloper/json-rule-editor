@@ -9,9 +9,11 @@ import 'font-awesome/css/font-awesome.min.css';
 import SweetAlert from 'react-bootstrap-sweetalert';
 class DecisionDetails extends Component {
 	static getDerivedStateFromProps(props, state) {
-		const { data: { note = '' } = {} } = props.ruleset;
+		const { data: rulecases = [] } = props.ruleset;
 
-		const outcomes = { note };
+		const outcomes = rulecases.map(({ note }) => note);
+
+		// const outcomes = { note };
 
 		if (Object.keys(outcomes).length !== state.showCase.length) {
 			const showCase = Object.keys(outcomes).map((key, index) => {
@@ -24,9 +26,9 @@ class DecisionDetails extends Component {
 
 	constructor(props) {
 		super(props);
-		const { data: { note = '' } = {} } = props.ruleset;
+		const { data: rulecases = [] } = props.ruleset;
 
-		const outcomes = { note };
+		const outcomes = rulecases.map(({ note }) => note);
 
 		const showCase = Object.keys(outcomes).map((key, index) => {
 			return { case: false, edit: false, index };
@@ -150,10 +152,13 @@ class DecisionDetails extends Component {
 		);
 	};
 
-	renderConditions = () => {
+	renderConditions = (_, index) => {
 		// const transformedData = transformRuleToTree(conditions);
 		// eslint-disable-next-line no-unused-vars
-		const { data: { expressions = [], yields = [], note = '' } = {} } = this.props.ruleset;
+		// const { data: { expressions = [], yields = [], note = '' } = {} } = this.props.ruleset;
+		const { data: rulecases = [] } = this.props.ruleset;
+
+		const { expressions = [], yields = [], note = '' } = rulecases[index];
 		return (
 			<div className="rule-flex-container">
 				<div className="decision-box" key={`case - `}>
@@ -341,13 +346,15 @@ class DecisionDetails extends Component {
 		// const { outcomes } = this.props;
 		const { showCase } = this.state;
 		// eslint-disable-next-line no-unused-vars
-		const { data: { expressions = [], yields = [], note = '' } = {} } = this.props.ruleset;
-		const outcomes = { note };
-		const conditions = Object.keys(outcomes).map((key, index) => (
-			<div key={key}>
+		const { data: rulecases = [] } = this.props.ruleset;
+		// { expressions = [], yields = [], note = '' }
+		const outcomes = rulecases.map(({ note }) => note);
+
+		const conditions = rulecases.map(({ expressions, note }, index) => (
+			<div key={note}>
 				<PanelBox className={'boolean'}>
 					<div className="index">{index + 1}</div>
-					<div className="name">{String(key)}</div>
+					<div className="name">{String(note)}</div>
 					<div className="type">
 						conditions <span className="type-badge">{expressions.length}</span>
 					</div>
@@ -355,13 +362,13 @@ class DecisionDetails extends Component {
 						<a href="" onClick={(e) => this.handleExpand(e, index)}>
 							{showCase[index].case ? 'Collapse' : 'View Conditions'}
 						</a>
-						<a href="" onClick={(e) => this.handleRemoveConditions(e, String(key))}>
+						<a href="" onClick={(e) => this.handleRemoveConditions(e, String(note))}>
 							Remove
 						</a>
 					</div>
 				</PanelBox>
 
-				{showCase[index].case && this.renderConditions(outcomes[key], index)}
+				{showCase[index].case && this.renderConditions(outcomes[note], index)}
 			</div>
 		));
 

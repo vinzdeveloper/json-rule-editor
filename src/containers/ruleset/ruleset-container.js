@@ -38,24 +38,37 @@ class RulesetContainer extends Component {
 	};
 
 	generateFile() {
-		const { ruleset } = this.props;
+		const { ruleset: { name = 'rulesetDefault', data = [] } = {} } = this.props;
+
+		const rules = data.map(({ expressions, note, yields }) => {
+			return {
+				expressions: expressions.map(({ name: lhs, operator, value: rhs }) => ({
+					lhs,
+					operator: operatorsMap[operator] || operator,
+					rhs
+				})),
+				note,
+				yields,
+				override: true
+			};
+		});
 
 		// converting from  name,value format to  lhs,rhs format
-		const expressions = ruleset.data.expressions.map(({ name: lhs, operator, value: rhs }) => ({
-			lhs,
-			operator: operatorsMap[operator] || operator,
-			rhs
-		}));
+		// const expressions = ruleset.data.expressions.map(({ name: lhs, operator, value: rhs }) => ({
+		// 	lhs,
+		// 	operator: operatorsMap[operator] || operator,
+		// 	rhs
+		// }));
 		const exportedObj = {
-			note: ruleset.data.note,
-			expressions,
-			yields: ruleset.data.yields
+			name: 'preference v2.0.3',
+			stage: 'preference',
+			rules
 		};
 		const fileData = JSON.stringify(exportedObj, null, '\t');
 		const blob = new Blob([fileData], { type: 'application/json' });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement('a');
-		link.download = ruleset.name + '.json';
+		link.download = name + '.json';
 		link.href = url;
 		link.click();
 		this.setState({ generateFlag: true });

@@ -363,7 +363,7 @@ class DecisionDetails extends Component {
 
 		const conditions = rulecases.map(({ expressions, note }, index) => (
 			<div key={note}>
-				<PanelBox className={'boolean'}>
+				<PanelBox className={'boolean'} key={`PanelBox-${note}`}>
 					<div className="index">{index + 1}</div>
 					<div className="name">{String(note)}</div>
 					<div className="type">

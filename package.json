@@ -50,6 +50,7 @@
     "react-notifications": "1.6.0",
     "react-redux": "7.1.3",
     "react-router-dom": "5.1.2",
+    "react-select": "^4.1.0",
     "react-spinners": "0.8.1",
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",

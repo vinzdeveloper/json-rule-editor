@@ -1,62 +1,62 @@
 .form-groups-inline {
-    font-family: $form-font-family;
-    display: flex;
-    flex-wrap: wrap;
+	font-family: $form-font-family;
+	display: flex;
+	flex-wrap: wrap;
 
-    div {
-        margin-top: 10px;
-    }
+	div {
+		margin-top: 10px;
+	}
 
-    .form-field {
-        width: 35%;
-    }
+	.form-field {
+		width: 35%;
+	}
 }
 
 .upload-panel {
-    .form-field {
-        width: 70%;
-    }
+	.form-field {
+		width: 70%;
+	}
 }
 
 .form-field {
-    margin-right: 10%;
-    margin-top: 5px;
+	margin-right: 10%;
+	margin-top: 5px;
 
-    input {
-        border: 1px solid $form-border-color;
-        border-radius: 4px;
-        color: $form-field-color;
-        font-size: 16px;
-        height: 35px;
-        margin-top: 5px;
-        padding-left: 10px;
-        width: 90%;
-    }
+	input {
+		border: 1px solid $form-border-color;
+		border-radius: 4px;
+		color: $form-field-color;
+		font-size: 16px;
+		height: 35px;
+		margin-top: 5px;
+		padding-left: 10px;
+		width: 90%;
+	}
 
-    select {
-        background-color: #fff;
-        border: 1px solid $form-border-color;
-        border-radius: 4px;
-        font-size: 16px;
-        color: $form-field-color;
-        height: 40px;
-        margin-top: 5px;
-        padding-left: 10px;
-        width: 90%;
-    }
+	select {
+		background-color: #fff;
+		border: 1px solid $form-border-color;
+		border-radius: 4px;
+		font-size: 16px;
+		color: $form-field-color;
+		height: 35px;
+		margin-top: 5px;
+		padding-left: 10px;
+		width: 90%;
+	}
 
-    .error {
-        border-color: red;
-    }
+	.error {
+		border-color: red;
+	}
 
-    .readOnly {
-        background-color: #eee;
-        border: 1px dashed;
-    }
+	.readOnly {
+		background-color: #eee;
+		border: 1px dashed;
+	}
 }
 
 .form-error {
-    color: red;
-    font-family: $form-font-family;
-    font-size: 16px;
+	color: red;
+	font-family: $form-font-family;
+	font-size: 16px;
 }

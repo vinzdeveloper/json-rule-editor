@@ -8,6 +8,6 @@
 		"greaterThan",
 		"greaterThanInclusive"
 	],
-	"array": ["equal", "notEqual"],
-	"object": ["equal", "notEqual"]
+	"array": ["in", "notIn"],
+	"object": ["in", "notIn"]
 }

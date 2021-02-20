@@ -127,7 +127,7 @@ class HomeContainer extends Component {
 	handleUpload() {
 		if (this.state.ruleset.length > 0) {
 			this.props.uploadRuleset(this.state.ruleset);
-			this.navigate('./ruleset');
+			this.navigate('/ruleset');
 		}
 	}
 
@@ -151,12 +151,12 @@ class HomeContainer extends Component {
 							<div className="drop-section" onDrop={this.drop} onDragOver={this.allowDrop}>
 								<div>
 									<label htmlFor="uploadFile">
-										Choose Ruleset directory
+										Choose Ruleset File
 										<input
 											id="uploadFile"
 											type="file"
 											onChange={this.chooseDirectory}
-											webkitdirectory="true"
+											// webkitdirectory="true"
 											multiple
 										/>
 									</label>{' '}
@@ -177,7 +177,7 @@ class HomeContainer extends Component {
 							{!this.props.loggedIn && (
 								<Button
 									label={'Create'}
-									onConfirm={() => this.navigate('./create-ruleset')}
+									onConfirm={() => this.navigate('/create-ruleset')}
 									classname="primary-btn"
 									type="button"
 									disabled={this.state.files.length > 0}

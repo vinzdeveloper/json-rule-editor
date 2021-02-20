@@ -42,12 +42,12 @@ class RulesetContainer extends Component {
 
 		const rules = data.map(({ expressions, note, yields }) => {
 			return {
+				note,
 				expressions: expressions.map(({ name: lhs, operator, value: rhs }) => ({
 					lhs,
 					operator: operatorsMap[operator] || operator,
 					rhs
 				})),
-				note,
 				yields,
 				override: true
 			};
@@ -83,7 +83,7 @@ class RulesetContainer extends Component {
 		return (
 			<SweetAlert success title={'File generated!'} onConfirm={this.cancelAlert}>
 				{' '}
-				{`${name} rule is succefully generated at your default download location`}
+				{`${name} rule is successfully generated at your default download location`}
 			</SweetAlert>
 		);
 	};

@@ -7,6 +7,7 @@ import SelectField from '../forms/selectmenu-field';
 import Button from '../button/button';
 import ButtonGroup from '../button/button-groups';
 import operator from '../../constants/operators.json';
+import FieldOptions from '../../constants/options.json';
 import partnerOptions from '../../constants/yeildTypes.json';
 
 import { rulesetValidation } from '../../validations/decision-validation';
@@ -135,8 +136,15 @@ class AddDecision extends Component {
 	}
 	onChangeField(e, name) {
 		const expression = { ...this.state.expression };
-
-		expression[name] = e.target.value;
+		if (Array.isArray(e)) {
+			expression[name] = e && e.map(({ value }) => value).join(',');
+		} else {
+			if (name === 'name' || name === 'operator') {
+				expression[name] = e.value;
+			} else {
+				expression[name] = e.target.value;
+			}
+		}
 		this.setState({ expression });
 	}
 	// onChangeField(e, name) {}
@@ -148,12 +156,15 @@ class AddDecision extends Component {
 	onChangeYield(e, name) {
 		const yieldV = { ...this.state.yield };
 		const error = {};
-		yieldV[name] = e.target.value;
 
-		if (name == 'weight' && !isNaN(e.target.value)) {
-			yieldV[name] = parseFloat(e.target.value);
+		if (name == 'weight') {
+			if (!isNaN(e.target.value)) {
+				yieldV[name] = parseFloat(e.target.value);
+			} else {
+				error.weight = 'only numbers';
+			}
 		} else {
-			error.weight = 'only numbers';
+			yieldV[name] = e.value;
 		}
 
 		this.setState({ yield: { ...yieldV, error } });
@@ -289,7 +300,6 @@ class AddDecision extends Component {
 			expressions: exprs,
 			expression: defaultExpression
 		});
-		const { error: _, ...expression } = this.state.expression;
 	}
 	handleChildrenNode(value) {
 		let factOptions = [...factsButton];
@@ -422,7 +432,31 @@ class AddDecision extends Component {
 			</div>
 		);
 	}
-
+	renderValueField({ expression }) {
+		if (FieldOptions[expression.name] && FieldOptions[expression.name].length > 0) {
+			return (
+				<SelectField
+					options={FieldOptions[expression.name]}
+					onChange={(e) => this.onChangeField(e, 'value')}
+					value={expression.value}
+					error={expression.error.value}
+					label="Value"
+					isMulti
+				/>
+			);
+		} else {
+			return (
+				<InputField
+					onChange={(value) => this.onChangeField(value, 'value')}
+					value={expression.value}
+					error={expression.error.value}
+					label="Value"
+					type={expression.operator === 'number' ? 'number' : 'text'}
+					placeholder={PLACEHOLDER.number}
+				/>
+			);
+		}
+	}
 	fieldPanel() {
 		const {
 			note,
@@ -485,14 +519,15 @@ class AddDecision extends Component {
 							/>
 						</div>
 						<div>
-							<InputField
+							{/* <InputField
 								onChange={(value) => this.onChangeField(value, 'value')}
 								value={expression.value}
 								error={expression.error.value}
 								label="Value"
 								type={expression.operator === 'number' ? 'number' : 'text'}
 								placeholder={PLACEHOLDER.number}
-							/>
+							/> */}
+							{this.renderValueField({ expression })}
 						</div>
 					</div>
 
@@ -537,6 +572,8 @@ class AddDecision extends Component {
 								</div>
 							</div>
 						))}
+
+					<hr />
 					<div className="add-field-panel-row">
 						<div>
 							<SelectField
@@ -590,6 +627,7 @@ class AddDecision extends Component {
 							</div>
 						</div>
 					))}
+					<hr />
 				</div>
 
 				{

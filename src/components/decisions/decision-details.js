@@ -39,7 +39,8 @@ class DecisionDetails extends Component {
 			submitAlert: false,
 			removeAlert: false,
 			successAlert: false,
-			removeDecisionAlert: false
+			removeDecisionAlert: false,
+			selectedRuleCaseIndex: -1
 		};
 		this.handleExpand = this.handleExpand.bind(this);
 		this.handleRemoveCondition = this.handleRemoveCondition.bind(this);
@@ -55,15 +56,19 @@ class DecisionDetails extends Component {
 		this.setState({ showRuleIndex: val });
 	}
 
-	editCondition(e, decisionIndex) {
+	editCondition(e, decisionIndex, rulecaseIndex) {
 		e.preventDefault();
-		this.props.editCondition(decisionIndex);
+		this.props.editCondition(decisionIndex, rulecaseIndex);
 	}
 
 	handleExpand(e, index) {
 		e.preventDefault();
 		const cases = [...this.state.showCase];
+
 		let updateCase = cases[index];
+		// if (!updateCase.case) {
+		// 	this.setState({});
+		// }
 		updateCase = { ...updateCase, case: !updateCase.case };
 		cases[index] = { ...updateCase };
 		this.setState({ showCase: cases });
@@ -169,7 +174,7 @@ class DecisionDetails extends Component {
 						</div>
 					)}
 					<div className="add-field-panel">
-						{expressions.map((expression, index) => (
+						{expressions.map((expression, idx) => (
 							<div
 								key={expression.name}
 								className="view-field-panel-row"
@@ -187,7 +192,7 @@ class DecisionDetails extends Component {
 										// onChange={(value) => this.onChangeField(value, 'value')}
 										value={expression.name}
 										// error={expression.error.value}
-										label={index === 0 && 'Expressions'}
+										label={idx === 0 && 'Expressions'}
 										readOnly
 										// placeholder={placeholder}
 									/>
@@ -198,13 +203,13 @@ class DecisionDetails extends Component {
 								onChange={(e) => this.onChangeField(e, 'operator')}
 								value={expression.operator}
 								error={expression.error.operator}
-								label={index===0 && "Operator"}
+								label={idx===0 && "Operator"}
 							/> */}
 									<InputField
 										// onChange={(value) => this.onChangeField(value, 'value')}
 										value={expression.operator}
 										// error={expression.error.operator}
-										label={index === 0 && 'Operator'}
+										label={idx === 0 && 'Operator'}
 										readOnly
 										// placeholder={placeholder}
 									/>
@@ -214,19 +219,19 @@ class DecisionDetails extends Component {
 										// onChange={(value) => this.onChangeField(value, 'value')}
 										value={expression.value}
 										// error={expression.error.value}
-										label={index === 0 && 'Value'}
+										label={idx === 0 && 'Value'}
 										readOnly
 										// placeholder={placeholder}
 									/>
 								</div>
 								<div className="tool-flex">
 									<div>
-										<a href="" onClick={(e) => this.editCondition(e, index)}>
+										<a href="" onClick={(e) => this.editCondition(e, idx, index)}>
 											<span className="fa fa-edit" />
 										</a>
 									</div>
 									<div>
-										<a href="" onClick={(e) => this.handleRemoveCondition(e, index)}>
+										<a href="" onClick={(e) => this.handleRemoveCondition(e, idx, index)}>
 											<span className="fa fa-trash-o" />
 										</a>
 									</div>

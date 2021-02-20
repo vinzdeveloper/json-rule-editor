@@ -32,7 +32,7 @@ class ValidateRules extends Component {
 	}
 
 	handleAttribute(e, index) {
-		const attribute = { ...this.state.conditions[index], name: e.target.value };
+		const attribute = { ...this.state.conditions[index], name: e.value };
 		const conditions = [
 			...this.state.conditions.slice(0, index),
 			attribute,

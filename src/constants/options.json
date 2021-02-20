@@ -1,0 +1,5 @@
+{
+	"size": ["A5", "A4", "us_letter", "6x9", "6x11", "4x6", "5x7"],
+	"mail_type": ["european_carrier", "usps_first_class", "usps_standard"],
+	"object": ["postcard", "letter", "check", "self_mailer"]
+}

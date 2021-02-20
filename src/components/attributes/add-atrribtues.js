@@ -22,7 +22,7 @@ class AddAttributes extends Component {
 	}
 
 	onChangeType(e) {
-		this.setState({ type: e.target.value });
+		this.setState({ type: e.value });
 	}
 
 	handleAdd(e) {

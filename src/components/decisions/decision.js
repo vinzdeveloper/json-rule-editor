@@ -43,7 +43,7 @@ class Decision extends Component {
 		this.setState({ showAddRuleCase: false, editCaseFlag: false, bannerflag: false });
 	};
 
-	editCondition(decisionIndex) {
+	editCondition(decisionIndex, editRulecaseIndex) {
 		// const decision = this.props.ruleset.data.expressions[decisionIndex];
 		// const decision = this.props.decisions[decisionIndex];
 		// const editCondition = transformRuleToTree(decision);
@@ -58,7 +58,8 @@ class Decision extends Component {
 		this.setState({
 			editCaseFlag: true,
 			// editCondition,
-			editDecisionIndex: decisionIndex
+			editDecisionIndex: decisionIndex,
+			editRulecaseIndex
 			// editOutcome: { value: decision.event.type, params: outputParams }
 		});
 	}
@@ -70,9 +71,6 @@ class Decision extends Component {
 	}
 
 	updateCondition(condition) {
-		// console.log('this.state.editDecisionIndex', this.state.editDecisionIndex);
-
-		// console.log('condition', condition);
 		this.props.handleDecisions('UPDATE', {
 			condition,
 			decisionIndex: this.state.editDecisionIndex

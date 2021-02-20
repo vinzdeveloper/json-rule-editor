@@ -21,6 +21,6 @@
 	},
 	{
 		"name": "billing_group_id",
-		"type": "array"
+		"type": "string"
 	}
 ]

@@ -7,12 +7,12 @@ const devToolEnhancer = process.env.NODE_ENV !== 'production' ? composeWithDevTo
 
 const enhancer = devToolEnhancer(applyMiddleware(thunk));
 
- export default () => {
-    const store = createStore(reducers, enhancer);
-    if (module.hot) {
-        module.hot.accept('./reducers', () => {
-            store.replaceReducer(reducers);
-        });
-    }
-    return store;
-}
+export default () => {
+	const store = createStore(reducers, {}, enhancer);
+	if (module.hot) {
+		module.hot.accept('./reducers', () => {
+			store.replaceReducer(reducers);
+		});
+	}
+	return store;
+};

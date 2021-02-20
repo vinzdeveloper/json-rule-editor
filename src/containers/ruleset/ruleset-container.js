@@ -8,7 +8,7 @@ import Attributes from '../../components/attributes/attributes';
 import Decisions from '../../components/decisions/decision';
 import ValidateRules from '../../components/validate/validate-rules';
 import { handleAttribute } from '../../actions/attributes';
-import { handleDecision, addRulesetData } from '../../actions/decisions';
+import { handleDecision, addRulesetData, changeRulecaseOrder } from '../../actions/decisions';
 import Banner from '../../components/panel/banner';
 import * as Message from '../../constants/messages';
 import { groupBy } from 'lodash/collection';
@@ -118,6 +118,7 @@ class RulesetContainer extends Component {
 								handleDecisions={this.props.handleDecisions}
 								handleAddRulesetData={this.props.handleAddRulesetData}
 								outcomes={outcomes}
+								changeRulecaseOrder={this.props.changeRulecaseOrderAction}
 								ruleset={this.props.ruleset}
 							/>
 						)}
@@ -150,7 +151,8 @@ RulesetContainer.propTypes = {
 	handleDecisions: PropTypes.func,
 	handleAddRulesetData: PropTypes.func,
 	updatedFlag: PropTypes.bool,
-	runRules: PropTypes.func
+	runRules: PropTypes.func,
+	changeRulecaseOrderAction: PropTypes.func
 };
 
 RulesetContainer.defaultProps = {
@@ -169,7 +171,8 @@ const mapDispatchToProps = (dispatch) => ({
 	handleAttribute: (operation, attribute, index) =>
 		dispatch(handleAttribute(operation, attribute, index)),
 	handleDecisions: (operation, decision) => dispatch(handleDecision(operation, decision)),
-	handleAddRulesetData: (payload) => dispatch(addRulesetData(payload))
+	handleAddRulesetData: (payload) => dispatch(addRulesetData(payload)),
+	changeRulecaseOrderAction: (payload) => dispatch(changeRulecaseOrder(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RulesetContainer);

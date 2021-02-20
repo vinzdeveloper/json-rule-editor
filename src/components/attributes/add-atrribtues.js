@@ -67,7 +67,7 @@ class AddAttributes extends Component {
 								label={buttonProps.primaryLabel}
 								onConfirm={this.handleAdd}
 								classname="primary-btn"
-								type="submit"
+								// type="submit"
 							/>
 							<Button
 								label={buttonProps.secondaryLabel}

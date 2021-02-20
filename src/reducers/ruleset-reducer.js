@@ -20,7 +20,7 @@ const reverseOperatorsMap = {
 	'>': 'greaterThan',
 	'>=': 'greaterThanInclusive'
 };
-function ruleset(state = initialState, action = '') {
+function ruleset(state = initialState || {}, action = '') {
 	switch (action.type) {
 		case ActionTypes.UPLOAD_RULESET: {
 			const { ruleset } = action.payload;
@@ -230,7 +230,25 @@ function ruleset(state = initialState, action = '') {
 			}
 			return { ...state };
 		}
-
+		case ActionTypes.CHANGE_RULECASE_ORDER: {
+			const { direction, rulecaseIndex } = action.payload;
+			const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
+			if (activeRuleSet.data) {
+				if (direction === 'up') {
+					const temp = activeRuleSet.data[rulecaseIndex];
+					activeRuleSet.data[rulecaseIndex] = activeRuleSet.data[rulecaseIndex - 1];
+					activeRuleSet.data[rulecaseIndex - 1] = temp;
+				} else {
+					const temp = activeRuleSet.data[rulecaseIndex];
+					activeRuleSet.data[rulecaseIndex] = activeRuleSet.data[rulecaseIndex + 1];
+					activeRuleSet.data[rulecaseIndex + 1] = temp;
+				}
+			}
+			return {
+				...state,
+				rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)
+			};
+		}
 		default:
 			return { ...state };
 	}

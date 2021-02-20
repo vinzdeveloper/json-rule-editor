@@ -54,3 +54,7 @@ export const handleDecision = (action, editDecision = {}) => (dispatch) => {
 		}
 	}
 };
+
+export const changeRulecaseOrder = (payload) => {
+	return { type: ActionTypes.CHANGE_RULECASE_ORDER, payload };
+};

@@ -536,7 +536,7 @@ class AddDecision extends Component {
 							label={'Add Expression'}
 							onConfirm={() => this.handleAddRule('Add fact node')}
 							classname="btn-toolbar"
-							type="submit"
+							// type="submit"
 						/>
 						<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
 					</div>
@@ -600,7 +600,7 @@ class AddDecision extends Component {
 							label={'Add Yield'}
 							onConfirm={() => this.handleAddYield('Add fact node')}
 							classname="btn-toolbar"
-							type="submit"
+							// type="submit"
 						/>
 						<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
 					</div>

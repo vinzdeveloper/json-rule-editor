@@ -29,6 +29,7 @@ class Decision extends Component {
 		this.removeDecisions = this.removeDecisions.bind(this);
 		this.handleReset = this.handleReset.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
+		this.changeRulecaseOrder = this.changeRulecaseOrder.bind(this);
 	}
 
 	handleSearch = (value) => {
@@ -89,7 +90,9 @@ class Decision extends Component {
 	handleReset() {
 		this.props.handleDecisions('RESET');
 	}
-
+	changeRulecaseOrder(payload) {
+		this.props.changeRulecaseOrder(payload);
+	}
 	filterOutcomes = () => {
 		const { searchCriteria } = this.state;
 		const { outcomes } = this.props;
@@ -151,6 +154,7 @@ class Decision extends Component {
 					removeDecisions={this.removeDecisions}
 					ruleset={this.props.ruleset}
 					attributes={this.props.attributes}
+					changeRulecaseOrder={this.props.changeRulecaseOrder}
 				/>
 
 				{(!this.props.ruleset.data || this.props.ruleset.data.length === 0) && (
@@ -178,6 +182,7 @@ Decision.propTypes = {
 	attributes: PropTypes.array,
 	outcomes: PropTypes.object,
 	handleAddRulesetData: PropTypes.func,
+	changeRulecaseOrder: PropTypes.func,
 	ruleset: PropTypes.object
 };
 

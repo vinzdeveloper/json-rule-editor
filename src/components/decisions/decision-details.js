@@ -49,6 +49,7 @@ class DecisionDetails extends Component {
 		this.cancelAlert = this.cancelAlert.bind(this);
 		this.removeCase = this.removeCase.bind(this);
 		this.removeDecisions = this.removeDecisions.bind(this);
+		this.changeRulecaseOrder = this.changeRulecaseOrder.bind(this);
 	}
 
 	handleEdit(e, val) {
@@ -156,6 +157,11 @@ class DecisionDetails extends Component {
 			</div>
 		);
 	};
+
+	changeRulecaseOrder(e, payload) {
+		e.preventDefault();
+		this.props.changeRulecaseOrder(payload);
+	}
 
 	renderConditions = (_, index) => {
 		// const transformedData = transformRuleToTree(conditions);
@@ -370,6 +376,26 @@ class DecisionDetails extends Component {
 						<a href="" onClick={(e) => this.handleRemoveConditions(e, /*String(note)*/ index)}>
 							Remove
 						</a>
+						{index !== 0 && (
+							<a
+								href=""
+								onClick={(e) =>
+									this.changeRulecaseOrder(e, { direction: 'up', rulecaseIndex: index })
+								}
+							>
+								<span className="fa fa-arrow-up" />
+							</a>
+						)}
+						{index !== rulecases.length - 1 && (
+							<a
+								href=""
+								onClick={(e) =>
+									this.changeRulecaseOrder(e, { direction: 'down', rulecaseIndex: index })
+								}
+							>
+								<span className="fa fa-arrow-down" />
+							</a>
+						)}
 					</div>
 				</PanelBox>
 
@@ -401,7 +427,8 @@ DecisionDetails.propTypes = {
 	removeCase: PropTypes.func,
 	removeDecisions: PropTypes.func,
 	outcomes: PropTypes.object,
-	ruleset: PropTypes.object
+	ruleset: PropTypes.object,
+	changeRulecaseOrder: PropTypes.func
 };
 
 export default DecisionDetails;

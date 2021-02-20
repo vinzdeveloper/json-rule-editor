@@ -495,7 +495,7 @@ class AddDecision extends Component {
 							onChange={this.onChangeNote}
 							note={note}
 							label="Note"
-							placeholder={placeholder}
+							placeholder="Note..."
 						/>
 					</div>
 

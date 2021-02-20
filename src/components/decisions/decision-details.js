@@ -75,9 +75,13 @@ class DecisionDetails extends Component {
 		this.setState({ showCase: cases });
 	}
 
-	handleRemoveCondition(e, decisionIndex) {
+	handleRemoveCondition(e, decisionIndex, rulecaseIndex) {
 		e.preventDefault();
-		this.setState({ removeAlert: true, removeDecisionIndex: decisionIndex });
+		this.setState({
+			removeAlert: true,
+			removeDecisionIndex: decisionIndex,
+			removeRuleCaseIndex: rulecaseIndex
+		});
 	}
 
 	handleRemoveConditions(e, index) {
@@ -90,7 +94,7 @@ class DecisionDetails extends Component {
 	};
 
 	removeCase = () => {
-		this.props.removeCase(this.state.removeDecisionIndex);
+		this.props.removeCase(this.state.removeDecisionIndex, this.state.removeRuleCaseIndex);
 		this.setState({
 			removeAlert: false,
 			successAlert: true,

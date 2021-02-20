@@ -79,8 +79,8 @@ class Decision extends Component {
 		this.setState({ editCaseFlag: false });
 	}
 
-	removeCase(decisionIndex) {
-		this.props.handleDecisions('REMOVECONDITION', { decisionIndex });
+	removeCase(decisionIndex, rulecaseIndex) {
+		this.props.handleDecisions('REMOVECONDITION', { decisionIndex, rulecaseIndex });
 	}
 
 	removeDecisions(outcome) {

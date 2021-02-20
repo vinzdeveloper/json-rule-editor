@@ -135,10 +135,14 @@ function ruleset(state = initialState || {}, action = '') {
 			};
 		}
 		case ActionTypes.REMOVE_DECISION: {
-			const { decisionIndex } = action.payload;
+			const { decisionIndex, rulecaseIndex } = action.payload;
 			const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
 
-			activeRuleSet.decisions.splice(decisionIndex, 1);
+			activeRuleSet &&
+				activeRuleSet.data &&
+				activeRuleSet.data[rulecaseIndex] &&
+				activeRuleSet.data[rulecaseIndex] &&
+				activeRuleSet.data[rulecaseIndex].expressions.splice(decisionIndex, 1);
 
 			return {
 				...state,

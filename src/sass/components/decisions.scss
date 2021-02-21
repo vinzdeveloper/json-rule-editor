@@ -62,7 +62,6 @@
 		& .form-field {
 			min-width: 300px;
 			max-width: 400px;
-			padding: 12px 0px;
 			flex-grow: 1;
 		}
 	}
@@ -71,11 +70,11 @@
 		flex-direction: row;
 		justify-content: flex-start;
 		align-items: center;
-		width: 800;
+		width: 1200;
 
 		& .form-field {
 			min-width: 200px;
-			max-width: 300px;
+			max-width: 500px;
 			flex-grow: 1;
 		}
 	}

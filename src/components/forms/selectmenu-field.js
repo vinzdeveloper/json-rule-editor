@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
@@ -12,6 +13,73 @@ const SelectField = ({
 	value,
 	readOnly
 }) => {
+	const customStyles = {
+		placeholder: () => ({
+			// color: colors.lightGrey,
+			padding: 10,
+			fontStyle: 'italic'
+		}),
+		control: (provided) => ({
+			...provided,
+			width: `400px`,
+			height: '100%',
+			cursor: 'pointer',
+			backgroundColor: '#fff',
+			fontSize: '16px',
+			marginTop: 5
+		}),
+		option: (provided, state) => ({
+			...provided,
+			// color: colors.white,
+			'&:hover': {
+				// background: colors.offBlack
+			},
+			cursor: 'pointer',
+
+			background: state.isSelected ? '#4574c3' : state.isFocused ? '#3c67ad' : '#fff',
+			color: state.isSelected ? '#fff' : state.isFocused ? '#fff' : '#2a3f54',
+
+			padding: 10
+		}),
+		singleValue: (provided) => ({
+			...provided,
+			color: '#2a3f54'
+		}),
+		input: (provided) => ({
+			...provided,
+			color: '#2a3f54'
+		}),
+		menuList: () => ({
+			position: 'absolute',
+			width: `400px`,
+			maxHeight: '180px',
+			overflowY: 'auto',
+			borderRadius: '5px'
+			// border: `2px solid ${colors.darkerGrey}`
+		}),
+		indicatorsContainer: () => ({
+			position: 'relative',
+			top: '-2px',
+			display: 'flex'
+		}),
+		multiValue: (provided) => ({
+			...provided
+			// background: colors.greenMain
+		}),
+		multiValueLabel: (provided) => ({
+			...provided,
+			color: '#2a3f54'
+		}),
+		multiValueRemove: (provided) => ({
+			...provided,
+			color: '#2a3f54',
+
+			'&:hover': {
+				background: '#fff'
+				// color: colors.greenMain
+			}
+		})
+	};
 	const [fieldValue, setFieldValue] = useState(null);
 	let errorClass = error ? 'error' : undefined;
 	let readOnlyClass = readOnly ? 'readOnly' : undefined;
@@ -32,17 +100,19 @@ const SelectField = ({
 			? fieldValue.split(',').map((f) => ({ label: f, value: f }))
 			: fieldValue && { label: fieldValue, value: fieldValue };
 	return (
-		<div className="form-field">
+		<div style={{ marginTop: 5, marginRight: 8 }}>
 			{label && <label>{label}</label>}
 
 			<Select
 				options={options && options.map((op) => ({ label: op, value: op }))}
 				isClearable
 				onChange={change}
-				className={`form-field-drpdwn ${errorClass} ${readOnlyClass}`}
+				// className={`form-field-drpdwn ${errorClass} ${readOnlyClass}`}
 				value={fieldValue && actualValue}
 				isDisabled={readOnly}
 				isMulti={isMulti}
+				styles={customStyles}
+				placeholder={label}
 			/>
 		</div>
 	);

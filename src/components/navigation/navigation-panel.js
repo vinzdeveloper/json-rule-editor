@@ -6,18 +6,18 @@ import FooterLinks from '../footer/footer';
 import footerLinks from '../../data-objects/footer-links.json';
 
 const navmenu = [
-	{
-		name: 'Create Rules',
-		navigate: '/create-ruleset',
-		iconClass: 'icon fa fa-plus-square-o',
-		linkClass: 'navmenu'
-	},
-	{
-		name: 'Upload Rules',
-		navigate: '/home',
-		iconClass: 'icon fa fa-cloud-upload',
-		linkClass: 'navmenu'
-	}
+	// {
+	// 	name: 'Create Rules',
+	// 	navigate: '/create-ruleset',
+	// 	iconClass: 'icon fa fa-plus-square-o',
+	// 	linkClass: 'navmenu'
+	// },
+	// {
+	// 	name: 'Upload Rules',
+	// 	navigate: '/home',
+	// 	iconClass: 'icon fa fa-cloud-upload',
+	// 	linkClass: 'navmenu'
+	// }
 ];
 class NavigationPanel extends Component {
 	constructor(props) {

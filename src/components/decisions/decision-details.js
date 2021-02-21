@@ -233,10 +233,15 @@ class DecisionDetails extends Component {
 								<div>
 									<InputField
 										// onChange={(value) => this.onChangeField(value, 'value')}
-										value={expression.value}
+										value={
+											typeof expression.value !== 'undefined' || expression.value != null
+												? expression.value
+												: 'null'
+										}
 										// error={expression.error.value}
 										label={idx === 0 && 'Value'}
 										readOnly={currentEditIndex !== idx}
+										style={{ width: 500 }}
 										// placeholder={placeholder}
 									/>
 								</div>
@@ -282,7 +287,9 @@ class DecisionDetails extends Component {
 								<div>
 									<InputField
 										// onChange={(value) => this.onChangeField(value, 'value')}
-										value={yld.weight}
+										value={
+											typeof yld.weight !== 'undefined' || yld.weight != null ? yld.weight : 'null'
+										}
 										// error={expression.error.value}
 										label={idx === 0 && 'Weight'}
 										readOnly

@@ -33,7 +33,7 @@ function ruleset(state = initialState || {}, action = '') {
 					expressions: expressions.map(({ lhs: name, operator, rhs: value }) => ({
 						name,
 						operator: reverseOperatorsMap[operator] || operator,
-						value
+						value: value === 'null' ? undefined : value
 					})),
 					...others
 				};
@@ -151,7 +151,7 @@ function ruleset(state = initialState || {}, action = '') {
 							operator ||
 							activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex].operator,
 
-						value: value || activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex].value
+						value: value
 					};
 				}
 			} else if (currentEditType === 'yield') {
@@ -165,7 +165,7 @@ function ruleset(state = initialState || {}, action = '') {
 				) {
 					activeRuleSet.data[currentRuleIndex].yields[currentEditIndex] = {
 						...activeRuleSet.data[currentRuleIndex].yields[currentEditIndex],
-						weight: weight || activeRuleSet.data[currentRuleIndex].yields[currentEditIndex].weight,
+						weight: weight,
 						partner:
 							partner || activeRuleSet.data[currentRuleIndex].yields[currentEditIndex].partner
 					};

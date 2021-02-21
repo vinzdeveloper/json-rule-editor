@@ -43,7 +43,7 @@ class RulesetContainer extends Component {
 		const rules = data.map(({ expressions, note, yields }) => {
 			return {
 				note,
-				expressions: expressions.map(({ name: lhs, operator, value: rhs }) => ({
+				expressions: expressions.map(({ name: lhs, operator, value: rhs = 'null' }) => ({
 					lhs,
 					operator: operatorsMap[operator] || operator,
 					rhs

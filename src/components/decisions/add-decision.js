@@ -670,8 +670,9 @@ class AddDecision extends Component {
 						/>
 					</div>
 
-					<div className="add-field-panel-row">
-						<div className="field">
+					<hr />
+					<div className="add-field-panel-row" style={{ marginTop: 8 }}>
+						<div className="field" style={{ marginTop: 8 }}>
 							<SelectField
 								options={attributeOptions}
 								onChange={(e) => this.onChangeField(e, 'name')}
@@ -701,7 +702,6 @@ class AddDecision extends Component {
 							{this.renderValueField({ expression })}
 						</div>
 					</div>
-
 					<div className="add-field-panel-row ">
 						<Button
 							label={'Add Expression'}
@@ -743,7 +743,6 @@ class AddDecision extends Component {
 								</div>
 							</div>
 						))}
-
 					<hr />
 					<div className="add-field-panel-row">
 						<div>
@@ -765,7 +764,6 @@ class AddDecision extends Component {
 							/>
 						</div>
 					</div>
-
 					<div className="add-field-panel-row ">
 						<Button
 							label={'Add Yield'}

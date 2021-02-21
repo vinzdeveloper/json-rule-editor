@@ -15,9 +15,9 @@ const SelectField = ({
 }) => {
 	const customStyles = {
 		placeholder: () => ({
-			// color: colors.lightGrey,
 			padding: 10,
-			fontStyle: 'italic'
+			fontSize: 16,
+			color: '#2a3f54'
 		}),
 		control: (provided) => ({
 			...provided,
@@ -36,8 +36,8 @@ const SelectField = ({
 			},
 			cursor: 'pointer',
 
-			background: state.isSelected ? '#4574c3' : state.isFocused ? '#3c67ad' : '#fff',
-			color: state.isSelected ? '#fff' : state.isFocused ? '#fff' : '#2a3f54',
+			background: state.isSelected ? '#4574c3' : state.isFocused ? '#d1e2ff' : '#fff',
+			color: state.isSelected ? '#fff' : state.isFocused ? '#2a3f54' : '#2a3f54',
 
 			padding: 10
 		}),
@@ -52,10 +52,10 @@ const SelectField = ({
 		menuList: () => ({
 			position: 'absolute',
 			width: `400px`,
-			maxHeight: '180px',
+			maxHeight: '300px',
 			overflowY: 'auto',
-			borderRadius: '5px'
-			// border: `2px solid ${colors.darkerGrey}`
+			borderRadius: '5px',
+			border: `2px solid #2a3f54`
 		}),
 		indicatorsContainer: () => ({
 			position: 'relative',

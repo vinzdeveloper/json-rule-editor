@@ -57,15 +57,15 @@ class AddDecision extends Component {
 			: { name: 'all', nodeSvgShape: nodeStyle, children: [] };
 		const activeNode = { index: 0, depth: 0 };
 		// const node = ;
-
 		this.state = {
-			note: '',
+			note: (props.rulecase && props.rulecase.note) || '',
+
 			name: '',
 			attributes: props.attributes,
 			expression: defaultExpression,
 			yield: defaultYield,
-			expressions: [],
-			yields: [],
+			expressions: props.rulecase ? props.rulecase.expressions : [],
+			yields: props.rulecase ? props.rulecase.yields : [],
 			outcome,
 			addAttribute,
 			enableTreeView: true,
@@ -432,15 +432,15 @@ class AddDecision extends Component {
 			</div>
 		);
 	}
-	renderValueField({ expression }) {
+	renderValueField({ expression, hideLabel }) {
 		if (FieldOptions[expression.name] && FieldOptions[expression.name].length > 0) {
 			return (
 				<SelectField
 					options={FieldOptions[expression.name]}
 					onChange={(e) => this.onChangeField(e, 'value')}
 					value={expression.value}
-					error={expression.error.value}
-					label="Value"
+					// error={expression && expression.error.value}
+					label={!hideLabel && 'Value'}
 					isMulti
 				/>
 			);
@@ -449,8 +449,8 @@ class AddDecision extends Component {
 				<InputField
 					onChange={(value) => this.onChangeField(value, 'value')}
 					value={expression.value}
-					error={expression.error.value}
-					label="Value"
+					// error={expression.error.value}
+					label={!hideLabel && 'Value'}
 					type={expression.operator === 'number' ? 'number' : 'text'}
 					placeholder={PLACEHOLDER.number}
 				/>
@@ -462,6 +462,184 @@ class AddDecision extends Component {
 			note,
 			attributes,
 			expression,
+			expressions = [],
+			yields = [],
+			yield: Yield
+		} = this.state;
+		const attributeOptions = attributes.map((attr) => attr.name);
+		const attribute = expression.name && attributes.find((attr) => attr.name === expression.name);
+
+		const opertorOptions = attribute && operator[attribute.type];
+
+		const placeholder =
+			expression.operator === 'contains' || expression.operator === 'doesNotContain'
+				? PLACEHOLDER['string']
+				: PLACEHOLDER[attribute.type];
+		const getOperators = (eName) => {
+			const attribute = attributes.find((attr) => attr.name === eName);
+			const opertorOptions = attribute && operator[attribute.type];
+			return opertorOptions;
+		};
+		return (
+			<Panel>
+				<div className="attributes-header">
+					{/* Add Path  <div className="attr-link" onClick={this.addPath}>
+						<span className="plus-icon" />
+						<span className="text">Add Path</span>
+					</div> */}
+				</div>
+
+				<div className="add-field-panel">
+					<div className="add-field-panel-row">
+						<InputField
+							onChange={this.onChangeNote}
+							value={note}
+							label="Note"
+							placeholder="Note..."
+						/>
+					</div>
+
+					<div className="add-field-panel-row">
+						<div className="field">
+							<SelectField
+								options={attributeOptions}
+								onChange={(e) => this.onChangeField(e, 'name')}
+								value={expression.name}
+								error={expression.error.name}
+								label="Expressions"
+							/>
+						</div>
+						<div>
+							<SelectField
+								options={opertorOptions}
+								onChange={(e) => this.onChangeField(e, 'operator')}
+								value={expression.operator}
+								error={expression.error.operator}
+								label="Operator"
+							/>
+						</div>
+						<div>
+							{/* <InputField
+								onChange={(value) => this.onChangeField(value, 'value')}
+								value={expression.value}
+								error={expression.error.value}
+								label="Value"
+								type={expression.operator === 'number' ? 'number' : 'text'}
+								placeholder={PLACEHOLDER.number}
+							/> */}
+							{this.renderValueField({ expression })}
+						</div>
+					</div>
+
+					<div className="add-field-panel-row ">
+						<Button
+							label={'Add Expression'}
+							onConfirm={() => this.handleAddRule('Add fact node')}
+							classname="btn-toolbar"
+							// type="submit"
+						/>
+						<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
+					</div>
+					{expressions &&
+						expressions.map((expression, index) => (
+							<div key={`${expression.name}${expression.value}`} className="add-field-panel-row">
+								<div className="field">
+									<SelectField
+										options={attributeOptions}
+										onChange={(e) => this.onEditField(e, 'name', index)}
+										value={expression.name}
+										// error={expression.error.name}
+										label={index === 0 && 'Expressions'}
+									/>
+								</div>
+								<div>
+									<SelectField
+										options={getOperators(expression.name)}
+										onChange={(e) => this.onEditField(e, 'operator', index)}
+										value={expression.operator}
+										// error={expression.error.operator}
+										label={index === 0 && 'Operator'}
+									/>
+								</div>
+								{/* <div>
+									<InputField
+										onChange={(value) => this.onEditField(value, 'value', index)}
+										value={expression.value}
+										// error={expression.error.value}
+										label={index === 0 && 'Value'}
+										placeholder={placeholder}
+									/>
+								</div> */}
+								{this.renderValueField({ expression, hideLabel: index !== 0 })}
+							</div>
+						))}
+
+					<hr />
+					<div className="add-field-panel-row">
+						<div>
+							<SelectField
+								options={partnerOptions}
+								onChange={(e) => this.onChangeYield(e, 'partner')}
+								value={Yield.partner}
+								error={Yield.error.partner}
+								label="Yields"
+							/>
+						</div>
+						<div>
+							<InputField
+								onChange={(value) => this.onChangeYield(value, 'weight')}
+								value={Yield.weight}
+								error={Yield.error.weight}
+								label="Weight"
+								placeholder={PLACEHOLDER.number}
+							/>
+						</div>
+					</div>
+
+					<div className="add-field-panel-row ">
+						<Button
+							label={'Add Yield'}
+							onConfirm={() => this.handleAddYield('Add fact node')}
+							classname="btn-toolbar"
+							// type="submit"
+						/>
+						<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
+					</div>
+					{yields.map((yld, index) => (
+						<div key={`${yld.partner}${yld.weight}`} className="add-field-panel-row">
+							<div>
+								<SelectField
+									options={partnerOptions}
+									onChange={(e) => this.onChangeYield(e, 'partner')}
+									value={yld.partner}
+									// error={yld.error.operator}
+									label={index === 0 && 'Yields'}
+								/>
+							</div>
+							<div>
+								<InputField
+									onChange={(value) => this.onChangeYield(value, 'weight')}
+									value={yld.weight}
+									// error={yld.error.value}
+									label={index === 0 && 'Weight'}
+									placeholder={PLACEHOLDER.number}
+									type="number"
+								/>
+							</div>
+						</div>
+					))}
+					<hr />
+				</div>
+			</Panel>
+		);
+	}
+	editPanel() {
+		const {
+			attributes,
+
+			expression,
+			note,
+
 			expressions = [],
 			yields = [],
 			yield: Yield
@@ -629,27 +807,9 @@ class AddDecision extends Component {
 					))}
 					<hr />
 				</div>
-
-				{
-					// addPathflag && (
-					// 	<div className="add-field-panel half-width">
-					// 		<div>
-					// 			{/*<InputField onChange={(value) => this.onChangeNewFact(value, 'path')} value={addAttribute.path}
-					//         label="Path" placeholder={"Enter path value - dont give prefix ' . ' "}/> */}
-					// 			<SelectField
-					// 				options={attributeOptions}
-					// 				onChange={(e) => this.onChangeField(e, 'path')}
-					// 				value={addAttribute.path}
-					// 				label="Path"
-					// 			/>
-					// 		</div>
-					// 	</div>
-					// )
-				}
 			</Panel>
 		);
 	}
-
 	outputPanel() {
 		const { outcome } = this.state;
 		const { editDecision } = this.props;
@@ -765,7 +925,8 @@ AddDecision.propTypes = {
 	attributes: PropTypes.array,
 	outcome: PropTypes.object,
 	editDecision: PropTypes.bool,
-	editCondition: PropTypes.object
+	editCondition: PropTypes.object,
+	rulecase: PropTypes.object
 };
 
 export default AddDecision;

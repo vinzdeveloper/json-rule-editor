@@ -59,6 +59,7 @@ class DecisionDetails extends Component {
 
 	editCondition(e, decisionIndex, rulecaseIndex) {
 		e.preventDefault();
+		// this.setState({ currentEditIndex: decisionIndex });
 		this.props.editCondition(decisionIndex, rulecaseIndex);
 	}
 
@@ -172,7 +173,7 @@ class DecisionDetails extends Component {
 		// eslint-disable-next-line no-unused-vars
 		// const { data: { expressions = [], yields = [], note = '' } = {} } = this.props.ruleset;
 		const { data: rulecases = [] } = this.props.ruleset;
-
+		const { currentEditIndex } = this.state;
 		const { expressions = [], yields = [], note = '' } = rulecases[index];
 		return (
 			<div className="rule-flex-container">
@@ -203,7 +204,7 @@ class DecisionDetails extends Component {
 										value={expression.name}
 										// error={expression.error.value}
 										label={idx === 0 && 'Expressions'}
-										readOnly
+										readOnly={currentEditIndex !== idx}
 										// placeholder={placeholder}
 									/>
 								</div>
@@ -220,7 +221,7 @@ class DecisionDetails extends Component {
 										value={expression.operator}
 										// error={expression.error.operator}
 										label={idx === 0 && 'Operator'}
-										readOnly
+										readOnly={currentEditIndex !== idx}
 										// placeholder={placeholder}
 									/>
 								</div>
@@ -230,7 +231,7 @@ class DecisionDetails extends Component {
 										value={expression.value}
 										// error={expression.error.value}
 										label={idx === 0 && 'Value'}
-										readOnly
+										readOnly={currentEditIndex !== idx}
 										// placeholder={placeholder}
 									/>
 								</div>
@@ -368,6 +369,30 @@ class DecisionDetails extends Component {
 		const conditions = rulecases.map(({ expressions, note }, index) => (
 			<div key={note}>
 				<PanelBox className={'boolean'} key={`PanelBox-${note}`}>
+					<div style={{ width: 60 }}>
+						{index !== 0 && (
+							<a
+								style={{ marginRight: 14 }}
+								href=""
+								onClick={(e) =>
+									this.changeRulecaseOrder(e, { direction: 'up', rulecaseIndex: index })
+								}
+							>
+								<span className="fa fa-arrow-up" />
+							</a>
+						)}
+						{index !== rulecases.length - 1 && (
+							<a
+								style={{ marginRight: 0 }}
+								href=""
+								onClick={(e) =>
+									this.changeRulecaseOrder(e, { direction: 'down', rulecaseIndex: index })
+								}
+							>
+								<span className="fa fa-arrow-down" />
+							</a>
+						)}
+					</div>
 					<div className="index">{index + 1}</div>
 					<div className="name">{String(note)}</div>
 					<div className="type">
@@ -380,26 +405,6 @@ class DecisionDetails extends Component {
 						<a href="" onClick={(e) => this.handleRemoveConditions(e, /*String(note)*/ index)}>
 							Remove
 						</a>
-						{index !== 0 && (
-							<a
-								href=""
-								onClick={(e) =>
-									this.changeRulecaseOrder(e, { direction: 'up', rulecaseIndex: index })
-								}
-							>
-								<span className="fa fa-arrow-up" />
-							</a>
-						)}
-						{index !== rulecases.length - 1 && (
-							<a
-								href=""
-								onClick={(e) =>
-									this.changeRulecaseOrder(e, { direction: 'down', rulecaseIndex: index })
-								}
-							>
-								<span className="fa fa-arrow-down" />
-							</a>
-						)}
 					</div>
 				</PanelBox>
 

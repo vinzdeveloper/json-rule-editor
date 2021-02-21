@@ -59,7 +59,10 @@ a.btn.btn-lg.btn-primary {
 	background-color: $primary-btn-color;
 	border: 1px solid $primary-btn-color;
 }
-
+.small-btn {
+	height: 35px;
+	margin-top: 6px;
+}
 .primary-btn:focus {
 	background-color: #3c67ad;
 	border: 1px solid #3c67ad;

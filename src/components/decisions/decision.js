@@ -62,10 +62,9 @@ class Decision extends Component {
 
 	updateCondition(condition) {
 		this.props.handleDecisions('UPDATE', {
-			condition,
-			decisionIndex: this.state.editDecisionIndex
+			...condition
 		});
-		this.setState({ editCaseFlag: false });
+		// this.setState({ editCaseFlag: false });
 	}
 
 	removeCase(decisionIndex, rulecaseIndex, type) {
@@ -138,6 +137,7 @@ class Decision extends Component {
 				)}
 
 				<DecisionDetails
+					searchCriteria={this.state.searchCriteria}
 					outcomes={filteredOutcomes}
 					editCondition={this.editCondition}
 					removeCase={this.removeCase}
@@ -145,6 +145,7 @@ class Decision extends Component {
 					ruleset={this.props.ruleset}
 					attributes={this.props.attributes}
 					changeRulecaseOrder={this.props.changeRulecaseOrder}
+					updateCondition={this.updateCondition}
 				/>
 
 				{(!this.props.ruleset.data || this.props.ruleset.data.length === 0) && (

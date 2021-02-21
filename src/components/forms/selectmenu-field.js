@@ -11,7 +11,8 @@ const SelectField = ({
 	required,
 	options,
 	value,
-	readOnly
+	readOnly,
+	placeholder
 }) => {
 	const customStyles = {
 		placeholder: () => ({
@@ -21,7 +22,7 @@ const SelectField = ({
 		}),
 		control: (provided) => ({
 			...provided,
-			width: `400px`,
+			width: `300px`,
 			height: '100%',
 			cursor: 'pointer',
 			backgroundColor: '#fff',
@@ -51,7 +52,7 @@ const SelectField = ({
 		}),
 		menuList: () => ({
 			position: 'absolute',
-			width: `400px`,
+			width: `300px`,
 			maxHeight: '300px',
 			overflowY: 'auto',
 			borderRadius: '5px',
@@ -112,7 +113,7 @@ const SelectField = ({
 				isDisabled={readOnly}
 				isMulti={isMulti}
 				styles={customStyles}
-				placeholder={label}
+				placeholder={placeholder || label}
 			/>
 		</div>
 	);
@@ -149,6 +150,7 @@ SelectField.defaultProps = {
 
 SelectField.propTypes = {
 	label: PropTypes.string,
+	placeholder: PropTypes.string,
 	onChange: PropTypes.func,
 	error: PropTypes.string,
 	required: PropTypes.bool,

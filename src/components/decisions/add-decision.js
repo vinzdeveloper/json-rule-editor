@@ -134,6 +134,11 @@ class AddDecision extends Component {
 		expressions[index][name] = e.target.value;
 		this.setState({ expressions });
 	}
+	onEditYield(e, name, index) {
+		const yields = [...this.state.yields];
+		yields[index][name] = e.target.value;
+		this.setState({ yields });
+	}
 	onChangeField(e, name) {
 		const expression = { ...this.state.expression };
 		if (Array.isArray(e)) {
@@ -148,11 +153,7 @@ class AddDecision extends Component {
 		this.setState({ expression });
 	}
 	// onChangeField(e, name) {}
-	onEditYield(e, name, index) {
-		const yields = [...this.state.yields];
-		yields[index][name] = e.target.value;
-		this.setState({ yields });
-	}
+
 	onChangeYield(e, name) {
 		const yieldV = { ...this.state.yield };
 		const error = {};
@@ -561,15 +562,7 @@ class AddDecision extends Component {
 										label={index === 0 && 'Operator'}
 									/>
 								</div>
-								{/* <div>
-									<InputField
-										onChange={(value) => this.onEditField(value, 'value', index)}
-										value={expression.value}
-										// error={expression.error.value}
-										label={index === 0 && 'Value'}
-										placeholder={placeholder}
-									/>
-								</div> */}
+
 								{this.renderValueField({ expression, hideLabel: index !== 0 })}
 							</div>
 						))}

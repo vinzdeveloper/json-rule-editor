@@ -123,10 +123,65 @@ function ruleset(state = initialState || {}, action = '') {
 		}
 
 		case ActionTypes.UPDATE_DECISION: {
-			const { condition, decisionIndex } = action.payload;
-			const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
+			const {
+				expression,
+				yield: Yield,
+				currentEditType,
+				currentEditIndex,
+				currentRuleIndex,
+				note
+			} = action.payload;
+			const { name, operator, value } = expression;
+			const { partner, weight } = Yield;
 
-			activeRuleSet.decisions[decisionIndex] = condition;
+			const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
+			if (currentEditType === 'expression') {
+				if (
+					activeRuleSet &&
+					activeRuleSet.data &&
+					activeRuleSet.data[currentRuleIndex] &&
+					activeRuleSet.data[currentRuleIndex] &&
+					activeRuleSet.data[currentRuleIndex].expressions &&
+					activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex]
+				) {
+					activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex] = {
+						...activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex],
+						name: name || activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex].name,
+						operator:
+							operator ||
+							activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex].operator,
+
+						value: value || activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex].value
+					};
+				}
+			} else if (currentEditType === 'yield') {
+				if (
+					activeRuleSet &&
+					activeRuleSet.data &&
+					activeRuleSet.data[currentRuleIndex] &&
+					activeRuleSet.data[currentRuleIndex] &&
+					activeRuleSet.data[currentRuleIndex].yields &&
+					activeRuleSet.data[currentRuleIndex].yields[currentEditIndex]
+				) {
+					activeRuleSet.data[currentRuleIndex].yields[currentEditIndex] = {
+						...activeRuleSet.data[currentRuleIndex].yields[currentEditIndex],
+						weight: weight || activeRuleSet.data[currentRuleIndex].yields[currentEditIndex].weight,
+						partner:
+							partner || activeRuleSet.data[currentRuleIndex].yields[currentEditIndex].partner
+					};
+				}
+			} else if (currentEditType === 'note') {
+				if (
+					activeRuleSet &&
+					activeRuleSet.data &&
+					activeRuleSet.data[currentRuleIndex] &&
+					activeRuleSet.data[currentRuleIndex] &&
+					activeRuleSet.data[currentRuleIndex].note
+				) {
+					activeRuleSet.data[currentRuleIndex].note =
+						note || activeRuleSet.data[currentRuleIndex].note;
+				}
+			}
 
 			return {
 				...state,

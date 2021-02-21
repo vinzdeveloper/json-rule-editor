@@ -6,9 +6,7 @@ export const removeDecision = (decisionIndex, rulecaseIndex, type) => {
 	return { type: ActionTypes.REMOVE_DECISION, payload };
 };
 
-export const updateDecision = (condition, decisionIndex) => {
-	const payload = { condition, decisionIndex };
-
+export const updateDecision = (payload) => {
 	return { type: ActionTypes.UPDATE_DECISION, payload };
 };
 
@@ -38,8 +36,7 @@ export const handleDecision = (action, editDecision = {}) => (dispatch) => {
 			return dispatch(addDecision(condition));
 		}
 		case 'UPDATE': {
-			const { decisionIndex } = editDecision;
-			return dispatch(updateDecision(condition, decisionIndex));
+			return dispatch(updateDecision(editDecision));
 		}
 		case 'REMOVECONDITION': {
 			const { decisionIndex, rulecaseIndex, type } = editDecision;

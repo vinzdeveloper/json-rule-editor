@@ -1,7 +1,7 @@
 import * as ActionTypes from './action-types';
 
-export const removeDecision = (decisionIndex, rulecaseIndex) => {
-	const payload = { decisionIndex, rulecaseIndex };
+export const removeDecision = (decisionIndex, rulecaseIndex, type) => {
+	const payload = { decisionIndex, rulecaseIndex, type };
 
 	return { type: ActionTypes.REMOVE_DECISION, payload };
 };
@@ -42,8 +42,8 @@ export const handleDecision = (action, editDecision = {}) => (dispatch) => {
 			return dispatch(updateDecision(condition, decisionIndex));
 		}
 		case 'REMOVECONDITION': {
-			const { decisionIndex, rulecaseIndex } = editDecision;
-			return dispatch(removeDecision(decisionIndex, rulecaseIndex));
+			const { decisionIndex, rulecaseIndex, type } = editDecision;
+			return dispatch(removeDecision(decisionIndex, rulecaseIndex, type));
 		}
 		case 'REMOVEDECISIONS': {
 			const { outcome } = editDecision;

@@ -135,14 +135,21 @@ function ruleset(state = initialState || {}, action = '') {
 			};
 		}
 		case ActionTypes.REMOVE_DECISION: {
-			const { decisionIndex, rulecaseIndex } = action.payload;
+			const { decisionIndex, rulecaseIndex, type } = action.payload;
 			const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
-
-			activeRuleSet &&
-				activeRuleSet.data &&
-				activeRuleSet.data[rulecaseIndex] &&
-				activeRuleSet.data[rulecaseIndex] &&
-				activeRuleSet.data[rulecaseIndex].expressions.splice(decisionIndex, 1);
+			if (type === 'expression') {
+				activeRuleSet &&
+					activeRuleSet.data &&
+					activeRuleSet.data[rulecaseIndex] &&
+					activeRuleSet.data[rulecaseIndex] &&
+					activeRuleSet.data[rulecaseIndex].expressions.splice(decisionIndex, 1);
+			} else if (type === 'yield') {
+				activeRuleSet &&
+					activeRuleSet.data &&
+					activeRuleSet.data[rulecaseIndex] &&
+					activeRuleSet.data[rulecaseIndex] &&
+					activeRuleSet.data[rulecaseIndex].yields.splice(decisionIndex, 1);
+			}
 
 			return {
 				...state,

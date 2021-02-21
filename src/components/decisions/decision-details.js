@@ -76,12 +76,13 @@ class DecisionDetails extends Component {
 		this.setState({ showCase: cases });
 	}
 
-	handleRemoveCondition(e, decisionIndex, rulecaseIndex) {
+	handleRemoveCondition(e, decisionIndex, rulecaseIndex, type) {
 		e.preventDefault();
 		this.setState({
 			removeAlert: true,
 			removeDecisionIndex: decisionIndex,
-			removeRuleCaseIndex: rulecaseIndex
+			removeRuleCaseIndex: rulecaseIndex,
+			removeRuleCaseType: type
 		});
 	}
 
@@ -95,7 +96,11 @@ class DecisionDetails extends Component {
 	};
 
 	removeCase = () => {
-		this.props.removeCase(this.state.removeDecisionIndex, this.state.removeRuleCaseIndex);
+		this.props.removeCase(
+			this.state.removeDecisionIndex,
+			this.state.removeRuleCaseIndex,
+			this.state.removeRuleCaseType
+		);
 		this.setState({
 			removeAlert: false,
 			successAlert: true,
@@ -242,7 +247,10 @@ class DecisionDetails extends Component {
 										</a>
 									</div>
 									<div>
-										<a href="" onClick={(e) => this.handleRemoveCondition(e, idx, index)}>
+										<a
+											href=""
+											onClick={(e) => this.handleRemoveCondition(e, idx, index, 'expression')}
+										>
 											<span className="fa fa-trash-o" />
 										</a>
 									</div>
@@ -251,7 +259,7 @@ class DecisionDetails extends Component {
 						))}
 					</div>
 					<div className="add-field-panel">
-						{yields.map((yld, index) => (
+						{yields.map((yld, idx) => (
 							<div key={yld.name} className="view-field-panel-row" style={{ alignItems: 'center' }}>
 								<div className="field">
 									{/* <SelectField
@@ -265,7 +273,7 @@ class DecisionDetails extends Component {
 										// onChange={(value) => this.onChangeField(value, 'value')}
 										value={yld.partner}
 										// error={yld.error.value}
-										label={index === 0 && 'Yields'}
+										label={idx === 0 && 'Yields'}
 										readOnly
 										// placeholder={placeholder}
 									/>
@@ -276,19 +284,19 @@ class DecisionDetails extends Component {
 										// onChange={(value) => this.onChangeField(value, 'value')}
 										value={yld.weight}
 										// error={expression.error.value}
-										label={index === 0 && 'Weight'}
+										label={idx === 0 && 'Weight'}
 										readOnly
 										// placeholder={placeholder}
 									/>
 								</div>
 								<div className="tool-flex">
 									<div>
-										<a href="" onClick={(e) => this.editCondition(e, index)}>
+										<a href="" onClick={(e) => this.editCondition(e, idx)}>
 											<span className="fa fa-edit" />
 										</a>
 									</div>
 									<div>
-										<a href="" onClick={(e) => this.handleRemoveCondition(e, index)}>
+										<a href="" onClick={(e) => this.handleRemoveCondition(e, idx, index, 'yield')}>
 											<span className="fa fa-trash-o" />
 										</a>
 									</div>

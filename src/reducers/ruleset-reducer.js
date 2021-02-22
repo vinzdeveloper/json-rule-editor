@@ -152,7 +152,7 @@ function ruleset(state = initialState || {}, action = '') {
 							operator ||
 							activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex].operator,
 
-						value: value
+						value: value || activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex].value
 					};
 				}
 			} else if (currentEditType === 'yield') {
@@ -166,7 +166,8 @@ function ruleset(state = initialState || {}, action = '') {
 				) {
 					activeRuleSet.data[currentRuleIndex].yields[currentEditIndex] = {
 						...activeRuleSet.data[currentRuleIndex].yields[currentEditIndex],
-						weight: weight,
+						weight: weight || activeRuleSet.data[currentRuleIndex].yields[currentEditIndex].weight,
+
 						partner:
 							partner || activeRuleSet.data[currentRuleIndex].yields[currentEditIndex].partner
 					};

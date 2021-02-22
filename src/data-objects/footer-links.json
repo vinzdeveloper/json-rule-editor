@@ -1,14 +1,5 @@
 [
-
-    {
-        "label": "v1.0.0"
-    },
-    {
-        "label": "Report issue",
-        "src": "https://github.com/vinzdeveloper/json-rule-editor/issues"
-    },
-    {
-        "label": "Docs",
-        "src": "https://vinzdeveloper.github.io/json-rule-editor/docs/"
-    }
+	{
+		"label": "v1.0.0"
+	}
 ]

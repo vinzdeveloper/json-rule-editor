@@ -103,7 +103,6 @@ class DecisionDetails extends Component {
 
 	onChangeNote(e) {
 		this.setState({ note: e.target.value });
-		// this.props.addCondition({ note: e.target.value });
 	}
 	handleEdit(e, val) {
 		e.preventDefault();
@@ -299,10 +298,62 @@ class DecisionDetails extends Component {
 			<div className="rule-flex-container">
 				<div className="decision-box" key={`case - `}>
 					{note && (
-						<div className="add-field-panel">
-							<label>Note: </label>
-							{note}
-						</div>
+						<>
+							<div className="add-field-panel">
+								{this.state.currentEditType !== 'note' ? (
+									<div style={{ display: 'flex', alignItems: 'center' }}>
+										<div style={{ width: 300 }}>
+											<InputField
+												// onChange={(value) => this.onChangeField(value, 'value')}
+												value={note}
+												// error={expression.error.value}
+												label={'Note'}
+												readOnly
+												// placeholder={placeholder}
+											/>
+										</div>
+										<div style={{ marginTop: 28 }}>
+											<a href="" onClick={(e) => this.editCondition(e, -1, index, 'note')}>
+												<span className="fa fa-edit" />
+											</a>
+										</div>
+									</div>
+								) : (
+									<div
+										style={{
+											display: 'flex',
+											justifyContent: 'flex-starts',
+											alignItems: 'center'
+										}}
+									>
+										<div>
+											<InputField
+												onChange={this.onChangeNote}
+												value={note}
+												label="Note"
+												placeholder="Note..."
+											/>
+										</div>
+										<div style={{ marginTop: 26 }}>
+											<Button
+												label="Update"
+												onConfirm={this.updateCondition}
+												classname="primary-btn small-btn"
+												// type="submit"
+											/>
+										</div>
+										<div style={{ marginTop: 26 }}>
+											<Button
+												label="Cancel"
+												onConfirm={this.resetCondition}
+												classname="cancel-btn small-btn"
+												// type="submit"
+											/>
+										</div>
+									</div>
+								)}
+							</div>
+						</>
 					)}
 					<div className="add-field-panel">
 						{expressions.map((expression, idx) => (

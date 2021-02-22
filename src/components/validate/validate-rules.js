@@ -156,7 +156,7 @@ class ValidateRules extends Component {
 				message = (
 					<div className="view-params-container">
 						<h4>Outcomes (Valid Rulecases) </h4>
-						<div>No Rulecases were valid</div>
+						<div>No matching rulesets found</div>
 					</div>
 				);
 			} else if (outcomes && outcomes.length > 0) {

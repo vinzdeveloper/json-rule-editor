@@ -10,6 +10,7 @@ import * as Message from '../../constants/messages';
 import { validateRuleset } from '../../validations/rule-validation';
 import Loader from '../loader/loader';
 import { ViewOutcomes } from '../attributes/view-attributes';
+import FieldOptions from '../../constants/options.json';
 
 class ValidateRules extends Component {
 	constructor(props) {
@@ -42,7 +43,13 @@ class ValidateRules extends Component {
 	}
 
 	handleValue(e, index) {
-		const attribute = { ...this.state.conditions[index], value: e.target.value };
+		let value;
+		if (Array.isArray(e)) {
+			value = e && e.map(({ value }) => value).join(',');
+		} else {
+			value = e;
+		}
+		const attribute = { ...this.state.conditions[index], value };
 		const conditions = [
 			...this.state.conditions.slice(0, index),
 			attribute,
@@ -68,7 +75,7 @@ class ValidateRules extends Component {
 			} else if (condition.value && condition.value.indexOf(',') > -1) {
 				facts[condition.name] = condition.value.split(',');
 			} else {
-				facts[condition.name] = condition.value;
+				facts[condition.name] = condition.value || null;
 			}
 		});
 		// const expressions2 = expressions.map(({ name: fact, operator, value }) => ({
@@ -79,10 +86,10 @@ class ValidateRules extends Component {
 		const decisions = this.props.ruleset.data.map(({ expressions, note }) => {
 			return {
 				conditions: {
-					all: expressions.map(({ name: fact, operator, value }) => ({
+					any: expressions.map(({ name: fact, operator, value }) => ({
 						fact,
 						operator,
-						value
+						value: value
 					}))
 				},
 				event: { type: note }
@@ -94,6 +101,7 @@ class ValidateRules extends Component {
 		// 	{ conditions: { all: [...expressions2] }, event: { type: 'Valid' } }
 		// 	// { conditions: { all: [...expressions2] }, event: { type: '2 isValid' } }
 		// ];
+
 		validateRuleset(facts, decisions)
 			.then((outcomes) => {
 				this.setState({ loading: false, outcomes, result: true, error: false, errorMessage: '' });
@@ -118,8 +126,20 @@ class ValidateRules extends Component {
 						readOnly
 					/>
 				</td>
-				<td colSpan="2">
-					{<InputField onChange={(e) => this.handleValue(e, index)} value={condition.value} />}
+				<td colSpan="4">
+					{condition.type === 'array' ? (
+						<SelectField
+							options={FieldOptions[condition.name]}
+							onChange={(e) => this.handleValue(e, index)}
+							value={condition.value}
+							isMulti
+						/>
+					) : (
+						<InputField
+							onChange={(e) => this.handleValue(e.target.value, index)}
+							value={condition.value}
+						/>
+					)}
 				</td>
 			</tr>
 		));

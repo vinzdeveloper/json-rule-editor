@@ -1,7 +1,9 @@
 import { Engine } from 'json-rules-engine';
 
 export const processEngine = (fact, conditions) => {
-	const engine = new Engine(conditions);
+	// console.log('fact', fact);
+	// console.log('conditions', conditions);
+	const engine = new Engine(conditions, { allowUndefinedFacts: true });
 
 	return engine
 		.run(fact)

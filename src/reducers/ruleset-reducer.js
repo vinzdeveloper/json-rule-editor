@@ -45,14 +45,15 @@ function ruleset(state = initialState || {}, action = '') {
 			// }));
 
 			if (state.rulesets && state.rulesets.length > 0) {
-				rulesets = state.rulesets.concat({
-					name: `Ruleset-${state.rulesets.length + 1}`,
-					atrribtues: [],
-					decisions: [],
-					data: rules
-				});
+				// rulesets = state.rulesets.concat({
+				// 	name: `Ruleset-${state.rulesets.length + 1}`,
+				// 	atrribtues: [],
+				// 	decisions: [],
+				// 	data: rules
+				// });
+				rulesets = [{ name: state.rulesets[0].name, atrribtues: [], decisions: [], data: rules }];
 			} else {
-				rulesets = [{ name: `Ruleset-1`, atrribtues: [], decisions: [], data: rules }];
+				rulesets = [{ name: `Ruleset`, atrribtues: [], decisions: [], data: rules }];
 			}
 			// console.log('state.rulesets', state.rulesets);
 			return { ...state, rulesets: cloneDeep(rulesets), uploadedRules: cloneDeep(rulesets) };
@@ -61,8 +62,8 @@ function ruleset(state = initialState || {}, action = '') {
 		case ActionTypes.ADD_RULESET: {
 			const { name } = action.payload;
 			const rulset = { name, attributes: [], decisions: [] };
-			const count = state.rulesets.length === 0 ? 0 : state.rulesets.length;
-			return { ...state, rulesets: state.rulesets.concat(rulset), activeRuleset: count };
+			// const count = state.rulesets.length === 0 ? 0 : state.rulesets.length;
+			return { ...state, rulesets: [rulset], activeRuleset: 0 };
 		}
 
 		case ActionTypes.ADD_RULESET_DATA: {

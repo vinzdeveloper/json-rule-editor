@@ -124,6 +124,7 @@ class ValidateRules extends Component {
 						onChange={(e) => this.handleAttribute(e, index)}
 						value={condition.name}
 						readOnly
+						width={200}
 					/>
 				</td>
 				<td colSpan="4">
@@ -133,6 +134,7 @@ class ValidateRules extends Component {
 							onChange={(e) => this.handleValue(e, index)}
 							value={condition.value}
 							isMulti
+							width={700}
 						/>
 					) : (
 						<InputField

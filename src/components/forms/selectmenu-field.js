@@ -12,7 +12,8 @@ const SelectField = ({
 	options,
 	value,
 	readOnly,
-	placeholder
+	placeholder,
+	width = 300
 }) => {
 	const customStyles = {
 		placeholder: () => ({
@@ -22,7 +23,7 @@ const SelectField = ({
 		}),
 		control: (provided) => ({
 			...provided,
-			width: `300px`,
+			width: `${width}px`,
 			height: '100%',
 			cursor: 'pointer',
 			backgroundColor: '#fff',
@@ -52,7 +53,7 @@ const SelectField = ({
 		}),
 		menuList: () => ({
 			position: 'absolute',
-			width: `300px`,
+			width: `${width}px`,
 			maxHeight: '300px',
 			overflowY: 'auto',
 			borderRadius: '5px',
@@ -157,7 +158,8 @@ SelectField.propTypes = {
 	options: PropTypes.array,
 	value: PropTypes.string,
 	readOnly: PropTypes.bool,
-	isMulti: PropTypes.bool
+	isMulti: PropTypes.bool,
+	width: PropTypes.number
 };
 
 export default SelectField;

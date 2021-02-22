@@ -82,7 +82,7 @@ const SelectField = ({
 			}
 		})
 	};
-	const [fieldValue, setFieldValue] = useState(null);
+	const [fieldValue, setFieldValue] = useState('');
 	let errorClass = error ? 'error' : undefined;
 	let readOnlyClass = readOnly ? 'readOnly' : undefined;
 

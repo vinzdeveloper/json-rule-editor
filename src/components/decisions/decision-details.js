@@ -426,7 +426,7 @@ class DecisionDetails extends Component {
 												value={
 													typeof expression.value !== 'undefined' && expression.value !== ''
 														? expression.value
-														: 'null'
+														: ''
 												}
 												// error={expression.error.value}
 												label={idx === 0 && 'Value'}
@@ -480,7 +480,7 @@ class DecisionDetails extends Component {
 													yld.weight !== '' &&
 													!isNaN(yld.weight)
 														? yld.weight
-														: 'null'
+														: ''
 												}
 												// error={expression.error.value}
 												label={idx === 0 && 'Weight'}

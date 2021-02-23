@@ -767,10 +767,11 @@ class DecisionDetails extends Component {
 		// const { outcomes } = this.props;
 		const { showCase } = this.state;
 		// eslint-disable-next-line no-unused-vars
-		const { data: rulecases = [] } = this.props.ruleset;
+		const { data: rulecasesWithoutIndex = [] } = this.props.ruleset;
 		const { searchCriteria = '' } = this.props;
 		// { expressions = [], yields = [], note = '' }
-		const outcomes = rulecases.map(({ note }) => note);
+		const outcomes = rulecasesWithoutIndex.map(({ note }) => note);
+		const rulecases = rulecasesWithoutIndex.map((rulecase, index) => ({ ...rulecase, index }));
 
 		const conditions = rulecases
 			.filter(
@@ -782,7 +783,7 @@ class DecisionDetails extends Component {
 						.toLowerCase()
 						.includes(searchCriteria.toLowerCase())
 			)
-			.map(({ expressions, note }, index) => (
+			.map(({ expressions, note, index }) => (
 				<div key={note}>
 					<PanelBox className={'boolean'} key={`PanelBox-${note}`}>
 						<div style={{ width: 60 }}>

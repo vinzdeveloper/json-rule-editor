@@ -538,10 +538,14 @@ class AddDecision extends Component {
 						<Button
 							label={'Add Expression'}
 							onConfirm={() => this.handleAddRule('Add fact node')}
-							classname="btn-toolbar"
+							classname="btn-toolbar-small"
 							// type="submit"
 						/>
-						<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
+						<Button
+							label={'Cancel'}
+							onConfirm={this.handleFieldCancel}
+							classname="btn-toolbar-small"
+						/>
 					</div>
 					{expressions &&
 						expressions.map((expression, index) => (
@@ -595,10 +599,14 @@ class AddDecision extends Component {
 						<Button
 							label={'Add Yield'}
 							onConfirm={() => this.handleAddYield('Add fact node')}
-							classname="btn-toolbar"
+							classname="btn-toolbar-small"
 							// type="submit"
 						/>
-						<Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
+						<Button
+							label={'Cancel'}
+							onConfirm={this.handleFieldCancel}
+							classname="btn-toolbar-small"
+						/>
 					</div>
 					{yields.map((yld, index) => (
 						<div key={`${yld.partner}${yld.weight}`} className="add-field-panel-row">

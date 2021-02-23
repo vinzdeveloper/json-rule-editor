@@ -97,7 +97,11 @@
 		width: 160px;
 		// margin-top: 12px;
 		margin-bottom: 24px;
-		& .btn-toolbar {
+		& .btn-toolbar-small {
+			width: 160px;
+			height: 32px;
+		}
+		& .btn-ToolBar {
 			width: 160px;
 			height: 46px;
 		}

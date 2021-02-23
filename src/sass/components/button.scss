@@ -134,6 +134,16 @@ a.btn.btn-lg.btn-primary {
 	background-color: #3c67ad;
 }
 
+.btn-toolbar-small {
+	background-color: $toobar-btn-color;
+	border: 1px solid $toobar-btn-color;
+	width: 100px;
+	height: 35px;
+}
+
+.btn-toolbar-small:focus {
+	background-color: #3c67ad;
+}
 .btn-group-container {
 	display: flex;
 	flex-direction: row;

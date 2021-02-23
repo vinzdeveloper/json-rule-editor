@@ -60,6 +60,9 @@
 		margin-top: 0px;
 	}
 }
+.disabled {
+	cursor: not-allowed;
+}
 
 td.attributes-header {
 	justify-content: flex-start;

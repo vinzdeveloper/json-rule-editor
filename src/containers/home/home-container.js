@@ -157,7 +157,6 @@ class HomeContainer extends Component {
 											type="file"
 											onChange={this.chooseDirectory}
 											// webkitdirectory="true"
-											multiple
 										/>
 									</label>{' '}
 									or Drop Files
@@ -173,6 +172,7 @@ class HomeContainer extends Component {
 								onConfirm={this.handleUpload}
 								classname="primary-btn"
 								type="button"
+								disabled={this.state.files.length === 0}
 							/>
 							{!this.props.loggedIn && (
 								<Button

@@ -54,6 +54,9 @@ a.btn.btn-lg.btn-primary {
 .btn:focus {
 	cursor: pointer;
 }
+.disabled:hover {
+	cursor: not-allowed;
+}
 
 .primary-btn {
 	background-color: $primary-btn-color;

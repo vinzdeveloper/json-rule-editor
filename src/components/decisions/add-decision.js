@@ -641,7 +641,7 @@ class AddDecision extends Component {
 					<hr />
 					<Checkbox
 						onChange={(value) => this.onChangeOverride(value)}
-						value={override.value}
+						value={override}
 						// error={expression.error.value}
 						label="Override"
 					/>

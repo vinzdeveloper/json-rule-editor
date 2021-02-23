@@ -13,6 +13,7 @@ import SelectField from '../forms/selectmenu-field';
 import FieldOptions from '../../constants/options.json';
 import partnerOptions from '../../constants/yeildTypes.json';
 import Button from '../button/button';
+import Checkbox from '../forms/checkbox';
 
 const defaultExpression = { error: {}, name: '', operator: '', value: '' };
 const defaultYield = { error: {}, partner: '', weight: '' };
@@ -53,7 +54,8 @@ class DecisionDetails extends Component {
 			selectedRuleCaseIndex: -1,
 			expression: defaultExpression,
 			yield: defaultYield,
-			note: ''
+			note: '',
+			override: false
 		};
 		this.handleExpand = this.handleExpand.bind(this);
 		this.handleRemoveCondition = this.handleRemoveCondition.bind(this);
@@ -65,6 +67,7 @@ class DecisionDetails extends Component {
 		this.changeRulecaseOrder = this.changeRulecaseOrder.bind(this);
 		this.onChangeField = this.onChangeField.bind(this);
 		this.onChangeYield = this.onChangeYield.bind(this);
+		this.onChangeOverride = this.onChangeOverride.bind(this);
 		this.onChangeNote = this.onChangeNote.bind(this);
 		this.updateCondition = this.updateCondition.bind(this);
 		this.resetCondition = this.resetCondition.bind(this);
@@ -136,6 +139,16 @@ class DecisionDetails extends Component {
 	onChangeNote(e) {
 		this.setState({ note: e.target.value });
 	}
+
+	onChangeOverride(checked, currentRuleIndex) {
+		this.setState({ override: checked });
+		this.props.updateCondition({
+			currentEditType: 'override',
+			override: checked,
+			currentRuleIndex
+		});
+	}
+
 	handleEdit(e, val) {
 		e.preventDefault();
 		this.setState({ showRuleIndex: val });
@@ -151,14 +164,22 @@ class DecisionDetails extends Component {
 		// this.props.editCondition(decisionIndex, rulecaseIndex);
 	}
 	updateCondition() {
-		const { note, expression, currentEditType, currentEditIndex, currentRuleIndex } = this.state;
+		const {
+			note,
+			expression,
+			currentEditType,
+			currentEditIndex,
+			currentRuleIndex,
+			override
+		} = this.state;
 		this.props.updateCondition({
 			expression,
 			yield: this.state.yield,
 			currentEditIndex,
 			currentRuleIndex,
 			currentEditType,
-			note
+			note,
+			override
 		});
 		this.setState({ currentEditIndex: -1, currentRuleIndex: -1, currentEditType: '' });
 	}
@@ -316,7 +337,7 @@ class DecisionDetails extends Component {
 			yield: currentYield,
 			expression: currentExpression
 		} = this.state;
-		const { expressions = [], yields = [], note = '' } = rulecases[index];
+		const { expressions = [], yields = [], note = '', override } = rulecases[index];
 
 		// const attribute = expression.name && attributes.find((attr) => attr.name === expression.name);
 
@@ -672,6 +693,13 @@ class DecisionDetails extends Component {
 								/>
 							)}
 						</div>
+					</div>
+					<div className="add-field-panel">
+						<Checkbox
+							onChange={(value) => this.onChangeOverride(value, index)}
+							value={override}
+							label="Override"
+						/>
 					</div>
 
 					{/* <Tree treeData={data.node} count={data.depthCount} /> */}

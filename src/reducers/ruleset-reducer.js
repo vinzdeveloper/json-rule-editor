@@ -125,12 +125,13 @@ function ruleset(state = initialState || {}, action = '') {
 
 		case ActionTypes.UPDATE_DECISION: {
 			const {
-				expression,
-				yield: Yield,
+				expression = {},
+				yield: Yield = {},
 				currentEditType,
 				currentEditIndex,
 				currentRuleIndex,
-				note
+				note,
+				override
 			} = action.payload;
 			const { name, operator, value } = expression;
 			const { partner, weight } = Yield;
@@ -183,8 +184,9 @@ function ruleset(state = initialState || {}, action = '') {
 					activeRuleSet.data[currentRuleIndex].note =
 						note || activeRuleSet.data[currentRuleIndex].note;
 				}
+			} else if (currentEditType === 'override') {
+				activeRuleSet.data[currentRuleIndex].override = override;
 			}
-
 			return {
 				...state,
 				updatedFlag: true,

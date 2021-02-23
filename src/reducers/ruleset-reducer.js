@@ -191,6 +191,31 @@ function ruleset(state = initialState || {}, action = '') {
 				rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)
 			};
 		}
+		case ActionTypes.ADD_NEW_ITEM: {
+			const { expression = {}, yield: Yield = {}, type, rulecaseIndex } = action.payload;
+			const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
+			const { name, operator, value } = expression;
+			const { partner, weight } = Yield;
+
+			if (type === 'expression') {
+				activeRuleSet &&
+					activeRuleSet.data &&
+					activeRuleSet.data[rulecaseIndex] &&
+					activeRuleSet.data[rulecaseIndex] &&
+					activeRuleSet.data[rulecaseIndex].expressions.push({ name, operator, value });
+			} else if (type === 'yield') {
+				activeRuleSet &&
+					activeRuleSet.data &&
+					activeRuleSet.data[rulecaseIndex] &&
+					activeRuleSet.data[rulecaseIndex] &&
+					activeRuleSet.data[rulecaseIndex].yields.push({ partner, weight });
+			}
+
+			return {
+				...state,
+				rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)
+			};
+		}
 		case ActionTypes.REMOVE_DECISION: {
 			const { decisionIndex, rulecaseIndex, type } = action.payload;
 			const activeRuleSet = { ...state.rulesets[state.activeRuleset] };

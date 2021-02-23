@@ -146,6 +146,7 @@ class Decision extends Component {
 					attributes={this.props.attributes}
 					changeRulecaseOrder={this.props.changeRulecaseOrder}
 					updateCondition={this.updateCondition}
+					handleAddItem={this.props.handleAddItem}
 				/>
 
 				{(!this.props.ruleset.data || this.props.ruleset.data.length === 0) && (
@@ -174,6 +175,7 @@ Decision.propTypes = {
 	outcomes: PropTypes.object,
 	handleAddRulesetData: PropTypes.func,
 	changeRulecaseOrder: PropTypes.func,
+	handleAddItem: PropTypes.func,
 	ruleset: PropTypes.object
 };
 

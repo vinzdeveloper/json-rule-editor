@@ -68,6 +68,38 @@ class DecisionDetails extends Component {
 		this.onChangeNote = this.onChangeNote.bind(this);
 		this.updateCondition = this.updateCondition.bind(this);
 		this.resetCondition = this.resetCondition.bind(this);
+		this.addExpression = this.addExpression.bind(this);
+		this.addYield = this.addYield.bind(this);
+		this.addNewItem = this.addNewItem.bind(this);
+	}
+	addNewItem(type, rulecaseIndex) {
+		const { expression, yield: Yield } = this.state;
+		this.props.handleAddItem({ expression, yield: Yield, type, rulecaseIndex });
+
+		this.setState({ expression: defaultExpression, yield: defaultYield });
+	}
+	cancel(type) {
+		if (type === 'expression') {
+			this.setState({
+				showAddExpression: false
+			});
+		} else {
+			this.setState({
+				showAddYield: false
+			});
+		}
+	}
+
+	addExpression() {
+		this.setState({
+			showAddExpression: true
+		});
+	}
+
+	addYield() {
+		this.setState({
+			showAddYield: true
+		});
 	}
 	onChangeField(e, name) {
 		const expression = { ...this.state.expression };
@@ -277,7 +309,13 @@ class DecisionDetails extends Component {
 		const { attributes = [] } = this.props;
 		const attributeOptions = attributes.map((attr) => attr.name);
 
-		const { currentEditIndex } = this.state;
+		const {
+			currentEditIndex,
+			showAddYield,
+			showAddExpression,
+			yield: currentYield,
+			expression: currentExpression
+		} = this.state;
 		const { expressions = [], yields = [], note = '' } = rulecases[index];
 
 		// const attribute = expression.name && attributes.find((attr) => attr.name === expression.name);
@@ -457,6 +495,56 @@ class DecisionDetails extends Component {
 								</div>
 							</div>
 						))}
+						<div className="view-field-panel-row" style={{ alignItems: 'center' }}>
+							{showAddExpression ? (
+								<>
+									<div className="field" key={`field-new`}>
+										<SelectField
+											options={attributeOptions}
+											onChange={(e) => this.onChangeField(e, 'name')}
+											value={currentExpression.name}
+											// error={expression.error.name}
+											label={null}
+											placeholder={'Expression'}
+										/>
+									</div>
+									<div>
+										<SelectField
+											options={getOperators(currentExpression.name)}
+											onChange={(e) => this.onChangeField(e, 'operator')}
+											value={currentExpression.operator}
+											// error={expression.error.operator}
+											label={null}
+											placeholder={'Operator'}
+										/>
+									</div>
+									<div>
+										{this.renderValueField({ expression: currentExpression, hideLabel: true })}
+									</div>
+									<Button
+										label="Add Expression"
+										onConfirm={() => this.addNewItem('expression', index)}
+										classname="primary-btn small-btn"
+										// type="submit"
+									/>
+									<Button
+										label="Cancel"
+										onConfirm={() => this.cancel('expression')}
+										classname="cancel-btn small-btn"
+										// type="submit"
+									/>
+								</>
+							) : (
+								<div className="view-field-panel-row" style={{ alignItems: 'center' }}>
+									<Button
+										label="Add Expression"
+										onConfirm={() => this.addExpression()}
+										classname="primary-btn small-btn"
+										// type="submit"
+									/>
+								</div>
+							)}
+						</div>
 					</div>
 					<div className="add-field-panel">
 						{yields.map((yld, idx) => (
@@ -523,7 +611,6 @@ class DecisionDetails extends Component {
 										/>
 									</>
 								)}
-
 								<div className="tool-flex">
 									<div>
 										{currentEditIndex !== idx && this.state.currentEditType !== 'yield' && (
@@ -541,6 +628,50 @@ class DecisionDetails extends Component {
 								</div>
 							</div>
 						))}
+						<div className="view-field-panel-row" style={{ alignItems: 'center' }}>
+							{showAddYield ? (
+								<>
+									<div>
+										<SelectField
+											options={partnerOptions}
+											onChange={(e) => this.onChangeYield(e, 'partner')}
+											value={currentYield.partner}
+											// error={currentYield.error.partner}
+											label={null}
+										/>
+									</div>
+									<div>
+										<InputField
+											onChange={(value) => this.onChangeYield(value, 'weight')}
+											value={currentYield.weight}
+											// error={currentYield.error.weight}
+											label={null}
+											placeholder={PLACEHOLDER.number}
+										/>
+									</div>
+
+									<Button
+										label="Add Yield"
+										onConfirm={() => this.addNewItem('yield', index)}
+										classname="primary-btn small-btn"
+										// type="submit"
+									/>
+									<Button
+										label="Cancel"
+										onConfirm={() => this.cancel('yield')}
+										classname="cancel-btn small-btn"
+										// type="submit"
+									/>
+								</>
+							) : (
+								<Button
+									label="Add Yield"
+									onConfirm={() => this.addYield()}
+									classname="primary-btn small-btn"
+									// type="submit"
+								/>
+							)}
+						</div>
 					</div>
 
 					{/* <Tree treeData={data.node} count={data.depthCount} /> */}
@@ -697,6 +828,7 @@ DecisionDetails.propTypes = {
 	changeRulecaseOrder: PropTypes.func,
 	attributes: PropTypes.array,
 	updateCondition: PropTypes.func,
+	handleAddItem: PropTypes.func,
 	searchCriteria: PropTypes.string
 };
 

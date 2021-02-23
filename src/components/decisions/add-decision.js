@@ -492,12 +492,14 @@ class AddDecision extends Component {
 
 				<div className="add-field-panel">
 					<div className="add-field-panel-row">
-						<InputField
-							onChange={this.onChangeNote}
-							value={note}
-							label="Note"
-							placeholder="Note..."
-						/>
+						<div className="full-width">
+							<InputField
+								onChange={this.onChangeNote}
+								value={note}
+								label="Note"
+								placeholder="Note..."
+							/>
+						</div>
 					</div>
 
 					<div className="add-field-panel-row">

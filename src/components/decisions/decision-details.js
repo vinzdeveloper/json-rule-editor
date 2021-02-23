@@ -302,7 +302,7 @@ class DecisionDetails extends Component {
 							<div className="add-field-panel">
 								{this.state.currentEditType !== 'note' ? (
 									<div style={{ display: 'flex', alignItems: 'center' }}>
-										<div style={{ width: 300 }}>
+										<div style={{ width: '80%' }}>
 											<InputField
 												// onChange={(value) => this.onChangeField(value, 'value')}
 												value={note}
@@ -312,7 +312,7 @@ class DecisionDetails extends Component {
 												// placeholder={placeholder}
 											/>
 										</div>
-										<div style={{ marginTop: 28 }}>
+										<div style={{ marginLeft: 'auto', marginRight: 45, marginTop: 12 }}>
 											<a href="" onClick={(e) => this.editCondition(e, -1, index, 'note')}>
 												<span className="fa fa-edit" />
 											</a>
@@ -326,7 +326,7 @@ class DecisionDetails extends Component {
 											alignItems: 'center'
 										}}
 									>
-										<div>
+										<div style={{ width: '80%' }}>
 											<InputField
 												onChange={this.onChangeNote}
 												value={note}
@@ -334,7 +334,7 @@ class DecisionDetails extends Component {
 												placeholder="Note..."
 											/>
 										</div>
-										<div style={{ marginTop: 26 }}>
+										<div style={{ marginTop: 6 }}>
 											<Button
 												label="Update"
 												onConfirm={this.updateCondition}
@@ -342,7 +342,7 @@ class DecisionDetails extends Component {
 												// type="submit"
 											/>
 										</div>
-										<div style={{ marginTop: 26 }}>
+										<div style={{ marginTop: 6 }}>
 											<Button
 												label="Cancel"
 												onConfirm={this.resetCondition}

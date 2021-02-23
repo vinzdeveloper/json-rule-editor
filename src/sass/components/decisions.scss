@@ -64,6 +64,16 @@
 			max-width: 400px;
 			flex-grow: 1;
 		}
+
+		& .full-width {
+			width: 100%;
+			padding-bottom: 20px;
+			& .form-field {
+				min-width: 300px;
+				max-width: 921px;
+				flex-grow: 1;
+			}
+		}
 	}
 	.view-field-panel-row {
 		display: flex;

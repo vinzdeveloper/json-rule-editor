@@ -45,7 +45,19 @@ class RulesetContainer extends Component {
 	generateFile() {
 		const { ruleset: { name = 'rulesetDefault', data = [] } = {} } = this.props;
 
-		const rules = data.map(({ expressions, note, yields }) => {
+		const rules = data.map(({ expressions, note, yields, override }) => {
+			if (override) {
+				return {
+					note,
+					expressions: expressions.map(({ name: lhs, operator, value: rhs = 'null' }) => ({
+						lhs,
+						operator: operatorsMap[operator] || operator,
+						rhs
+					})),
+					yields,
+					override: true
+				};
+			}
 			return {
 				note,
 				expressions: expressions.map(({ name: lhs, operator, value: rhs = 'null' }) => ({
@@ -53,8 +65,7 @@ class RulesetContainer extends Component {
 					operator: operatorsMap[operator] || operator,
 					rhs
 				})),
-				yields,
-				override: true
+				yields
 			};
 		});
 

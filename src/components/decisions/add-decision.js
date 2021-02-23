@@ -9,7 +9,7 @@ import ButtonGroup from '../button/button-groups';
 import operator from '../../constants/operators.json';
 import FieldOptions from '../../constants/options.json';
 import partnerOptions from '../../constants/yeildTypes.json';
-
+import Checkbox from '../forms/checkbox';
 import { rulesetValidation } from '../../validations/decision-validation';
 import Tree from '../tree/tree';
 import { has } from 'lodash/object';
@@ -59,7 +59,7 @@ class AddDecision extends Component {
 		// const node = ;
 		this.state = {
 			note: (props.rulecase && props.rulecase.note) || '',
-
+			override: false,
 			name: '',
 			attributes: props.attributes,
 			expression: defaultExpression,
@@ -101,11 +101,12 @@ class AddDecision extends Component {
 		this.handleOutputParams = this.handleOutputParams.bind(this);
 		this.addParams = this.addParams.bind(this);
 		this.addPath = this.addPath.bind(this);
+		this.onChangeOverride = this.onChangeOverride.bind(this);
 	}
 
 	handleAdd(e) {
 		e.preventDefault();
-		const { expressions, yields, note, name } = this.state;
+		const { expressions, yields, note, name, override } = this.state;
 		const error = rulesetValidation({ expressions, yields });
 
 		if (error.formError) {
@@ -113,7 +114,7 @@ class AddDecision extends Component {
 				formError: error.formError
 			});
 		}
-		this.props.addCondition({ expressions, yields, note, name });
+		this.props.addCondition({ expressions, yields, note, name, override });
 		this.props.cancel();
 
 		// else {
@@ -151,6 +152,11 @@ class AddDecision extends Component {
 			}
 		}
 		this.setState({ expression });
+	}
+	onChangeOverride(e) {
+		this.setState({
+			override: e
+		});
 	}
 	// onChangeField(e, name) {}
 
@@ -465,7 +471,8 @@ class AddDecision extends Component {
 			expression,
 			expressions = [],
 			yields = [],
-			yield: Yield
+			yield: Yield,
+			override
 		} = this.state;
 		const attributeOptions = attributes.map((attr) => attr.name);
 		const attribute = expression.name && attributes.find((attr) => attr.name === expression.name);
@@ -632,6 +639,12 @@ class AddDecision extends Component {
 						</div>
 					))}
 					<hr />
+					<Checkbox
+						onChange={(value) => this.onChangeOverride(value)}
+						value={override.value}
+						// error={expression.error.value}
+						label="Override"
+					/>
 				</div>
 			</Panel>
 		);

@@ -70,11 +70,11 @@ class ValidateRules extends Component {
 		this.setState({ loading: true });
 		this.state.conditions.forEach((condition) => {
 			const attrProps = attributes.find((attr) => attr.name === condition.name);
-			if (attrProps.type === 'number') {
+			if (attrProps.type === 'number' && !isNaN(condition.value)) {
 				facts[condition.name] = Number(condition.value);
 			} else if (condition.value && condition.value.indexOf(',') > -1) {
 				facts[condition.name] = condition.value.split(',');
-			} else {
+			} else if (condition.value) {
 				facts[condition.name] = condition.value || null;
 			}
 		});
@@ -86,11 +86,16 @@ class ValidateRules extends Component {
 		const decisions = this.props.ruleset.data.map(({ expressions, note }) => {
 			return {
 				conditions: {
-					any: expressions.map(({ name: fact, operator, value }) => ({
-						fact,
-						operator,
-						value: value
-					}))
+					all: expressions
+						.filter(
+							({ name }) =>
+								typeof facts[name] !== 'undefined' && facts[name] !== null && facts[name] !== ''
+						)
+						.map(({ name: fact, operator, value }) => ({
+							fact,
+							operator,
+							value: value
+						}))
 				},
 				event: { type: note }
 			};
@@ -101,7 +106,6 @@ class ValidateRules extends Component {
 		// 	{ conditions: { all: [...expressions2] }, event: { type: 'Valid' } }
 		// 	// { conditions: { all: [...expressions2] }, event: { type: '2 isValid' } }
 		// ];
-
 		validateRuleset(facts, decisions)
 			.then((outcomes) => {
 				this.setState({ loading: false, outcomes, result: true, error: false, errorMessage: '' });

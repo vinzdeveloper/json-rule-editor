@@ -2,7 +2,7 @@ export const ADD_DECISION = 'ADD_DECISION';
 export const REMOVE_DECISION = 'REMOVE_DECISION';
 export const REMOVE_DECISIONS = 'REMOVE_DECISIONS';
 export const UPDATE_DECISION = 'UPDATE_DECISION';
-// new yield or expression while adding 
+// new yield or expression while adding
 export const ADD_NEW_ITEM = 'ADD_NEW_ITEM';
 
 export const RESET_DECISION = 'RESET_DECISION';
@@ -17,3 +17,4 @@ export const UPDATE_NAV_STATE = 'UPDATE_NAV_STATE';
 export const LOG_IN = 'LOG_IN';
 export const ADD_RULESET_DATA = 'ADD_RULESET_DATA';
 export const CHANGE_RULECASE_ORDER = 'CHANGE_RULECASE_ORDER';
+export const UPDATE_RULSET_NAME = 'UPDATE_RULSET_NAME';

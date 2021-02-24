@@ -28,6 +28,16 @@ const getStringValue = (value) => {
 };
 function ruleset(state = initialState || {}, action = '') {
 	switch (action.type) {
+		case ActionTypes.UPDATE_RULSET_NAME: {
+			const { name } = action.payload;
+			const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
+			activeRuleSet.name = name;
+
+			return {
+				...state,
+				rulesets: replaceRulesetByIndex(state.rulesets, activeRuleSet, state.activeRuleset)
+			};
+		}
 		case ActionTypes.UPLOAD_RULESET: {
 			const { ruleset } = action.payload;
 			let rulesets;
@@ -59,7 +69,14 @@ function ruleset(state = initialState || {}, action = '') {
 				// });
 				rulesets = [{ name: state.rulesets[0].name, atrribtues: [], decisions: [], data: rules }];
 			} else {
-				rulesets = [{ name: `Ruleset`, atrribtues: [], decisions: [], data: rules }];
+				rulesets = [
+					{
+						name: (ruleset && ruleset[0] && ruleset[0].name) || `Ruleset`,
+						atrribtues: [],
+						decisions: [],
+						data: rules
+					}
+				];
 			}
 			// console.log('state.rulesets', state.rulesets);
 			return { ...state, rulesets: cloneDeep(rulesets), uploadedRules: cloneDeep(rulesets) };

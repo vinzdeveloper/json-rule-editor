@@ -153,7 +153,13 @@ class HomeContainer extends Component {
 									<>
 										<div className="file-drop-msg">
 											{`${this.state.files.length} json file is selected!`}{' '}
-											<a href="" onClick={() => this.setState({ files: [] })}>
+											<a
+												href=""
+												onClick={(e) => {
+													e.preventDefault();
+													this.setState({ files: [] });
+												}}
+											>
 												<span className="fa fa-close" style={{ color: 'red' }} />
 											</a>
 										</div>

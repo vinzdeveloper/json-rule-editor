@@ -23,3 +23,10 @@ export const updateRulesetIndex = (name) => {
 		payload: { name }
 	};
 };
+
+export const updateRulesetName = (name) => {
+	return {
+		type: ActionTypes.UPDATE_RULSET_NAME,
+		payload: { name }
+	};
+};

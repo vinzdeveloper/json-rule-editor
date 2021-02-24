@@ -14,6 +14,7 @@ import {
 	changeRulecaseOrder,
 	addNewItem
 } from '../../actions/decisions';
+import { updateRulesetName } from '../../actions/ruleset';
 import Banner from '../../components/panel/banner';
 import * as Message from '../../constants/messages';
 import { groupBy } from 'lodash/collection';
@@ -92,7 +93,7 @@ class RulesetContainer extends Component {
 		// 	rhs
 		// }));
 		const exportedObj = {
-			name: 'preference v2.0.3',
+			name: name,
 			stage: 'preference',
 			rules
 		};
@@ -137,7 +138,7 @@ class RulesetContainer extends Component {
 		return (
 			<div>
 				<RuleErrorBoundary>
-					<PageTitle name={name} />
+					<PageTitle name={name} onEdit={this.props.onUpdateRulesetName} />
 					<Tabs tabs={tabs} onConfirm={this.handleTab} activeTab={this.state.activeTab} />
 					<div className="tab-page-container">
 						{this.state.activeTab === 'Fields' && (
@@ -186,7 +187,8 @@ RulesetContainer.propTypes = {
 	updatedFlag: PropTypes.bool,
 	runRules: PropTypes.func,
 	changeRulecaseOrderAction: PropTypes.func,
-	handleAddItem: PropTypes.func
+	handleAddItem: PropTypes.func,
+	onUpdateRulesetName: PropTypes.func
 };
 
 RulesetContainer.defaultProps = {
@@ -207,7 +209,8 @@ const mapDispatchToProps = (dispatch) => ({
 	handleDecisions: (operation, decision) => dispatch(handleDecision(operation, decision)),
 	handleAddRulesetData: (payload) => dispatch(addRulesetData(payload)),
 	changeRulecaseOrderAction: (payload) => dispatch(changeRulecaseOrder(payload)),
-	handleAddItem: (payload) => dispatch(addNewItem(payload))
+	handleAddItem: (payload) => dispatch(addNewItem(payload)),
+	onUpdateRulesetName: (payload) => dispatch(updateRulesetName(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RulesetContainer);

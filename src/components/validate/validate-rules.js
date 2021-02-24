@@ -83,23 +83,26 @@ class ValidateRules extends Component {
 		// 	operator,
 		// 	value
 		// }));
-		const decisions = this.props.ruleset.data.map(({ expressions, note }) => {
-			return {
-				conditions: {
-					all: expressions
-						.filter(
-							({ name }) =>
-								typeof facts[name] !== 'undefined' && facts[name] !== null && facts[name] !== ''
-						)
-						.map(({ name: fact, operator, value }) => ({
-							fact,
-							operator,
-							value: value
-						}))
-				},
-				event: { type: note }
-			};
-		});
+		const decisions = this.props.ruleset.data
+			.filter(({ expressions }) => expressions.length > 0)
+			.map(({ expressions, note }) => {
+				return {
+					conditions: {
+						all: expressions
+							.filter(
+								({ name }) =>
+									typeof facts[name] !== 'undefined' && facts[name] !== null && facts[name] !== ''
+							)
+							.map(({ name: fact, operator, value }) => ({
+								fact,
+								operator,
+								value: value
+							}))
+					},
+					event: { type: note }
+				};
+			});
+
 		// conditionsBeforeParsing
 		// console.log('conditionsBeforeParsing', conditionsBeforeParsing);
 		// const decisions = [

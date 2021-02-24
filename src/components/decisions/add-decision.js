@@ -148,7 +148,7 @@ class AddDecision extends Component {
 			if (name === 'name' || name === 'operator') {
 				expression[name] = e.value;
 			} else {
-				expression[name] = e.target.value;
+				expression[name] = (e && e.target && e.target.value) || e.value;
 			}
 		}
 		this.setState({ expression });
@@ -448,7 +448,11 @@ class AddDecision extends Component {
 					value={expression.value}
 					// error={expression && expression.error.value}
 					label={!hideLabel && 'Value'}
-					isMulti
+					isMulti={
+						expression.name !== 'color' &&
+						expression.name !== 'double_sided' &&
+						FieldOptions[expression.name].length !== 1
+					}
 				/>
 			);
 		} else {

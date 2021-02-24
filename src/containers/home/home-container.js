@@ -149,20 +149,28 @@ class HomeContainer extends Component {
 					<TitlePanel title={title} titleClass="fa fa-cloud-upload">
 						<div className="upload-panel">
 							<div className="drop-section" onDrop={this.drop} onDragOver={this.allowDrop}>
-								<div>
-									<label htmlFor="uploadFile">
-										Choose Ruleset File
-										<input
-											id="uploadFile"
-											type="file"
-											onChange={this.chooseDirectory}
-											// webkitdirectory="true"
-										/>
-									</label>{' '}
-									or Drop Files
-								</div>
-								{this.state.files.length > 0 && (
-									<div className="file-drop-msg">{`${this.state.files.length} json files are dropped!`}</div>
+								{this.state.files.length > 0 ? (
+									<>
+										<div className="file-drop-msg">
+											{`${this.state.files.length} json file is selected!`}{' '}
+											<a href="" onClick={() => this.setState({ files: [] })}>
+												<span className="fa fa-close" style={{ color: 'red' }} />
+											</a>
+										</div>
+									</>
+								) : (
+									<div>
+										<label htmlFor="uploadFile">
+											Choose Ruleset File
+											<input
+												id="uploadFile"
+												type="file"
+												onChange={this.chooseDirectory}
+												// webkitdirectory="true"
+											/>
+										</label>
+										or Drop Files
+									</div>
 								)}
 							</div>
 						</div>

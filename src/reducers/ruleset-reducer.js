@@ -20,6 +20,12 @@ const reverseOperatorsMap = {
 	'>': 'greaterThan',
 	'>=': 'greaterThanInclusive'
 };
+const getStringValue = (value) => {
+	if (value === 'null') {
+		return undefined;
+	}
+	return `${value}`;
+};
 function ruleset(state = initialState || {}, action = '') {
 	switch (action.type) {
 		case ActionTypes.UPLOAD_RULESET: {
@@ -33,7 +39,7 @@ function ruleset(state = initialState || {}, action = '') {
 					expressions: expressions.map(({ lhs: name, operator, rhs: value }) => ({
 						name,
 						operator: reverseOperatorsMap[operator] || operator,
-						value: value === 'null' ? undefined : value
+						value: getStringValue(value)
 					})),
 					...others
 				};

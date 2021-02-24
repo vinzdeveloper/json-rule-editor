@@ -98,7 +98,7 @@ const SelectField = ({
 		}
 	};
 	const actualValue =
-		fieldValue && fieldValue.includes(',')
+		fieldValue && typeof fieldValue === 'string' && fieldValue.includes(',')
 			? fieldValue.split(',').map((f) => ({ label: f, value: f }))
 			: fieldValue && { label: fieldValue, value: fieldValue };
 	return (

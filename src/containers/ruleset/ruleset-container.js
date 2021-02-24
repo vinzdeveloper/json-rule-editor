@@ -19,7 +19,6 @@ import * as Message from '../../constants/messages';
 import { groupBy } from 'lodash/collection';
 import RuleErrorBoundary from '../../components/error/ruleset-error';
 import SweetAlert from 'react-bootstrap-sweetalert';
-
 import attributes from '../../constants/attributes.json';
 const operatorsMap = {
 	equal: '==',
@@ -30,6 +29,18 @@ const operatorsMap = {
 	greaterThanInclusive: '>='
 };
 const tabs = [{ name: 'Fields' }, { name: 'Rulesets' }, { name: 'Validate' }, { name: 'Generate' }];
+const getFormattedValue = (value, type) => {
+	switch (type) {
+		case 'boolean':
+			return value === 'true';
+		case 'number':
+			// eslint-disable-next-line no-case-declarations
+			const num = parseFloat(value, 10);
+			return num;
+		default:
+			return value;
+	}
+};
 class RulesetContainer extends Component {
 	constructor(props) {
 		super(props);
@@ -43,6 +54,11 @@ class RulesetContainer extends Component {
 	};
 
 	generateFile() {
+		const attributesMap = {};
+
+		attributes.forEach((v) => {
+			attributesMap[v.name] = v.type;
+		});
 		const { ruleset: { name = 'rulesetDefault', data = [] } = {} } = this.props;
 
 		const rules = data.map(({ expressions, note, yields, override }) => {
@@ -52,7 +68,7 @@ class RulesetContainer extends Component {
 					expressions: expressions.map(({ name: lhs, operator, value: rhs = 'null' }) => ({
 						lhs,
 						operator: operatorsMap[operator] || operator,
-						rhs
+						rhs: getFormattedValue(rhs, attributesMap[lhs])
 					})),
 					yields,
 					override: true

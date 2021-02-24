@@ -9,5 +9,6 @@
 		"greaterThanInclusive"
 	],
 	"array": ["in", "notIn"],
-	"object": ["in", "notIn"]
+	"object": ["in", "notIn"],
+	"boolean": ["equal"]
 }

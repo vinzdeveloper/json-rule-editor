@@ -47,7 +47,7 @@ class ValidateRules extends Component {
 		if (Array.isArray(e)) {
 			value = e && e.map(({ value }) => value).join(',');
 		} else {
-			value = e;
+			value = typeof e !== 'string' ? e.value : e;
 		}
 		const attribute = { ...this.state.conditions[index], value };
 		const conditions = [
@@ -128,12 +128,16 @@ class ValidateRules extends Component {
 					/>
 				</td>
 				<td colSpan="4">
-					{condition.type === 'array' ? (
+					{FieldOptions[condition.name] && FieldOptions[condition.name].length > 0 ? (
 						<SelectField
 							options={FieldOptions[condition.name]}
 							onChange={(e) => this.handleValue(e, index)}
 							value={condition.value}
-							isMulti
+							isMulti={
+								condition.name !== 'color' &&
+								condition.name !== 'double_sided' &&
+								FieldOptions[condition.name].length !== 1
+							}
 							width={700}
 						/>
 					) : (

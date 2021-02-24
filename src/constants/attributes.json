@@ -5,11 +5,11 @@
 	},
 	{
 		"name": "object",
-		"type": "array"
+		"type": "string"
 	},
 	{
 		"name": "size",
-		"type": "array"
+		"type": "string"
 	},
 	{
 		"name": "custom_envelope.id",
@@ -22,5 +22,21 @@
 	{
 		"name": "billing_group_id",
 		"type": "string"
+	},
+	{
+		"name": "sla",
+		"type": "number"
+	},
+	{
+		"name": "to.address_country",
+		"type": "string"
+	},
+	{
+		"name": "double_sided",
+		"type": "boolean"
+	},
+	{
+		"name": "color",
+		"type": "boolean"
 	}
 ]

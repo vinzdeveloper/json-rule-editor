@@ -22,7 +22,12 @@ const InputField = (props) => {
 
 	return (
 		<div className="form-field" style={{ marginRight: 8 }}>
-			{label && <label>{label}</label>}
+			{label && (
+				<>
+					<label>{label}</label>
+					<br />
+				</>
+			)}
 			<input
 				style={props.style && { ...props.style }}
 				type={type}

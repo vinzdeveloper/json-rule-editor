@@ -75,7 +75,7 @@ class ValidateRules extends Component {
 			} else if (condition.value && condition.value.indexOf(',') > -1) {
 				facts[condition.name] = condition.value.split(',');
 			} else if (condition.value) {
-				facts[condition.name] = condition.value || null;
+				facts[condition.name] = condition.value;
 			}
 		});
 		// const expressions2 = expressions.map(({ name: fact, operator, value }) => ({

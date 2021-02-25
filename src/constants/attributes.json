@@ -24,6 +24,10 @@
 		"type": "string"
 	},
 	{
+		"name": "extra_service",
+		"type": "string"
+	},
+	{
 		"name": "sla",
 		"type": "number"
 	},

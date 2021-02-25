@@ -18,7 +18,8 @@ const reverseOperatorsMap = {
 	'<=': 'lessThanInclusive',
 	'<': 'lessThan',
 	'>': 'greaterThan',
-	'>=': 'greaterThanInclusive'
+	'>=': 'greaterThanInclusive',
+	not_in: 'notIn'
 };
 const getStringValue = (value) => {
 	if (value === 'null') {
@@ -26,6 +27,7 @@ const getStringValue = (value) => {
 	}
 	return `${value}`;
 };
+
 function ruleset(state = initialState || {}, action = '') {
 	switch (action.type) {
 		case ActionTypes.UPDATE_RULSET_NAME: {

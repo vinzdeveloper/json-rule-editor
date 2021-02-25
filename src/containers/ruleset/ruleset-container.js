@@ -27,7 +27,8 @@ const operatorsMap = {
 	lessThanInclusive: '<=',
 	lessThan: '<',
 	greaterThan: '>',
-	greaterThanInclusive: '>='
+	greaterThanInclusive: '>=',
+	notIn: 'not_in'
 };
 const tabs = [{ name: 'Fields' }, { name: 'Rulesets' }, { name: 'Validate' }, { name: 'Generate' }];
 const getFormattedValue = (value, type) => {

@@ -65,14 +65,15 @@ class ValidateRules extends Component {
 	validateRules(e) {
 		e.preventDefault();
 		let facts = {};
-		const { attributes } = this.props;
+		// const { attributes } = this.props;
 		// console.log('expressions', expressions);
 		this.setState({ loading: true });
 		this.state.conditions.forEach((condition) => {
-			const attrProps = attributes.find((attr) => attr.name === condition.name);
-			if (attrProps.type === 'number' && !isNaN(condition.value)) {
-				facts[condition.name] = Number(condition.value);
-			} else if (condition.value && condition.value.indexOf(',') > -1) {
+			// const attrProps = attributes.find((attr) => attr.name === condition.name);
+			// if (attrProps.type === 'number' && !isNaN(condition.value)) {
+			// 	facts[condition.name] = Number(condition.value);
+			// } else
+			if (condition.value && condition.value.indexOf(',') > -1) {
 				facts[condition.name] = condition.value.split(',');
 			} else if (condition.value) {
 				facts[condition.name] = condition.value;
@@ -89,10 +90,10 @@ class ValidateRules extends Component {
 				return {
 					conditions: {
 						all: expressions
-							.filter(
-								({ name }) =>
-									typeof facts[name] !== 'undefined' && facts[name] !== null && facts[name] !== ''
-							)
+							// .filter(
+							// 	({ name }) =>
+							// 		typeof facts[name] !== 'undefined' && facts[name] !== null && facts[name] !== ''
+							// )
 							.map(({ name: fact, operator, value }) => ({
 								fact,
 								operator,

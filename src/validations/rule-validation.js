@@ -4,7 +4,12 @@ export const processEngine = (fact, conditions) => {
 	// console.log('fact', fact);
 	// console.log('conditions', conditions);
 	const engine = new Engine(conditions, { allowUndefinedFacts: true });
-
+	// engine.on('failure', (event, almanac, ruleset) => {
+	// 	console.log(
+	// 		'FAILURE',
+	// 		ruleset.conditions.all.filter((f) => f.result === false)
+	// 	);
+	// });
 	return engine
 		.run(fact)
 		.then((results) => {

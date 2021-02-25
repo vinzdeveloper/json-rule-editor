@@ -175,7 +175,8 @@ class HomeContainer extends Component {
 												// webkitdirectory="true"
 											/>
 										</label>
-										or Drop Files
+										<br />
+										or Drop File
 									</div>
 								)}
 							</div>

@@ -102,11 +102,13 @@ td.attributes-header {
 	border-bottom: 2px solid #ddd;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: flex-start;
 	padding: 10px;
 }
-
+.view-attribute > div:first-child {
+	width: 200px;
+}
 .view-params-container {
-	width: 40%;
+	width: 90%;
 	color: $dark-color;
 }

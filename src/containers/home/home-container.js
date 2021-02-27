@@ -155,13 +155,6 @@ class HomeContainer extends Component {
 	}
 
 	render() {
-		try {
-			// eslint-disable-next-line no-console
-			console.log(JSON.stringify(process.env));
-		} catch (err) {
-			// eslint-disable-next-line no-console
-			console.log('err', err);
-		}
 		const { fileExist, uploadError, message } = this.state;
 		const title = this.props.loggedIn ? 'Upload Rules' : 'Create / Upload Rules';
 		return (

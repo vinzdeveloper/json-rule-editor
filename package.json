@@ -1,74 +1,76 @@
 {
-  "name": "json-rule-editor",
-  "version": "1.0.0",
-  "description": "json-rule-editor",
-  "homepage": "https://github.com/vinzdeveloper/json-rule-editor",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --hot",
-    "lint": "eslint 'src/**/*.js' -f table --max-warnings 0",
-    "build": "webpack --mode=production"
-  },
-  "author": "vinzdeveloper@gmail.com",
-  "license": "ISC",
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vinzdeveloper/json-rule-editor.git"
-  },
-  "engines": {
-    "node": ">=10.15.3",
-    "npm": ">=6.4.1"
-  },
-  "dependencies": {
-    "@babel/core": "7.7.7",
-    "@babel/plugin-transform-runtime": "7.9.6",
-    "@babel/preset-env": "7.7.7",
-    "@babel/preset-react": "7.7.4",
-    "@babel/runtime": "7.9.2",
-    "babel": "6.23.0",
-    "babel-loader": "8.0.6",
-    "babel-plugin-transform-class-properties": "6.24.1",
-    "css-loader": "3.4.2",
-    "file-loader": "5.0.2",
-    "font-awesome": "4.7.0",
-    "history": "4.10.1",
-    "html-webpack-plugin": "3.2.0",
-    "json-rules-engine": "5.0.3",
-    "lodash": "4.17.15",
-    "mini-css-extract-plugin": "0.9.0",
-    "node-sass": "4.13.1",
-    "postcss-loader": "3.0.0",
-    "react": "16.12.0",
-    "react-bootstrap-sweetalert": "5.1.9",
-    "react-d3-tree": "1.16.1",
-    "react-dom": "16.12.0",
-    "react-notifications": "1.6.0",
-    "react-redux": "7.1.3",
-    "react-router-dom": "5.1.2",
-    "react-select": "^4.1.0",
-    "react-spinners": "0.8.1",
-    "redux": "4.0.5",
-    "redux-thunk": "2.3.0",
-    "sass-loader": "8.0.2",
-    "selectn": "1.1.2",
-    "style-loader": "1.1.2",
-    "url-loader": "4.1.0",
-    "webpack": "4.41.5",
-    "webpack-cli": "3.3.10"
-  },
-  "devDependencies": {
-    "@hot-loader/react-dom": "16.13.0",
-    "babel-eslint": "10.0.3",
-    "eslint": "6.8.0",
-    "eslint-plugin-react": "7.18.0",
-    "husky": "4.2.5",
-    "react-hot-loader": "4.12.20",
-    "redux-devtools-extension": "2.13.8",
-    "webpack-dev-server": "3.10.1"
-  }
+	"name": "json-rule-editor",
+	"version": "1.0.0",
+	"description": "json-rule-editor",
+	"homepage": "https://github.com/vinzdeveloper/json-rule-editor",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": " webpack-dev-server --hot",
+		"lint": "eslint 'src/**/*.js' -f table --max-warnings 0",
+		"build": "webpack --mode=production"
+	},
+	"author": "vinzdeveloper@gmail.com",
+	"license": "ISC",
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm run lint"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/vinzdeveloper/json-rule-editor.git"
+	},
+	"engines": {
+		"node": ">=10.15.3",
+		"npm": ">=6.4.1"
+	},
+	"dependencies": {
+		"@babel/core": "7.7.7",
+		"@babel/plugin-transform-runtime": "7.9.6",
+		"@babel/preset-env": "7.7.7",
+		"@babel/preset-react": "7.7.4",
+		"@babel/runtime": "7.9.2",
+		"axios": "^0.21.1",
+		"babel": "6.23.0",
+		"babel-loader": "8.0.6",
+		"babel-plugin-transform-class-properties": "6.24.1",
+		"cross-env": "^7.0.3",
+		"css-loader": "3.4.2",
+		"file-loader": "5.0.2",
+		"font-awesome": "4.7.0",
+		"history": "4.10.1",
+		"html-webpack-plugin": "3.2.0",
+		"json-rules-engine": "5.0.3",
+		"lodash": "4.17.15",
+		"mini-css-extract-plugin": "0.9.0",
+		"node-sass": "4.13.1",
+		"postcss-loader": "3.0.0",
+		"react": "16.12.0",
+		"react-bootstrap-sweetalert": "5.1.9",
+		"react-d3-tree": "1.16.1",
+		"react-dom": "16.12.0",
+		"react-notifications": "1.6.0",
+		"react-redux": "7.1.3",
+		"react-router-dom": "5.1.2",
+		"react-select": "^4.1.0",
+		"react-spinners": "0.8.1",
+		"redux": "4.0.5",
+		"redux-thunk": "2.3.0",
+		"sass-loader": "8.0.2",
+		"selectn": "1.1.2",
+		"style-loader": "1.1.2",
+		"url-loader": "4.1.0",
+		"webpack": "4.41.5",
+		"webpack-cli": "3.3.10"
+	},
+	"devDependencies": {
+		"@hot-loader/react-dom": "16.13.0",
+		"babel-eslint": "10.0.3",
+		"eslint": "6.8.0",
+		"eslint-plugin-react": "7.18.0",
+		"husky": "4.2.5",
+		"react-hot-loader": "4.12.20",
+		"redux-devtools-extension": "2.13.8",
+		"webpack-dev-server": "3.10.1"
+	}
 }

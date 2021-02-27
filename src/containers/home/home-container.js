@@ -11,7 +11,8 @@ import footerLinks from '../../data-objects/footer-links.json';
 import { includes } from 'lodash/collection';
 import Notification from '../../components/notification/notification';
 import { RULE_AVAILABLE_UPLOAD, RULE_UPLOAD_ERROR } from '../../constants/messages';
-
+import { getSha, updateFile } from '../../api';
+import attributes from '../../constants/attributes.json';
 function readFile(file, cb) {
 	// eslint-disable-next-line no-undef
 	var reader = new FileReader();
@@ -42,7 +43,31 @@ class HomeContainer extends Component {
 		this.handleUpload = this.handleUpload.bind(this);
 		this.chooseDirectory = this.chooseDirectory.bind(this);
 	}
-
+	async fetchData() {
+		let sha;
+		try {
+			const { data: { sha: Sha } = {} } = await getSha({ path: 'test1.txt' });
+			sha = Sha;
+		} catch (err) {
+			// eslint-disable-next-line no-console
+			console.log('err');
+		}
+		try {
+			await updateFile({
+				message: 'TEST',
+				content: JSON.stringify(attributes),
+				sha,
+				path: 'test1.txt'
+			});
+		} catch (err) {
+			// TODO: Handle error scenarios
+			// eslint-disable-next-line no-console
+			console.log('err', err);
+		}
+	}
+	componentDidMount() {
+		this.fetchData();
+	}
 	allowDrop(e) {
 		e.preventDefault();
 	}

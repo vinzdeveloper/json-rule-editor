@@ -12,6 +12,8 @@ import { includes } from 'lodash/collection';
 import Notification from '../../components/notification/notification';
 import { RULE_AVAILABLE_UPLOAD, RULE_UPLOAD_ERROR } from '../../constants/messages';
 import { getContent } from '../../api';
+import Loader from '../../components/loader/loader';
+
 import { PREFERENCE_PATH } from '../../constants/paths.json';
 function readFile(file, cb) {
 	// eslint-disable-next-line no-undef
@@ -45,6 +47,7 @@ class HomeContainer extends Component {
 		this.fetchLatest = this.fetchLatest.bind(this);
 	}
 	async fetchLatest() {
+		this.setState({ loading: true });
 		try {
 			const { data: { content } = {} } = await getContent({
 				path: PREFERENCE_PATH
@@ -57,6 +60,7 @@ class HomeContainer extends Component {
 			// eslint-disable-next-line no-console
 			console.log(err);
 		}
+		this.setState({ loading: false });
 	}
 
 	allowDrop(e) {
@@ -198,6 +202,19 @@ class HomeContainer extends Component {
 								)}
 							</div>
 						</div>
+						<div
+							style={{
+								position: 'fixed',
+								zIndex: 10,
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center',
+								width: 700
+							}}
+						>
+							{this.state.loading && <Loader />}
+						</div>
+
 						<div className="btn-group">
 							<Button
 								label={'Get Latest'}

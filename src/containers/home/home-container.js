@@ -46,7 +46,7 @@ class HomeContainer extends Component {
 	async fetchData() {
 		let sha;
 		try {
-			const { data: { sha: Sha } = {} } = await getSha({ path: 'test1.txt' });
+			const { data: { sha: Sha } = {} } = await getSha({ path: 'src/constants/attributes2.json' });
 			sha = Sha;
 		} catch (err) {
 			// eslint-disable-next-line no-console
@@ -57,7 +57,7 @@ class HomeContainer extends Component {
 				message: 'TEST',
 				content: JSON.stringify(attributes),
 				sha,
-				path: 'test1.txt'
+				path: 'src/constants/attributes2.json'
 			});
 		} catch (err) {
 			// TODO: Handle error scenarios

@@ -1,6 +1,6 @@
 import axios from 'axios';
 const REPO_BASE_URL = 'https://api.github.com/repos/avinashbn2/json-rule-editor/contents';
-const AC_TOKEN = process.env.GITHUB_TOKEN;
+const AC_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
 
 const createRequest = () => {
 	const request = axios.create({

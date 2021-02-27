@@ -3,28 +3,6 @@
 	"stage": "preference",
 	"rules": [
 		{
-			"note": "Send QA account orders to Sandy",
-			"expressions": [
-				{
-					"lhs": "account_id",
-					"operator": "==",
-					"rhs": "129eb7595157b2e3f76d"
-				},
-				{
-					"lhs": "object",
-					"operator": "==",
-					"rhs": "letter"
-				}
-			],
-			"yields": [
-				{
-					"partner": "sandy_alexander",
-					"weight": 1
-				}
-			],
-			"override": true
-		},
-		{
 			"note": "Send QA account orders to Hudson",
 			"expressions": [
 				{

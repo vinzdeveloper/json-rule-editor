@@ -10,6 +10,16 @@ export const NO_CHANGES_MSG = {
 const MODIFIED_HEADER = 'Submit Ruleset';
 const MODIFIED_BODY =
 	'You have created / modified this ruleset. Do you want to save these changes into ruleset file?';
+const UPLOAD_HEADER = 'Upload Ruleset';
+const UPLOAD_BODY =
+	'You have created / modified this ruleset. Do you want to push these changes to remote file?';
+const UPLOAD_BTN_PROPS = { label: 'Push' };
+export const UPLOAD_MSG = {
+	header: UPLOAD_HEADER,
+	body: UPLOAD_BODY,
+	type: 'submit-panel',
+	buttonProps: UPLOAD_BTN_PROPS
+};
 export const MODIFIED_MSG = {
 	header: MODIFIED_HEADER,
 	body: MODIFIED_BODY,

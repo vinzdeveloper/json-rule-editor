@@ -5,9 +5,10 @@
 	"homepage": "https://github.com/vinzdeveloper/json-rule-editor",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": " webpack-dev-server --hot",
+		"start": "cross-env REACT_APP_GITHUB_TOKEN=asd webpack-dev-server --hot",
 		"lint": "eslint 'src/**/*.js' -f table --max-warnings 0",
-		"build": "webpack --mode=production"
+		"build": "webpack --mode=production",
+		"build:dev": "cross-env NODE_ENV=production webpack --config webpack.prod.babel.js --color -p --progress --hide-modules --display-optimization-bailout"
 	},
 	"author": "vinzdeveloper@gmail.com",
 	"license": "ISC",

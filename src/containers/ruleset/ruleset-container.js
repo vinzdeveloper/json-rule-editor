@@ -203,7 +203,7 @@ class RulesetContainer extends Component {
 		}
 
 		const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
-		const uploadMessage = this.props.updatedFlag ? Message.UPLOAD_MSG : Message.NO_CHANGES_MSG;
+		// const uploadMessage = this.props.updatedFlag ? Message.UPLOAD_MSG : Message.NO_CHANGES_MSG;
 		return (
 			<div>
 				<RuleErrorBoundary>
@@ -246,31 +246,23 @@ class RulesetContainer extends Component {
 
 						{this.state.activeTab === 'Push' && (
 							<>
-								{this.props.updatedFlag ? (
-									<div className="add-attribute-wrapper" style={{ marginTop: 32, marginLeft: 34 }}>
-										<div className="form-groups-inline">
-											<InputField
-												label="Commit Message"
-												onChange={this.onChangeMessage}
-												value={this.state.message}
-												error={this.state.error.message}
-											/>
-										</div>
-										<div className="btn-group">
-											{this.state.error.message && this.state.message === '' && (
-												<span style={{ color: 'red' }}>{this.state.error.message}</span>
-											)}
-										</div>
-
-										<Button label="Push" onConfirm={this.pushToRepo} classname="primary-btn" />
+								<div className="add-attribute-wrapper" style={{ marginTop: 32, marginLeft: 34 }}>
+									<div className="form-groups-inline">
+										<InputField
+											label="Commit Message"
+											onChange={this.onChangeMessage}
+											value={this.state.message}
+											error={this.state.error.message}
+										/>
 									</div>
-								) : (
-									<Banner
-										message={uploadMessage}
-										ruleset={this.props.ruleset}
-										onConfirm={this.generateFile}
-									/>
-								)}
+									<div className="btn-group">
+										{this.state.error.message && this.state.message === '' && (
+											<span style={{ color: 'red' }}>{this.state.error.message}</span>
+										)}
+									</div>
+
+									<Button label="Push" onConfirm={this.pushToRepo} classname="primary-btn" />
+								</div>
 							</>
 						)}
 						{this.state.pushFlag &&

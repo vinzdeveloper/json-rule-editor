@@ -1,1 +1,46 @@
-[{"name":"account_id","type":"string"},{"name":"object","type":"string"},{"name":"size","type":"string"},{"name":"custom_envelope.id","type":"string"},{"name":"return_envelope.id","type":"string"},{"name":"billing_group_id","type":"string"},{"name":"extra_service","type":"string"},{"name":"sla","type":"number"},{"name":"to.address_country","type":"string"},{"name":"double_sided","type":"boolean"},{"name":"color","type":"boolean"}]
+[
+  {
+    "name": "account_id",
+    "type": "string"
+  },
+  {
+    "name": "object",
+    "type": "string"
+  },
+  {
+    "name": "size",
+    "type": "string"
+  },
+  {
+    "name": "custom_envelope.id",
+    "type": "string"
+  },
+  {
+    "name": "return_envelope.id",
+    "type": "string"
+  },
+  {
+    "name": "billing_group_id",
+    "type": "string"
+  },
+  {
+    "name": "extra_service",
+    "type": "string"
+  },
+  {
+    "name": "sla",
+    "type": "number"
+  },
+  {
+    "name": "to.address_country",
+    "type": "string"
+  },
+  {
+    "name": "double_sided",
+    "type": "boolean"
+  },
+  {
+    "name": "color",
+    "type": "boolean"
+  }
+]

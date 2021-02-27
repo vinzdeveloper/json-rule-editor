@@ -3,45 +3,6 @@
 	"stage": "preference",
 	"rules": [
 		{
-			"note": "Send QA account orders to Sepire (ENG-12775)",
-			"expressions": [
-				{
-					"lhs": "account_id",
-					"operator": "==",
-					"rhs": "838e50b46a422cbf03d3"
-				},
-				{
-					"lhs": "object",
-					"operator": "==",
-					"rhs": "letter"
-				}
-			],
-			"yields": [
-				{
-					"partner": "sepire",
-					"weight": 1
-				}
-			],
-			"override": true
-		},
-		{
-			"note": "Send QA account orders to SG360",
-			"expressions": [
-				{
-					"lhs": "account_id",
-					"operator": "==",
-					"rhs": "48be27b56a21b2c37b11"
-				}
-			],
-			"yields": [
-				{
-					"partner": "sg360",
-					"weight": 1
-				}
-			],
-			"override": true
-		},
-		{
 			"note": "All A5 Postcards to Proco (ENG-12867)",
 			"expressions": [
 				{
@@ -92,6 +53,23 @@
 					"weight": 1
 				}
 			]
+		},
+		{
+			"note": "Send QA account orders to SG360",
+			"expressions": [
+				{
+					"lhs": "account_id",
+					"operator": "==",
+					"rhs": "48be27b56a21b2c37b11"
+				}
+			],
+			"yields": [
+				{
+					"partner": "sg360",
+					"weight": 1
+				}
+			],
+			"override": true
 		},
 		{
 			"note": "Send all 1 Day SLA orders to Sandy Alexander (pre-empting account blacklists + envelope rules)",

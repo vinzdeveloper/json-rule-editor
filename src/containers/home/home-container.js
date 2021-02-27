@@ -11,8 +11,8 @@ import footerLinks from '../../data-objects/footer-links.json';
 import { includes } from 'lodash/collection';
 import Notification from '../../components/notification/notification';
 import { RULE_AVAILABLE_UPLOAD, RULE_UPLOAD_ERROR } from '../../constants/messages';
-import { getSha, updateFile } from '../../api';
-import attributes from '../../constants/attributes.json';
+import { getContent } from '../../api';
+import { PREFERENCE_PATH } from '../../constants/paths.json';
 function readFile(file, cb) {
 	// eslint-disable-next-line no-undef
 	var reader = new FileReader();
@@ -42,32 +42,23 @@ class HomeContainer extends Component {
 		this.printFile = this.printFile.bind(this);
 		this.handleUpload = this.handleUpload.bind(this);
 		this.chooseDirectory = this.chooseDirectory.bind(this);
+		this.fetchLatest = this.fetchLatest.bind(this);
 	}
-	async fetchData() {
-		let sha;
+	async fetchLatest() {
 		try {
-			const { data: { sha: Sha } = {} } = await getSha({ path: 'src/constants/attributes2.json' });
-			sha = Sha;
-		} catch (err) {
-			// eslint-disable-next-line no-console
-			console.log('err');
-		}
-		try {
-			await updateFile({
-				message: 'TEST',
-				content: JSON.stringify(attributes),
-				sha,
-				path: 'src/constants/attributes2.json'
+			const { data: { content } = {} } = await getContent({
+				path: PREFERENCE_PATH
+			});
+			this.setState({ ruleset: [JSON.parse(atob(content))] }, () => {
+				this.props.uploadRuleset(this.state.ruleset);
+				this.navigate('/ruleset');
 			});
 		} catch (err) {
-			// TODO: Handle error scenarios
 			// eslint-disable-next-line no-console
-			console.log('err', err);
+			console.log(err);
 		}
 	}
-	componentDidMount() {
-		this.fetchData();
-	}
+
 	allowDrop(e) {
 		e.preventDefault();
 	}
@@ -82,6 +73,7 @@ class HomeContainer extends Component {
 			if (!isFileAdded) {
 				const files = this.state.files.concat([name]);
 				const ruleset = this.state.ruleset.concat(file);
+
 				this.setState({ files, ruleset, fileExist: false });
 			} else {
 				const message = {
@@ -207,6 +199,12 @@ class HomeContainer extends Component {
 							</div>
 						</div>
 						<div className="btn-group">
+							<Button
+								label={'Get Latest'}
+								onConfirm={this.fetchLatest}
+								classname="primary-btn"
+								type="button"
+							/>
 							<Button
 								label={'Upload'}
 								onConfirm={this.handleUpload}

@@ -13,10 +13,11 @@ const createRequest = () => {
 	return request;
 };
 
-// export const getText = async () => {
-// 	const request = createRequest();
-// 	const rsp = await request.get('/test.txt');
-// };
+export const getContent = async ({ path }) => {
+	const request = createRequest();
+	const rsp = await request.get(path);
+	return rsp;
+};
 export const getSha = async ({ path }) => {
 	const request = createRequest();
 	const rsp = await request.get(path);

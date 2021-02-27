@@ -8,12 +8,15 @@ import Attributes from '../../components/attributes/attributes';
 import Decisions from '../../components/decisions/decision';
 import ValidateRules from '../../components/validate/validate-rules';
 import { handleAttribute } from '../../actions/attributes';
+import Button from '../../components/button/button';
 import {
 	handleDecision,
 	addRulesetData,
 	changeRulecaseOrder,
 	addNewItem
 } from '../../actions/decisions';
+import InputField from '../../components/forms/input-field';
+
 import { updateRulesetName } from '../../actions/ruleset';
 import Banner from '../../components/panel/banner';
 import * as Message from '../../constants/messages';
@@ -21,6 +24,8 @@ import { groupBy } from 'lodash/collection';
 import RuleErrorBoundary from '../../components/error/ruleset-error';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import attributes from '../../constants/attributes.json';
+import { getSha, updateFile } from '../../api';
+import { PREFERENCE_PATH } from '../../constants/paths.json';
 const operatorsMap = {
 	equal: '==',
 	notEqual: '!=',
@@ -30,7 +35,13 @@ const operatorsMap = {
 	greaterThanInclusive: '>=',
 	notIn: 'not_in'
 };
-const tabs = [{ name: 'Fields' }, { name: 'Rulesets' }, { name: 'Validate' }, { name: 'Generate' }];
+const tabs = [
+	{ name: 'Fields' },
+	{ name: 'Rulesets' },
+	{ name: 'Validate' },
+	{ name: 'Generate' },
+	{ name: 'Push' }
+];
 const getFormattedValue = (value, type) => {
 	switch (type) {
 		case 'boolean':
@@ -46,16 +57,28 @@ const getFormattedValue = (value, type) => {
 class RulesetContainer extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { activeTab: 'Fields', generateFlag: false };
+		this.state = {
+			activeTab: 'Fields',
+			generateFlag: false,
+			message: '',
+			error: {},
+			pushError: '',
+			pushFlag: false
+		};
 		this.generateFile = this.generateFile.bind(this);
 		this.cancelAlert = this.cancelAlert.bind(this);
-	}
+		this.onChangeMessage = this.onChangeMessage.bind(this);
 
+		this.pushToRepo = this.pushToRepo.bind(this);
+	}
+	onChangeMessage(e) {
+		this.setState({ message: e.target.value });
+	}
 	handleTab = (tabName) => {
 		this.setState({ activeTab: tabName });
 	};
 
-	generateFile() {
+	prepareFile() {
 		const attributesMap = {};
 
 		attributes.forEach((v) => {
@@ -98,26 +121,71 @@ class RulesetContainer extends Component {
 			stage: 'preference',
 			rules
 		};
-		const fileData = JSON.stringify(exportedObj, null, '\t');
+		return exportedObj;
+	}
+	async fetchData() {}
+	generateFile() {
+		const obj = this.prepareFile();
+		const fileData = JSON.stringify(obj, null, '\t');
 		const blob = new Blob([fileData], { type: 'application/json' });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement('a');
-		link.download = name + '.json';
+		link.download = obj.name + '.json';
 		link.href = url;
 		link.click();
-		this.setState({ generateFlag: true });
+		this.setState({ pushFlag: true });
 	}
+	async pushToRepo() {
+		if (this.state.message === '') {
+			this.setState({ error: { message: 'Commit message is required for pushing' } });
+		}
+		const obj = this.prepareFile();
 
+		// get latest sha if the file already exists
+		let sha;
+		try {
+			const { data: { sha: Sha } = {} } = await getSha({
+				path: PREFERENCE_PATH
+			});
+			sha = Sha;
+		} catch (err) {
+			// eslint-disable-next-line no-console
+			console.log('err');
+			this.setState({
+				pushError: err.message
+			});
+		}
+		try {
+			await updateFile({
+				message: this.state.message,
+				content: JSON.stringify(obj, null, '\t'),
+				sha,
+				path: PREFERENCE_PATH
+			});
+			this.setState({
+				pushFlag: true
+			});
+		} catch (err) {
+			this.setState({
+				pushError: err.message
+			});
+			// eslint-disable-next-line no-console
+			console.log('err', err);
+		}
+	}
 	cancelAlert() {
-		this.setState({ generateFlag: false });
+		this.setState({ generateFlag: false, pushFlag: false, pushError: '' });
 	}
 
-	successAlert = () => {
+	successAlert = ({
+		msg = 'rule is successfully generated at your default download location',
+		error = false,
+		title = 'File generated'
+	}) => {
 		const { name } = this.props.ruleset;
 		return (
-			<SweetAlert success title={'File generated!'} onConfirm={this.cancelAlert}>
-				{' '}
-				{`${name} rule is successfully generated at your default download location`}
+			<SweetAlert success={!error} error={error} title={title} onConfirm={this.cancelAlert}>
+				{`${name} ${msg}`}
 			</SweetAlert>
 		);
 	};
@@ -135,7 +203,7 @@ class RulesetContainer extends Component {
 		}
 
 		const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
-
+		const uploadMessage = this.props.updatedFlag ? Message.UPLOAD_MSG : Message.NO_CHANGES_MSG;
 		return (
 			<div>
 				<RuleErrorBoundary>
@@ -166,13 +234,56 @@ class RulesetContainer extends Component {
 							/>
 						)}
 						{this.state.activeTab === 'Generate' && (
-							<Banner
-								message={message}
-								ruleset={this.props.ruleset}
-								onConfirm={this.generateFile}
-							/>
+							<>
+								<Banner
+									message={message}
+									ruleset={this.props.ruleset}
+									onConfirm={this.generateFile}
+								/>
+							</>
 						)}
 						{this.state.generateFlag && this.successAlert()}
+
+						{this.state.activeTab === 'Push' && (
+							<>
+								{this.props.updatedFlag ? (
+									<div className="add-attribute-wrapper" style={{ marginTop: 32, marginLeft: 34 }}>
+										<div className="form-groups-inline">
+											<InputField
+												label="Commit Message"
+												onChange={this.onChangeMessage}
+												value={this.state.message}
+												error={this.state.error.message}
+											/>
+										</div>
+										<div className="btn-group">
+											{this.state.error.message && this.state.message === '' && (
+												<span style={{ color: 'red' }}>{this.state.error.message}</span>
+											)}
+										</div>
+
+										<Button label="Push" onConfirm={this.pushToRepo} classname="primary-btn" />
+									</div>
+								) : (
+									<Banner
+										message={uploadMessage}
+										ruleset={this.props.ruleset}
+										onConfirm={this.generateFile}
+									/>
+								)}
+							</>
+						)}
+						{this.state.pushFlag &&
+							this.successAlert({
+								msg: 'rule is successfully pushed to the repository',
+								title: 'Pushed successfully'
+							})}
+						{this.state.pushError &&
+							this.successAlert({
+								msg: this.state.pushError,
+								title: 'Push failed',
+								error: !!this.state.pushError
+							})}
 					</div>
 				</RuleErrorBoundary>
 			</div>

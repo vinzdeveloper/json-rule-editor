@@ -24,7 +24,6 @@ export const getSha = async ({ path, token }) => {
 	return rsp;
 };
 export const updateFile = async ({ message, content, sha, path, token }) => {
-	console.log('token', token);
 	const request = createRequest(token);
 	const body = { message, sha, content: btoa(content) };
 	const rsp = await request.put(path, body);

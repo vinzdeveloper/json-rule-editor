@@ -44,7 +44,7 @@ class NavigationPanel extends Component {
 			this.props.rulenames.length > 0
 				? [
 						{
-							name: 'Ruleset',
+							name: 'Preference Ruleset',
 							sublinks: this.props.rulenames,
 							iconClass: 'rules-icon',
 							linkClass: 'link-heading'

@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166540931-1"></script>
-    <script>
-     if (window.location.href && window.location.href.indexOf('localhost') <= -1) {
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+	<head>
+		<meta charset="utf-8" />
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-166540931-1"></script>
+		<script>
+			if (window.location.href && window.location.href.indexOf('localhost') <= -1) {
+				window.dataLayer = window.dataLayer || [];
+				function gtag() {
+					dataLayer.push(arguments);
+				}
+				gtag('js', new Date());
 
-        gtag('config', 'UA-166540931-1');
-    }
-    </script>
+				gtag('config', 'UA-166540931-1');
+			}
+		</script>
 
-    <title>Rule Editor</title>
-</head>
-<body>
-    <div id="root">
-    </div>
-</body>
+		<title>Preference Ruleset Editor</title>
+	</head>
+	<body>
+		<div id="root"></div>
+	</body>
 </html>

@@ -160,7 +160,7 @@ class HomeContainer extends Component {
 
 	render() {
 		const { fileExist, uploadError, message } = this.state;
-		const title = this.props.loggedIn ? 'Upload Rules' : 'Create / Upload Rules';
+		const title = this.props.loggedIn ? 'Upload Rules' : 'Create / Upload Preference Rules';
 		return (
 			<div className="home-container">
 				<div className="single-panel-container">

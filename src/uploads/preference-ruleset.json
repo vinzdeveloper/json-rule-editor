@@ -1,7 +1,178 @@
 {
-	"name": "preference v2.0.91",
+	"name": "preference v2.010",
 	"stage": "preference",
 	"rules": [
+		{
+			"note": "Send QA account orders to Wolverine",
+			"expressions": [
+				{
+					"lhs": "account_id",
+					"operator": "==",
+					"rhs": "d2e6ea1765ef5860695c"
+				},
+				{
+					"lhs": "object",
+					"operator": "in",
+					"rhs": "letter,postcard,self_mailer"
+				}
+			],
+			"yields": [
+				{
+					"partner": "wolverine",
+					"weight": 1
+				}
+			],
+			"override": true
+		},
+		{
+			"note": "Send QA account orders to Sandy",
+			"expressions": [
+				{
+					"lhs": "account_id",
+					"operator": "==",
+					"rhs": "129eb7595157b2e3f76d"
+				},
+				{
+					"lhs": "object",
+					"operator": "==",
+					"rhs": "letter"
+				}
+			],
+			"yields": [
+				{
+					"partner": "sandy_alexander",
+					"weight": 1
+				}
+			],
+			"override": true
+		},
+		{
+			"note": "Send QA account orders to Hudson",
+			"expressions": [
+				{
+					"lhs": "account_id",
+					"operator": "==",
+					"rhs": "129eb7595157b2e3f76d"
+				},
+				{
+					"lhs": "object",
+					"operator": "in",
+					"rhs": "postcard,self_mailer"
+				}
+			],
+			"yields": [
+				{
+					"partner": "hudson",
+					"weight": 1
+				}
+			],
+			"override": true
+		},
+		{
+			"note": "Send QA account orders to Quantum",
+			"expressions": [
+				{
+					"lhs": "account_id",
+					"operator": "==",
+					"rhs": "bc60fb58a03f1f8b9eba"
+				},
+				{
+					"lhs": "object",
+					"operator": "in",
+					"rhs": "letter,postcard,self_mailer"
+				}
+			],
+			"yields": [
+				{
+					"partner": "quantum",
+					"weight": 1
+				}
+			],
+			"override": true
+		},
+		{
+			"note": "Send QA account orders to Dot Corp",
+			"expressions": [
+				{
+					"lhs": "account_id",
+					"operator": "==",
+					"rhs": "c672d21326bac7f252d7"
+				},
+				{
+					"lhs": "object",
+					"operator": "in",
+					"rhs": "letter"
+				}
+			],
+			"yields": [
+				{
+					"partner": "dotcorp",
+					"weight": 1
+				}
+			],
+			"override": true
+		},
+		{
+			"note": "Send QA account orders to Darwill",
+			"expressions": [
+				{
+					"lhs": "account_id",
+					"operator": "==",
+					"rhs": "d2e6ea1765ef5860695c"
+				},
+				{
+					"lhs": "object",
+					"operator": "==",
+					"rhs": "check"
+				}
+			],
+			"yields": [
+				{
+					"partner": "darwill",
+					"weight": 1
+				}
+			],
+			"override": true
+		},
+		{
+			"note": "Send QA account orders to Sepire (ENG-12775)",
+			"expressions": [
+				{
+					"lhs": "account_id",
+					"operator": "==",
+					"rhs": "838e50b46a422cbf03d3"
+				},
+				{
+					"lhs": "object",
+					"operator": "==",
+					"rhs": "letter"
+				}
+			],
+			"yields": [
+				{
+					"partner": "sepire",
+					"weight": 1
+				}
+			],
+			"override": true
+		},
+		{
+			"note": "Send QA account orders to SG360",
+			"expressions": [
+				{
+					"lhs": "account_id",
+					"operator": "==",
+					"rhs": "48be27b56a21b2c37b11"
+				}
+			],
+			"yields": [
+				{
+					"partner": "sg360",
+					"weight": 1
+				}
+			],
+			"override": true
+		},
 		{
 			"note": "All A5 Postcards to Proco (ENG-12867)",
 			"expressions": [
@@ -53,23 +224,6 @@
 					"weight": 1
 				}
 			]
-		},
-		{
-			"note": "Send QA account orders to SG360",
-			"expressions": [
-				{
-					"lhs": "account_id",
-					"operator": "==",
-					"rhs": "48be27b56a21b2c37b11"
-				}
-			],
-			"yields": [
-				{
-					"partner": "sg360",
-					"weight": 1
-				}
-			],
-			"override": true
 		},
 		{
 			"note": "Send all 1 Day SLA orders to Sandy Alexander (pre-empting account blacklists + envelope rules)",

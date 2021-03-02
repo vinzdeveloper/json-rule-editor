@@ -126,7 +126,7 @@ class RulesetContainer extends Component {
 	async fetchData() {}
 	generateFile() {
 		const obj = this.prepareFile();
-		const fileData = JSON.stringify(obj, null, '\t');
+		const fileData = JSON.stringify(obj, null, 2);
 		const blob = new Blob([fileData], { type: 'application/json' });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement('a');
@@ -158,7 +158,7 @@ class RulesetContainer extends Component {
 		try {
 			await updateFile({
 				message: this.state.message,
-				content: JSON.stringify(obj, null, '\t'),
+				content: JSON.stringify(obj, null, 2),
 				sha,
 				path: PREFERENCE_PATH
 			});

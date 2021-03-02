@@ -63,12 +63,13 @@ class RulesetContainer extends Component {
 			message: '',
 			error: {},
 			pushError: '',
-			pushFlag: false
+			pushFlag: false,
+			accessToken: ''
 		};
 		this.generateFile = this.generateFile.bind(this);
 		this.cancelAlert = this.cancelAlert.bind(this);
 		this.onChangeMessage = this.onChangeMessage.bind(this);
-
+		this.onChangeAccessToken = this.onChangeAccessToken.bind(this);
 		this.pushToRepo = this.pushToRepo.bind(this);
 	}
 	onChangeMessage(e) {
@@ -77,7 +78,9 @@ class RulesetContainer extends Component {
 	handleTab = (tabName) => {
 		this.setState({ activeTab: tabName });
 	};
-
+	onChangeAccessToken(e) {
+		this.setState({ accessToken: e.target.value });
+	}
 	prepareFile() {
 		const attributesMap = {};
 
@@ -145,7 +148,8 @@ class RulesetContainer extends Component {
 		let sha;
 		try {
 			const { data: { sha: Sha } = {} } = await getSha({
-				path: PREFERENCE_PATH
+				path: PREFERENCE_PATH,
+				token: this.state.accessToken
 			});
 			sha = Sha;
 		} catch (err) {
@@ -160,7 +164,8 @@ class RulesetContainer extends Component {
 				message: this.state.message,
 				content: JSON.stringify(obj, null, 2),
 				sha,
-				path: PREFERENCE_PATH
+				path: PREFERENCE_PATH,
+				token: this.state.accessToken
 			});
 			this.setState({
 				pushFlag: true
@@ -255,6 +260,15 @@ class RulesetContainer extends Component {
 											error={this.state.error.message}
 										/>
 									</div>
+									<div className="form-groups-inline">
+										<InputField
+											label="Github Access Token"
+											onChange={this.onChangeAccessToken}
+											value={this.state.accessToken}
+											error={this.state.error.accessToken}
+										/>
+									</div>
+
 									<div className="btn-group">
 										{this.state.error.message && this.state.message === '' && (
 											<span style={{ color: 'red' }}>{this.state.error.message}</span>

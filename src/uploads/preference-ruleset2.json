@@ -1,0 +1,22 @@
+{
+  "name": "asd",
+  "stage": "preference",
+  "rules": [
+    {
+      "note": "asd",
+      "expressions": [
+        {
+          "lhs": "object",
+          "operator": "==",
+          "rhs": "postcard"
+        }
+      ],
+      "yields": [
+        {
+          "partner": "darwill",
+          "weight": 23
+        }
+      ]
+    }
+  ]
+}

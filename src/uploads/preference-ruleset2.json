@@ -1,22 +1,203 @@
 {
-  "name": "asd",
+  "name": "nahan capabilities v1.5.4",
   "stage": "preference",
   "rules": [
     {
-      "note": "asd",
+      "note": "Nahan - Letters",
       "expressions": [
         {
           "lhs": "object",
           "operator": "==",
-          "rhs": "postcard"
+          "rhs": "letter"
+        },
+        {
+          "lhs": "size",
+          "operator": "in",
+          "rhs": "us_letter"
+        },
+        {
+          "lhs": "sheets",
+          "operator": "<=",
+          "rhs": "6"
+        },
+        {
+          "lhs": "mail_type",
+          "operator": "in",
+          "rhs": "usps_first_class"
+        },
+        {
+          "lhs": "booklet",
+          "operator": "in",
+          "rhs": "false"
+        },
+        {
+          "lhs": "return_envelope.id",
+          "operator": "in",
+          "rhs": ""
+        },
+        {
+          "lhs": "custom_envelope.id",
+          "operator": "in",
+          "rhs": ",env_754434f7e9dffcbb,env_754434f7ajksfbsj"
+        },
+        {
+          "lhs": "extra_service",
+          "operator": "in",
+          "rhs": ""
+        },
+        {
+          "lhs": "color",
+          "operator": "in",
+          "rhs": "true,false"
+        },
+        {
+          "lhs": "double_sided",
+          "operator": "in",
+          "rhs": "true,false"
+        },
+        {
+          "lhs": "hipaa",
+          "operator": "in",
+          "rhs": "true,false"
+        },
+        {
+          "lhs": "to.address_country",
+          "operator": "in",
+          "rhs": "UNITED STATES"
+        },
+        {
+          "lhs": "mail_sort",
+          "operator": "in",
+          "rhs": ""
+        },
+        {
+          "lhs": "bleed",
+          "operator": "==",
+          "rhs": "false"
+        },
+        {
+          "lhs": "sla",
+          "operator": "in",
+          "rhs": "2"
+        },
+        {
+          "lhs": "card.id",
+          "operator": "in",
+          "rhs": ""
+        },
+        {
+          "lhs": "fold",
+          "operator": "in",
+          "rhs": ",c_fold,z_fold"
         }
       ],
       "yields": [
         {
-          "partner": "darwill",
-          "weight": 23
+          "partner": "nahan",
+          "weight": 1
         }
       ]
+    },
+    {
+      "note": "Nahan - Cap 1 Envelope Letters",
+      "expressions": [
+        {
+          "lhs": "object",
+          "operator": "==",
+          "rhs": "letter"
+        },
+        {
+          "lhs": "size",
+          "operator": "in",
+          "rhs": "us_letter"
+        },
+        {
+          "lhs": "sheets",
+          "operator": "<=",
+          "rhs": "2"
+        },
+        {
+          "lhs": "mail_type",
+          "operator": "in",
+          "rhs": "usps_first_class,usps_standard"
+        },
+        {
+          "lhs": "booklet",
+          "operator": "in",
+          "rhs": "false"
+        },
+        {
+          "lhs": "return_envelope.id",
+          "operator": "in",
+          "rhs": ""
+        },
+        {
+          "lhs": "custom_envelope.id",
+          "operator": "in",
+          "rhs": "env_a0f9cfde7258f014f,env_42a732912f0a8942f,"
+        },
+        {
+          "lhs": "extra_service",
+          "operator": "in",
+          "rhs": ""
+        },
+        {
+          "lhs": "color",
+          "operator": "in",
+          "rhs": "true,false"
+        },
+        {
+          "lhs": "double_sided",
+          "operator": "in",
+          "rhs": "true,false"
+        },
+        {
+          "lhs": "hipaa",
+          "operator": "in",
+          "rhs": "true,false"
+        },
+        {
+          "lhs": "to.address_country",
+          "operator": "in",
+          "rhs": "UNITED STATES"
+        },
+        {
+          "lhs": "mail_sort",
+          "operator": "in",
+          "rhs": ""
+        },
+        {
+          "lhs": "bleed",
+          "operator": "in",
+          "rhs": "true,false"
+        },
+        {
+          "lhs": "sla",
+          "operator": "in",
+          "rhs": "2"
+        },
+        {
+          "lhs": "card.id",
+          "operator": "in",
+          "rhs": ""
+        },
+        {
+          "lhs": "fold",
+          "operator": "in",
+          "rhs": ",c_fold,z_fold"
+        }
+      ],
+      "yields": [
+        {
+          "partner": "nahan",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "note": "asd",
+      "expressions": [],
+      "yields": []
     }
   ]
 }

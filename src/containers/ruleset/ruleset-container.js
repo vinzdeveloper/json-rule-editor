@@ -141,7 +141,13 @@ class RulesetContainer extends Component {
 	async pushToRepo() {
 		if (this.state.message === '') {
 			this.setState({ error: { message: 'Commit message is required for pushing' } });
+			return;
 		}
+		if (this.state.accessToken === '') {
+			this.setState({ error: { accessToken: 'Access Token is required for pushing' } });
+			return;
+		}
+
 		const obj = this.prepareFile();
 
 		// get latest sha if the file already exists
@@ -272,6 +278,9 @@ class RulesetContainer extends Component {
 									<div className="btn-group">
 										{this.state.error.message && this.state.message === '' && (
 											<span style={{ color: 'red' }}>{this.state.error.message}</span>
+										)}
+										{this.state.error.accessToken && this.state.accessToken === '' && (
+											<span style={{ color: 'red' }}>{this.state.error.accessToken}</span>
 										)}
 									</div>
 

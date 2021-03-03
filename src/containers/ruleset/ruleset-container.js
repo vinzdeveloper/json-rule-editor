@@ -69,7 +69,8 @@ class RulesetContainer extends Component {
 			accessToken: '',
 			loading: false,
 			prTitle: '',
-			prBody: ''
+			prBody: '',
+			prURL: ''
 		};
 		this.generateFile = this.generateFile.bind(this);
 		this.cancelAlert = this.cancelAlert.bind(this);
@@ -158,7 +159,7 @@ class RulesetContainer extends Component {
 			this.setState({ error: { accessToken: 'Access Token is required for pushing' } });
 			return;
 		}
-		this.setState({ loading: true });
+		this.setState({ loading: true, prURL: '' });
 		const obj = this.prepareFile();
 
 		// get latest sha if the file already exists
@@ -179,8 +180,11 @@ class RulesetContainer extends Component {
 				token: this.state.accessToken
 			});
 			branchSha = bSha;
-
-			const branch = new Date().toISOString().slice(0, 16).replace(':', '');
+			const timestamp = new Date().toISOString().slice(0, 16).replace(':', '');
+			const branch = `routing-rule-changes-${new Date()
+				.toISOString()
+				.slice(0, 16)
+				.replace(':', '')}`;
 			await createBranch({ token: this.state.accessToken, sha: branchSha, branch });
 			await updateFile({
 				message: this.state.message,
@@ -190,14 +194,15 @@ class RulesetContainer extends Component {
 				token: this.state.accessToken,
 				branch
 			});
-			await createPR({
+			const { html_url } = await createPR({
 				token: this.state.accessToken,
-				title: this.state.prTitle || 'Update preferences',
-				content: this.state.prBody || 'Update preferences',
+				title: this.state.prTitle || `Routing Rule Changes - ${timestamp}`,
+				content: this.state.prBody || `Routing Rule Changes - ${timestamp}`,
 				head: branch
 			});
 			this.setState({
-				pushFlag: true
+				pushFlag: true,
+				prURL: html_url
 			});
 		} catch (err) {
 			this.setState({
@@ -324,6 +329,15 @@ class RulesetContainer extends Component {
 									</div>
 									{this.state.loading && <Loader />}
 									<Button label="Push" onConfirm={this.pushToRepo} classname="primary-btn" />
+
+									{this.state.prURL && (
+										<div style={{ marginTop: 24 }}>
+											Pull request URL :{' '}
+											<a href={this.state.prURL} target="_blank" rel="noopener noreferrer">
+												{this.state.prURL}
+											</a>
+										</div>
+									)}
 								</div>
 							</>
 						)}

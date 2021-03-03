@@ -24,8 +24,10 @@ import { groupBy } from 'lodash/collection';
 import RuleErrorBoundary from '../../components/error/ruleset-error';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import attributes from '../../constants/attributes.json';
-import { getSha, updateFile } from '../../api';
+import { getSha, updateFile, getBranchSha, createPR, createBranch } from '../../api';
 import { PREFERENCE_PATH } from '../../constants/paths.json';
+import Loader from '../../components/loader/loader';
+
 const operatorsMap = {
 	equal: '==',
 	notEqual: '!=',
@@ -64,12 +66,17 @@ class RulesetContainer extends Component {
 			error: {},
 			pushError: '',
 			pushFlag: false,
-			accessToken: ''
+			accessToken: '',
+			loading: false,
+			prTitle: '',
+			prBody: ''
 		};
 		this.generateFile = this.generateFile.bind(this);
 		this.cancelAlert = this.cancelAlert.bind(this);
 		this.onChangeMessage = this.onChangeMessage.bind(this);
 		this.onChangeAccessToken = this.onChangeAccessToken.bind(this);
+		this.onChangePR = this.onChangePR.bind(this);
+
 		this.pushToRepo = this.pushToRepo.bind(this);
 	}
 	onChangeMessage(e) {
@@ -80,6 +87,10 @@ class RulesetContainer extends Component {
 	};
 	onChangeAccessToken(e) {
 		this.setState({ accessToken: e.target.value });
+	}
+
+	onChangePR(e, type) {
+		this.setState({ [type]: e.target.value });
 	}
 	prepareFile() {
 		const attributesMap = {};
@@ -147,31 +158,43 @@ class RulesetContainer extends Component {
 			this.setState({ error: { accessToken: 'Access Token is required for pushing' } });
 			return;
 		}
-
+		this.setState({ loading: true });
 		const obj = this.prepareFile();
 
 		// get latest sha if the file already exists
-		let sha;
 		try {
+			let sha;
+
 			const { data: { sha: Sha } = {} } = await getSha({
 				path: PREFERENCE_PATH,
 				token: this.state.accessToken
 			});
 			sha = Sha;
-		} catch (err) {
-			// eslint-disable-next-line no-console
-			console.log('err');
-			this.setState({
-				pushError: err.message
+
+			let branchSha;
+			const {
+				object: { sha: bSha }
+			} = await getBranchSha({
+				path: PREFERENCE_PATH,
+				token: this.state.accessToken
 			});
-		}
-		try {
+			branchSha = bSha;
+
+			const branch = new Date().toISOString().slice(0, 16).replace(':', '');
+			await createBranch({ token: this.state.accessToken, sha: branchSha, branch });
 			await updateFile({
 				message: this.state.message,
 				content: JSON.stringify(obj, null, 2),
 				sha,
 				path: PREFERENCE_PATH,
-				token: this.state.accessToken
+				token: this.state.accessToken,
+				branch
+			});
+			await createPR({
+				token: this.state.accessToken,
+				title: this.state.prTitle || 'Update preferences',
+				content: this.state.prBody || 'Update preferences',
+				head: branch
 			});
 			this.setState({
 				pushFlag: true
@@ -183,6 +206,7 @@ class RulesetContainer extends Component {
 			// eslint-disable-next-line no-console
 			console.log('err', err);
 		}
+		this.setState({ loading: false });
 	}
 	cancelAlert() {
 		this.setState({ generateFlag: false, pushFlag: false, pushError: '' });
@@ -274,7 +298,22 @@ class RulesetContainer extends Component {
 											error={this.state.error.accessToken}
 										/>
 									</div>
-
+									<div className="form-groups-inline">
+										<InputField
+											label="PR Title"
+											onChange={(e) => this.onChangePR(e, 'prTitle')}
+											value={this.state.prTitle}
+											error={this.state.error.prTitle}
+										/>
+									</div>
+									<div className="form-groups-inline">
+										<InputField
+											label="PR Body"
+											onChange={(e) => this.onChangePR(e, 'prBody')}
+											value={this.state.prBody}
+											error={this.state.error.prBody}
+										/>
+									</div>
 									<div className="btn-group">
 										{this.state.error.message && this.state.message === '' && (
 											<span style={{ color: 'red' }}>{this.state.error.message}</span>
@@ -283,7 +322,7 @@ class RulesetContainer extends Component {
 											<span style={{ color: 'red' }}>{this.state.error.accessToken}</span>
 										)}
 									</div>
-
+									{this.state.loading && <Loader />}
 									<Button label="Push" onConfirm={this.pushToRepo} classname="primary-btn" />
 								</div>
 							</>

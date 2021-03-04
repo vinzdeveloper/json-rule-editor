@@ -129,23 +129,29 @@ class DecisionDetails extends Component {
 
 	onChangeYield(e, name) {
 		const yieldV = { ...this.state.yield };
-		const error = {};
+		let error = {};
 
 		if (name == 'weight') {
 			if (isNaN(e.target.value)) {
 				// console.log(typeof e.target.value);
 				// yieldV[name] = parseFloat(e.target.value, 10);
-				error.weight = 'only numbers';
+				error.weight = 'Invalid decimal value';
 			} else {
-				yieldV[name] = e.target.value;
+				if (parseFloat(e.target.value) > 1e-7) {
+					yieldV[name] = e.target.value;
+					error = {};
+				} else if (parseFloat(e.target.value) > 0) {
+					error.weight = "Entered value can't go beyond 6 decimal places";
+					yieldV[name] = '';
+				}
 			}
 			//  else {
 			// error.weight = 'only numbers';
 			// }
 		} else {
 			yieldV[name] = e.value;
+			error = {};
 		}
-
 		this.setState({ yield: { ...yieldV, error } });
 	}
 
@@ -647,8 +653,8 @@ class DecisionDetails extends Component {
 											<InputField
 												onChange={(value) => this.onChangeYield(value, 'weight')}
 												value={yld.weight}
-												// error={yld.error.weight}
 												label={null}
+												error={currentYield.error.weight}
 												placeholder={PLACEHOLDER.number}
 											/>
 										</div>
@@ -656,6 +662,7 @@ class DecisionDetails extends Component {
 											label="Update"
 											onConfirm={() => this.updateCondition()}
 											classname="primary-btn small-btn"
+											disabled={currentYield.error.weight}
 											// type="submit"
 										/>
 										<Button
@@ -699,7 +706,7 @@ class DecisionDetails extends Component {
 										<InputField
 											onChange={(value) => this.onChangeYield(value, 'weight')}
 											value={currentYield.weight}
-											// error={currentYield.error.weight}
+											error={currentYield.error.weight}
 											label={null}
 											placeholder={PLACEHOLDER.number}
 										/>

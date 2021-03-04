@@ -55,7 +55,7 @@ const getFormattedValue = (value, { type, fieldType } = {}) => {
 			}
 			if (fieldType === 'array') {
 				if (value && value.includes(',')) {
-					const arr = value && value.split(',').map((v) => v);
+					const arr = value && value.split(',').map((v) => (!v ? null : v));
 					// if (nullable) {
 					// 	arr.push(null);
 					// } else {
@@ -78,7 +78,7 @@ const getFormattedValue = (value, { type, fieldType } = {}) => {
 		case 'number':
 			if (fieldType === 'array') {
 				if (value && value.includes(',')) {
-					const arr = value && value.split(',').map((v) => (!v ? null : parseFloat(v)));
+					const arr = value && value.split(',').map((v) => (!v ? null : v));
 					// if (nullable) {
 					// 	arr.push(null);
 					// } else {

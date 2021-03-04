@@ -44,17 +44,63 @@ const tabs = [
 	{ name: 'Generate' },
 	{ name: 'Push' }
 ];
-const getFormattedValue = (value, type) => {
+const getFormattedValue = (value, { type, fieldType } = {}) => {
 	switch (type) {
+		case 'string':
+			// if (nullable) {
+			// 	return null;
+			// }
+			if (value === 'null') {
+				return null;
+			}
+			if (fieldType === 'array') {
+				if (value && value.includes(',')) {
+					const arr = value && value.split(',').map((v) => v);
+					// if (nullable) {
+					// 	arr.push(null);
+					// } else {
+					return arr;
+					// }
+				}
+				return value ? [value] : [null];
+			}
+
+			// if (value.includes(',')) {
+			// 	return value && value.split(',').map((v) => (!v ? null : v));
+			// }
+			return value || null;
+
 		case 'boolean':
+			// if (nullable) {
+			// 	return null;
+			// }
 			return value === 'true';
 		case 'number':
-			// eslint-disable-next-line no-case-declarations
-			const num = parseFloat(value, 10);
-			return num;
+			if (fieldType === 'array') {
+				if (value && value.includes(',')) {
+					const arr = value && value.split(',').map((v) => (!v ? null : parseFloat(v)));
+					// if (nullable) {
+					// 	arr.push(null);
+					// } else {
+					return arr;
+					// }
+				}
+				return value ? [value] : [null];
+			} else {
+				// if (nullable) {
+				// 	return null;
+				// }
+				// eslint-disable-next-line no-case-declarations
+				const num = parseFloat(value, 10);
+
+				return num;
+			}
 		default:
 			return value;
 	}
+};
+const parseTypeFloat = (val) => {
+	return parseFloat(val);
 };
 class RulesetContainer extends Component {
 	constructor(props) {
@@ -93,11 +139,12 @@ class RulesetContainer extends Component {
 	onChangePR(e, type) {
 		this.setState({ [type]: e.target.value });
 	}
+
 	prepareFile() {
 		const attributesMap = {};
 
-		attributes.forEach((v) => {
-			attributesMap[v.name] = v.type;
+		attributes.forEach(({ name, type, fieldType }) => {
+			attributesMap[name] = { type, fieldType };
 		});
 		const { ruleset: { name = 'rulesetDefault', data = [] } = {} } = this.props;
 
@@ -105,12 +152,15 @@ class RulesetContainer extends Component {
 			if (override) {
 				return {
 					note,
-					expressions: expressions.map(({ name: lhs, operator, value: rhs = 'null' }) => ({
+					expressions: expressions.map(({ name: lhs, operator, value: rhs = null }) => ({
 						lhs,
 						operator: operatorsMap[operator] || operator,
 						rhs: getFormattedValue(rhs, attributesMap[lhs])
 					})),
-					yields,
+					yields: yields.map(({ partner, weight }) => ({
+						partner,
+						weight: parseTypeFloat(weight)
+					})),
 					override: true
 				};
 			}
@@ -119,12 +169,14 @@ class RulesetContainer extends Component {
 				expressions: expressions.map(({ name: lhs, operator, value: rhs = 'null' }) => ({
 					lhs,
 					operator: operatorsMap[operator] || operator,
-					rhs
+					rhs: getFormattedValue(rhs, attributesMap[lhs])
 				})),
-				yields
+				yields: yields.map(({ partner, weight }) => ({
+					partner,
+					weight: parseTypeFloat(weight)
+				}))
 			};
 		});
-
 		// converting from  name,value format to  lhs,rhs format
 		// const expressions = ruleset.data.expressions.map(({ name: lhs, operator, value: rhs }) => ({
 		// 	lhs,

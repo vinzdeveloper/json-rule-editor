@@ -177,7 +177,6 @@ function ruleset(state = initialState || {}, action = '') {
 						operator:
 							operator ||
 							activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex].operator,
-
 						value: value || activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex].value
 					};
 				}

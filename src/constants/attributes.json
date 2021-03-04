@@ -5,11 +5,13 @@
 	},
 	{
 		"name": "object",
-		"type": "string"
+		"type": "string",
+		"fieldType": "array"
 	},
 	{
 		"name": "size",
-		"type": "string"
+		"type": "string",
+		"fieldType": "array"
 	},
 	{
 		"name": "custom_envelope.id",
@@ -17,7 +19,8 @@
 	},
 	{
 		"name": "return_envelope.id",
-		"type": "string"
+		"type": "string",
+		"fieldType": "array"
 	},
 	{
 		"name": "billing_group_id",
@@ -25,22 +28,32 @@
 	},
 	{
 		"name": "extra_service",
-		"type": "string"
+		"type": "string",
+		"fieldType": "array"
 	},
 	{
 		"name": "sla",
-		"type": "number"
+		"type": "number",
+		"fieldType": "array"
 	},
 	{
 		"name": "to.address_country",
-		"type": "string"
+		"type": "string",
+		"fieldType": "array"
 	},
 	{
 		"name": "double_sided",
-		"type": "boolean"
+		"type": "boolean",
+		"fieldType": "array"
 	},
 	{
 		"name": "color",
-		"type": "boolean"
+		"type": "boolean",
+		"fieldType": "array"
+	},
+	{
+		"name": "mail_type",
+		"type": "string",
+		"fieldType": "array"
 	}
 ]

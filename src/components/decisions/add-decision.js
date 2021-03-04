@@ -102,6 +102,8 @@ class AddDecision extends Component {
 		this.addParams = this.addParams.bind(this);
 		this.addPath = this.addPath.bind(this);
 		this.onChangeOverride = this.onChangeOverride.bind(this);
+		this.onChangeNullable = this.onChangeNullable.bind(this);
+		this.onEditNullable = this.onEditNullable.bind(this);
 	}
 
 	handleAdd(e) {
@@ -130,6 +132,11 @@ class AddDecision extends Component {
 	handleCancel() {
 		this.props.cancel();
 	}
+	onEditNullable(value, index) {
+		const expressions = [...this.state.expressions];
+		expressions[index].nullable = value;
+		this.setState({ expressions });
+	}
 	onEditField(e, name, index) {
 		const expressions = [...this.state.expressions];
 		expressions[index][name] = e.target.value;
@@ -139,6 +146,11 @@ class AddDecision extends Component {
 		const yields = [...this.state.yields];
 		yields[index][name] = e.target.value;
 		this.setState({ yields });
+	}
+	onChangeNullable(value, index) {
+		const expression = { ...this.state.expression };
+		expression.nullable = value;
+		this.setState({ expression });
 	}
 	onChangeField(e, name) {
 		const expression = { ...this.state.expression };
@@ -165,10 +177,16 @@ class AddDecision extends Component {
 		const error = {};
 
 		if (name == 'weight') {
-			if (!isNaN(e.target.value)) {
-				yieldV[name] = parseFloat(e.target.value);
-			} else {
+			if (isNaN(e.target.value)) {
 				error.weight = 'only numbers';
+
+				// if (e.target.value.length > 1) {
+				// 	yieldV[name] = parseFloat(e.target.value, 10).toFixed(e.target.value.length - 2);
+				// } else {
+				// 	yieldV[name] = parseFloat(e.target.value, 10).toFixed(1);
+				// }
+			} else {
+				yieldV[name] = e.target.value;
 			}
 		} else {
 			yieldV[name] = e.value;
@@ -301,8 +319,8 @@ class AddDecision extends Component {
 		}
 
 		const exprs = Array.from(this.state.expressions);
-		const { operator, value, name } = this.state.expression;
-		exprs.push({ operator, value, name });
+		const { operator, value, name, nullable } = this.state.expression;
+		exprs.push({ operator, value, name, nullable });
 		this.setState({
 			expressions: exprs,
 			expression: defaultExpression
@@ -543,6 +561,14 @@ class AddDecision extends Component {
 							/> */}
 							{this.renderValueField({ expression })}
 						</div>
+						{/* <div>
+							<Checkbox
+								onChange={(value) => this.onChangeNullable(value)}
+								value={expression.nullable}
+								label={'Nullable?'}
+								vertical
+							/>
+						</div> */}
 					</div>
 
 					<div className="add-field-panel-row ">
@@ -581,6 +607,14 @@ class AddDecision extends Component {
 								</div>
 
 								{this.renderValueField({ expression, hideLabel: index !== 0 })}
+
+								{/* <div>
+									<Checkbox
+										onChange={(value) => this.onChangeNullable(value, index)}
+										value={expression.nullable}
+										label="Nullable?"
+									/>
+								</div> */}
 							</div>
 						))}
 
@@ -728,6 +762,13 @@ class AddDecision extends Component {
 							/> */}
 							{this.renderValueField({ expression })}
 						</div>
+						{/* <div>
+							<Checkbox
+								onChange={(value) => this.onChangeNullable(value)}
+								value={expression.nullable}
+								label={'Nullable?'}
+							/>
+						</div> */}
 					</div>
 					<div className="add-field-panel-row ">
 						<Button
@@ -768,6 +809,14 @@ class AddDecision extends Component {
 										placeholder={placeholder}
 									/>
 								</div>
+								{/* 
+								<div>
+									<Checkbox
+										onChange={(value) => this.onEditNullable(value, index)}
+										value={expression.nullable}
+										label={index === 0 && 'Nullable?'}
+									/>
+								</div> */}
 							</div>
 						))}
 					<hr />

@@ -74,6 +74,7 @@ class DecisionDetails extends Component {
 		this.addExpression = this.addExpression.bind(this);
 		this.addYield = this.addYield.bind(this);
 		this.addNewItem = this.addNewItem.bind(this);
+		this.onChangeNullable = this.onChangeNullable.bind(this);
 	}
 	addNewItem(type, rulecaseIndex) {
 		const { expression, yield: Yield } = this.state;
@@ -81,6 +82,13 @@ class DecisionDetails extends Component {
 
 		this.setState({ expression: defaultExpression, yield: defaultYield });
 	}
+
+	onChangeNullable(value) {
+		const expression = { ...this.state.expression };
+		expression.nullable = value;
+		this.setState({ expression });
+	}
+
 	cancel(type) {
 		if (type === 'expression') {
 			this.setState({
@@ -124,11 +132,16 @@ class DecisionDetails extends Component {
 		const error = {};
 
 		if (name == 'weight') {
-			if (!isNaN(e.target.value)) {
-				yieldV[name] = parseFloat(e.target.value);
-			} else {
+			if (isNaN(e.target.value)) {
+				// console.log(typeof e.target.value);
+				// yieldV[name] = parseFloat(e.target.value, 10);
 				error.weight = 'only numbers';
+			} else {
+				yieldV[name] = e.target.value;
 			}
+			//  else {
+			// error.weight = 'only numbers';
+			// }
 		} else {
 			yieldV[name] = e.value;
 		}
@@ -296,10 +309,14 @@ class DecisionDetails extends Component {
 		this.props.changeRulecaseOrder(payload);
 	}
 	renderValueField({ expression }) {
-		if (FieldOptions[expression.name] && FieldOptions[expression.name].length > 0) {
+		const currentExpression = this.state.expression;
+		if (
+			FieldOptions[currentExpression.name || expression.name] &&
+			FieldOptions[currentExpression.name || expression.name].length > 0
+		) {
 			return (
 				<SelectField
-					options={FieldOptions[expression.name]}
+					options={FieldOptions[currentExpression.name || expression.name]}
 					onChange={(e) => this.onChangeField(e, 'value')}
 					value={expression.value}
 					// error={expression && expression.error.value}
@@ -312,11 +329,11 @@ class DecisionDetails extends Component {
 			return (
 				<InputField
 					onChange={(value) => this.onChangeField(value, 'value')}
-					value={expression.value}
+					value={(expression && expression.value) || expression.value}
 					// error={expression.error.value}
 					label={null}
 					placeholder={'Value'}
-					type={expression.operator === 'number' ? 'number' : 'text'}
+					// type={expression.operator === 'number' ? 'number' : 'text'}
 					// placeholder={PLACEHOLDER.number}
 				/>
 			);
@@ -349,9 +366,10 @@ class DecisionDetails extends Component {
 		// 		: PLACEHOLDER[attribute.type];
 		const getOperators = (eName) => {
 			const attribute = attributes.find((attr) => attr.name === eName);
-			const opertorOptions = attribute && operator[attribute.type];
+			const opertorOptions = attribute && operator[attribute.fieldType || attribute.type];
 			return opertorOptions;
 		};
+		const operatorsList = getOperators(this.state.expression.name);
 
 		return (
 			<div className="rule-flex-container">
@@ -435,7 +453,7 @@ class DecisionDetails extends Component {
 										</div>
 										<div>
 											<SelectField
-												options={getOperators(expression.name)}
+												options={operatorsList || getOperators(expression.name)}
 												onChange={(e) => this.onChangeField(e, 'operator')}
 												value={expression.operator}
 												// error={expression.error.operator}
@@ -444,6 +462,14 @@ class DecisionDetails extends Component {
 											/>
 										</div>
 										<div>{this.renderValueField({ expression, hideLabel: true })}</div>
+										{/* <div>
+											<Checkbox
+												onChange={(value) => this.onChangeNullable(value)}
+												value={expression.nullable}
+												label={idx === 0 && 'Nullable?'}
+												vertical
+											/>
+										</div> */}
 										<Button
 											label="Update"
 											onConfirm={() => this.updateCondition('expression')}
@@ -542,6 +568,14 @@ class DecisionDetails extends Component {
 									<div>
 										{this.renderValueField({ expression: currentExpression, hideLabel: true })}
 									</div>
+									{/* <div>
+										<Checkbox
+											onChange={(value) => this.onChangeNullable(value)}
+											value={currentExpression.nullable}
+											label={'Nullable?'}
+											vertical
+										/>
+									</div> */}
 									<Button
 										label="Add Expression"
 										onConfirm={() => this.addNewItem('expression', index)}

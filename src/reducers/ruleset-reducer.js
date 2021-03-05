@@ -22,12 +22,19 @@ const reverseOperatorsMap = {
 	not_in: 'notIn'
 };
 const getStringValue = (value) => {
+	const nullIndex = Array.isArray(value) && value.findIndex((val) => val === null);
+	if (typeof nullIndex !== 'undefined' && value && Array.isArray(value)) {
+		value.splice(nullIndex, 1);
+	}
+
 	if (value === 'null') {
 		return undefined;
 	}
 	return `${value}`;
 };
-
+const getNullable = (value) => {
+	return value === null || (Array.isArray(value) && value.findIndex((val) => val === null) !== -1);
+};
 function ruleset(state = initialState || {}, action = '') {
 	switch (action.type) {
 		case ActionTypes.UPDATE_RULSET_NAME: {
@@ -51,6 +58,8 @@ function ruleset(state = initialState || {}, action = '') {
 					expressions: expressions.map(({ lhs: name, operator, rhs: value }) => ({
 						name,
 						operator: reverseOperatorsMap[operator] || operator,
+						nullable: getNullable(value),
+
 						value: getStringValue(value)
 					})),
 					...others

@@ -44,31 +44,39 @@ const tabs = [
 	{ name: 'Generate' },
 	{ name: 'Push' }
 ];
+const opMap = {
+	'==': 'in',
+	'!=': 'not_in'
+};
+const revOpMap = {
+	in: '==',
+	not_in: '!='
+};
+const getActualOperator = ({ operator, value, nullable }) => {
+	if ((value && value.includes(',')) || nullable) {
+		return opMap[operator] || operator;
+	}
+	return revOpMap[operator] || operator;
+};
 const getFormattedValue = (value, { type, fieldType } = {}, nullable) => {
 	switch (type) {
 		case 'string':
 			if (value === 'null') {
 				return null;
 			}
-			if (fieldType === 'array') {
-				if (value && value.includes(',')) {
-					const arr = value && value.split(',').map((v) => (!v ? null : v));
-					if (nullable) {
-						arr.push(null);
-						return arr;
-					} else {
-						return arr;
-					}
+			if (value && value.includes(',')) {
+				const arr = value && value.split(',').map((v) => (!v ? null : v));
+				if (nullable) {
+					arr.push(null);
+					return arr;
+				} else {
+					return arr;
 				}
-				return value ? (nullable ? [value, null] : [value]) : [null];
 			}
-			if (nullable) {
-				return null;
-			}
-			// if (value.includes(',')) {
-			// 	return value && value.split(',').map((v) => (!v ? null : v));
-			// }
-			return value || null;
+			return value ? (nullable ? [value, null] : value) : [null];
+		// if (value.includes(',')) {
+		// 	return value && value.split(',').map((v) => (!v ? null : v));
+		// }
 
 		case 'boolean':
 			if (nullable) {
@@ -155,7 +163,11 @@ class RulesetContainer extends Component {
 					note,
 					expressions: expressions.map(({ name: lhs, operator, value: rhs = null, nullable }) => ({
 						lhs,
-						operator: operatorsMap[operator] || operator,
+						operator: getActualOperator({
+							value: rhs,
+							nullable,
+							operator: operatorsMap[operator] || operator
+						}),
 						rhs: getFormattedValue(
 							rhs,
 							attributesMap[lhs],
@@ -174,7 +186,11 @@ class RulesetContainer extends Component {
 				note,
 				expressions: expressions.map(({ name: lhs, operator, value: rhs = 'null', nullable }) => ({
 					lhs,
-					operator: operatorsMap[operator] || operator,
+					operator: getActualOperator({
+						value: rhs,
+						nullable,
+						operator: operatorsMap[operator] || operator
+					}),
 					rhs: getFormattedValue(
 						rhs,
 						attributesMap[lhs],

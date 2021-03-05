@@ -12,6 +12,23 @@ import Loader from '../loader/loader';
 import { ViewOutcomes } from '../attributes/view-attributes';
 import FieldOptions from '../../constants/options.json';
 
+const opMap = {
+	equal: 'in',
+	notEqual: 'notIn',
+	not_in: 'notIn'
+};
+const revOpMap = {
+	in: 'equal',
+	not_in: 'notEqual'
+};
+const getActualOperator = ({ operator, value, nullable }) => {
+	if ((value && value.includes(',')) || nullable) {
+		const rt = opMap[operator] || operator;
+		return rt;
+	}
+	const rt = revOpMap[operator] || operator;
+	return rt;
+};
 class ValidateRules extends Component {
 	constructor(props) {
 		super(props);
@@ -92,11 +109,9 @@ class ValidateRules extends Component {
 					conditions: {
 						all: expressions.map(({ name: fact, operator, value, nullable }) => ({
 							fact,
-							operator,
+							operator: getActualOperator({ operator, value, nullable }),
 							value: nullable
-								? operator.includes('equal')
-									? undefined
-									: Array.isArray(value)
+								? Array.isArray(value)
 									? [...value, undefined]
 									: [value, undefined]
 								: value

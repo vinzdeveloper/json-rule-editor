@@ -335,7 +335,7 @@ class DecisionDetails extends Component {
 			return (
 				<InputField
 					onChange={(value) => this.onChangeField(value, 'value')}
-					value={(expression && expression.value) || expression.value}
+					value={expression && expression.value}
 					// error={expression.error.value}
 					label={null}
 					placeholder={'Value'}

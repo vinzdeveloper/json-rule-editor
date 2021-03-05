@@ -158,7 +158,7 @@ function ruleset(state = initialState || {}, action = '') {
 				note,
 				override
 			} = action.payload;
-			const { name, operator, value } = expression;
+			const { name, operator, value, nullable } = expression;
 			const { partner, weight } = Yield;
 
 			const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
@@ -177,6 +177,7 @@ function ruleset(state = initialState || {}, action = '') {
 						operator:
 							operator ||
 							activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex].operator,
+						nullable,
 						value: value || activeRuleSet.data[currentRuleIndex].expressions[currentEditIndex].value
 					};
 				}
@@ -220,7 +221,7 @@ function ruleset(state = initialState || {}, action = '') {
 		case ActionTypes.ADD_NEW_ITEM: {
 			const { expression = {}, yield: Yield = {}, type, rulecaseIndex } = action.payload;
 			const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
-			const { name, operator, value } = expression;
+			const { name, operator, value, nullable } = expression;
 			const { partner, weight } = Yield;
 
 			if (type === 'expression') {
@@ -228,7 +229,7 @@ function ruleset(state = initialState || {}, action = '') {
 					activeRuleSet.data &&
 					activeRuleSet.data[rulecaseIndex] &&
 					activeRuleSet.data[rulecaseIndex] &&
-					activeRuleSet.data[rulecaseIndex].expressions.push({ name, operator, value });
+					activeRuleSet.data[rulecaseIndex].expressions.push({ name, operator, value, nullable });
 			} else if (type === 'yield') {
 				activeRuleSet &&
 					activeRuleSet.data &&

@@ -20,6 +20,11 @@ const InputField = (props) => {
 	return (
 		<div className="form-field22" style={{ marginRight: 8 }}>
 			{label && <label>{label}</label>}
+			{props.vertical ? (
+				<div style={{ marginTop: 2 }}>
+					<br />
+				</div>
+			) : null}
 			<input
 				style={props.style && { ...props.style }}
 				type="checkbox"
@@ -51,7 +56,8 @@ InputField.propTypes = {
 	readOnly: PropTypes.bool,
 	placeholder: PropTypes.string,
 	type: PropTypes.string,
-	style: PropTypes.object
+	style: PropTypes.object,
+	vertical: PropTypes.bool
 };
 
 export default InputField;

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import Creatable, { makeCreatableSelect } from 'react-select/creatable';
 
 const SelectField = ({
 	isMulti = false,
@@ -105,8 +106,8 @@ const SelectField = ({
 		<div style={{ marginTop: 5, marginRight: 8 }}>
 			{label && <label>{label}</label>}
 
-			<Select
-				options={options && options.map((op) => ({ label: op, value: op }))}
+			<Creatable
+				options={(options && options.map((op) => ({ label: op, value: op }))) || []}
 				isClearable
 				onChange={change}
 				// className={`form-field-drpdwn ${errorClass} ${readOnlyClass}`}

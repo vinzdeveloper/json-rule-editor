@@ -561,14 +561,14 @@ class AddDecision extends Component {
 							/> */}
 							{this.renderValueField({ expression })}
 						</div>
-						{/* <div>
+						<div>
 							<Checkbox
 								onChange={(value) => this.onChangeNullable(value)}
 								value={expression.nullable}
 								label={'Nullable?'}
 								vertical
 							/>
-						</div> */}
+						</div>
 					</div>
 
 					<div className="add-field-panel-row ">
@@ -608,13 +608,13 @@ class AddDecision extends Component {
 
 								{this.renderValueField({ expression, hideLabel: index !== 0 })}
 
-								{/* <div>
+								<div>
 									<Checkbox
 										onChange={(value) => this.onChangeNullable(value, index)}
 										value={expression.nullable}
 										label="Nullable?"
 									/>
-								</div> */}
+								</div>
 							</div>
 						))}
 
@@ -762,13 +762,13 @@ class AddDecision extends Component {
 							/> */}
 							{this.renderValueField({ expression })}
 						</div>
-						{/* <div>
+						<div>
 							<Checkbox
 								onChange={(value) => this.onChangeNullable(value)}
 								value={expression.nullable}
 								label={'Nullable?'}
 							/>
-						</div> */}
+						</div>
 					</div>
 					<div className="add-field-panel-row ">
 						<Button
@@ -809,14 +809,14 @@ class AddDecision extends Component {
 										placeholder={placeholder}
 									/>
 								</div>
-								{/* 
+
 								<div>
 									<Checkbox
 										onChange={(value) => this.onEditNullable(value, index)}
 										value={expression.nullable}
 										label={index === 0 && 'Nullable?'}
 									/>
-								</div> */}
+								</div>
 							</div>
 						))}
 					<hr />

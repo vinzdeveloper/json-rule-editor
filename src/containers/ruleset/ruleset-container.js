@@ -44,52 +44,53 @@ const tabs = [
 	{ name: 'Generate' },
 	{ name: 'Push' }
 ];
-const getFormattedValue = (value, { type, fieldType } = {}) => {
+const getFormattedValue = (value, { type, fieldType } = {}, nullable) => {
 	switch (type) {
 		case 'string':
-			// if (nullable) {
-			// 	return null;
-			// }
 			if (value === 'null') {
 				return null;
 			}
 			if (fieldType === 'array') {
 				if (value && value.includes(',')) {
 					const arr = value && value.split(',').map((v) => (!v ? null : v));
-					// if (nullable) {
-					// 	arr.push(null);
-					// } else {
-					return arr;
-					// }
+					if (nullable) {
+						arr.push(null);
+						return arr;
+					} else {
+						return arr;
+					}
 				}
-				return value ? [value] : [null];
+				return value ? (nullable ? [value, null] : [value]) : [null];
 			}
-
+			if (nullable) {
+				return null;
+			}
 			// if (value.includes(',')) {
 			// 	return value && value.split(',').map((v) => (!v ? null : v));
 			// }
 			return value || null;
 
 		case 'boolean':
-			// if (nullable) {
-			// 	return null;
-			// }
+			if (nullable) {
+				return null;
+			}
 			return value === 'true';
 		case 'number':
 			if (fieldType === 'array') {
 				if (value && value.includes(',')) {
-					const arr = value && value.split(',').map((v) => (!v ? null : parseFloat(v, 10)));
-					// if (nullable) {
-					// 	arr.push(null);
-					// } else {
-					return arr;
-					// }
+					const arr = value && value.split(',').map((v) => (!v ? null : parseFloat(v)));
+					if (nullable) {
+						arr.push(null);
+						return arr;
+					} else {
+						return arr;
+					}
 				}
 				return value ? [value] : [null];
 			} else {
-				// if (nullable) {
-				// 	return null;
-				// }
+				if (nullable) {
+					return null;
+				}
 				// eslint-disable-next-line no-case-declarations
 				const num = parseFloat(value, 10);
 
@@ -152,10 +153,15 @@ class RulesetContainer extends Component {
 			if (override) {
 				return {
 					note,
-					expressions: expressions.map(({ name: lhs, operator, value: rhs = null }) => ({
+					expressions: expressions.map(({ name: lhs, operator, value: rhs = null, nullable }) => ({
 						lhs,
 						operator: operatorsMap[operator] || operator,
-						rhs: getFormattedValue(rhs, attributesMap[lhs])
+						rhs: getFormattedValue(
+							rhs,
+							attributesMap[lhs],
+							nullable,
+							operatorsMap[operator] || operator
+						)
 					})),
 					yields: yields.map(({ partner, weight }) => ({
 						partner,
@@ -166,10 +172,15 @@ class RulesetContainer extends Component {
 			}
 			return {
 				note,
-				expressions: expressions.map(({ name: lhs, operator, value: rhs = 'null' }) => ({
+				expressions: expressions.map(({ name: lhs, operator, value: rhs = 'null', nullable }) => ({
 					lhs,
 					operator: operatorsMap[operator] || operator,
-					rhs: getFormattedValue(rhs, attributesMap[lhs])
+					rhs: getFormattedValue(
+						rhs,
+						attributesMap[lhs],
+						nullable,
+						operatorsMap[operator] || operator
+					)
 				})),
 				yields: yields.map(({ partner, weight }) => ({
 					partner,

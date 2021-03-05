@@ -468,14 +468,13 @@ class DecisionDetails extends Component {
 											/>
 										</div>
 										<div>{this.renderValueField({ expression, hideLabel: true })}</div>
-										{/* <div>
+										<div>
 											<Checkbox
 												onChange={(value) => this.onChangeNullable(value)}
 												value={expression.nullable}
-												label={idx === 0 && 'Nullable?'}
-												vertical
+												label={'Nullable?'}
 											/>
-										</div> */}
+										</div>
 										<Button
 											label="Update"
 											onConfirm={() => this.updateCondition('expression')}
@@ -574,14 +573,13 @@ class DecisionDetails extends Component {
 									<div>
 										{this.renderValueField({ expression: currentExpression, hideLabel: true })}
 									</div>
-									{/* <div>
+									<div>
 										<Checkbox
 											onChange={(value) => this.onChangeNullable(value)}
 											value={currentExpression.nullable}
 											label={'Nullable?'}
-											vertical
 										/>
-									</div> */}
+									</div>
 									<Button
 										label="Add Expression"
 										onConfirm={() => this.addNewItem('expression', index)}

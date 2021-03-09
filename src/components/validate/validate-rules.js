@@ -32,9 +32,7 @@ const getActualOperator = ({ operator, value, nullable }) => {
 class ValidateRules extends Component {
 	constructor(props) {
 		super(props);
-		const conditions = props.attributes.filter(
-			(attr) => attr.type !== 'object' && { name: attr.name, value: '' }
-		);
+		const conditions = this.props.conditions || [];
 		this.state = {
 			attributes: [],
 			conditions,
@@ -43,41 +41,41 @@ class ValidateRules extends Component {
 			outcomes: [],
 			error: false
 		};
-		this.handleAttribute = this.handleAttribute.bind(this);
-		this.handleValue = this.handleValue.bind(this);
-		this.handleAdd = this.handleAdd.bind(this);
+		// this.handleAttribute = this.handleAttribute.bind(this);
+		// this.handleValue = this.handleValue.bind(this);
+		// this.handleAdd = this.handleAdd.bind(this);
 		this.validateRules = this.validateRules.bind(this);
 	}
 
-	handleAttribute(e, index) {
-		const attribute = { ...this.state.conditions[index], name: e.value };
-		const conditions = [
-			...this.state.conditions.slice(0, index),
-			attribute,
-			...this.state.conditions.slice(index + 1)
-		];
-		this.setState({ conditions });
-	}
+	// handleAttribute(e, index) {
+	// 	const attribute = { ...this.props.conditions[index], name: e.value };
+	// 	const conditions = [
+	// 		...this.props.conditions.slice(0, index),
+	// 		attribute,
+	// 		...this.props.conditions.slice(index + 1)
+	// 	];
+	// 	this.setState({ conditions });
+	// }
 
-	handleValue(e, index) {
-		let value;
-		if (Array.isArray(e)) {
-			value = e && e.map(({ value }) => value).join(',');
-		} else {
-			value = typeof e !== 'string' ? e.value : e;
-		}
-		const attribute = { ...this.state.conditions[index], value };
-		const conditions = [
-			...this.state.conditions.slice(0, index),
-			attribute,
-			...this.state.conditions.slice(index + 1)
-		];
-		this.setState({ conditions });
-	}
+	// handleValue(e, index) {
+	// 	let value;
+	// 	if (Array.isArray(e)) {
+	// 		value = e && e.map(({ value }) => value).join(',');
+	// 	} else {
+	// 		value = typeof e !== 'string' ? e.value : e;
+	// 	}
+	// 	const attribute = { ...this.props.conditions[index], value };
+	// 	const conditions = [
+	// 		...this.props.conditions.slice(0, index),
+	// 		attribute,
+	// 		...this.props.conditions.slice(index + 1)
+	// 	];
+	// 	this.setState({ conditions });
+	// }
 
-	handleAdd() {
-		this.setState({ conditions: this.state.conditions.concat([{ name: '' }]) });
-	}
+	// handleAdd() {
+	// 	this.setState({ conditions: this.props.conditions.concat([{ name: '' }]) });
+	// }
 
 	validateRules(e) {
 		e.preventDefault();
@@ -85,7 +83,7 @@ class ValidateRules extends Component {
 		// const { attributes } = this.props;
 		// console.log('expressions', expressions);
 		this.setState({ loading: true });
-		this.state.conditions.forEach((condition) => {
+		this.props.conditions.forEach((condition) => {
 			// const attrProps = attributes.find((attr) => attr.name === condition.name);
 			// if (attrProps.type === 'number' && !isNaN(condition.value)) {
 			// 	facts[condition.name] = Number(condition.value);
@@ -145,7 +143,7 @@ class ValidateRules extends Component {
 				<td>
 					<SelectField
 						options={options}
-						onChange={(e) => this.handleAttribute(e, index)}
+						onChange={(e) => this.props.handleAttribute(e, index)}
 						value={condition.name}
 						readOnly
 						width={200}
@@ -155,7 +153,7 @@ class ValidateRules extends Component {
 					{FieldOptions[condition.name] && FieldOptions[condition.name].length > 0 ? (
 						<SelectField
 							options={FieldOptions[condition.name]}
-							onChange={(e) => this.handleValue(e, index)}
+							onChange={(e) => this.props.handleValue(e, index)}
 							value={condition.value}
 							isMulti={
 								condition.name !== 'color' &&
@@ -166,7 +164,7 @@ class ValidateRules extends Component {
 						/>
 					) : (
 						<InputField
-							onChange={(e) => this.handleValue(e.target.value, index)}
+							onChange={(e) => this.props.handleValue(e.target.value, index)}
 							value={condition.value}
 						/>
 					)}
@@ -244,7 +242,10 @@ ValidateRules.propTypes = {
 	attributes: PropTypes.array,
 	decisions: PropTypes.array,
 	expressions: PropTypes.array,
-	ruleset: PropTypes.array
+	ruleset: PropTypes.array,
+	conditions: PropTypes.array,
+	handleAttribute: PropTypes.func,
+	handleValue: PropTypes.func
 };
 
 export default ValidateRules;

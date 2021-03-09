@@ -114,6 +114,10 @@ const parseTypeFloat = (val) => {
 class RulesetContainer extends Component {
 	constructor(props) {
 		super(props);
+		const conditions = attributes.filter(
+			(attr) => attr.type !== 'object' && { name: attr.name, value: '' }
+		);
+
 		this.state = {
 			activeTab: 'Fields',
 			generateFlag: false,
@@ -125,7 +129,8 @@ class RulesetContainer extends Component {
 			loading: false,
 			prTitle: '',
 			prBody: '',
-			prURL: ''
+			prURL: '',
+			conditions: conditions
 		};
 		this.generateFile = this.generateFile.bind(this);
 		this.cancelAlert = this.cancelAlert.bind(this);
@@ -134,6 +139,39 @@ class RulesetContainer extends Component {
 		this.onChangePR = this.onChangePR.bind(this);
 
 		this.pushToRepo = this.pushToRepo.bind(this);
+		this.handleAttributeUpdate = this.handleAttributeUpdate.bind(this);
+		this.handleValue = this.handleValue.bind(this);
+		this.handleAdd = this.handleAdd.bind(this);
+	}
+
+	handleAttributeUpdate(e, index) {
+		const attribute = { ...this.state.conditions[index], name: e.value };
+		const conditions = [
+			...this.state.conditions.slice(0, index),
+			attribute,
+			...this.state.conditions.slice(index + 1)
+		];
+		this.setState({ conditions });
+	}
+
+	handleValue(e, index) {
+		let value;
+		if (Array.isArray(e)) {
+			value = e && e.map(({ value }) => value).join(',');
+		} else {
+			value = typeof e !== 'string' ? e.value : e;
+		}
+		const attribute = { ...this.state.conditions[index], value };
+		const conditions = [
+			...this.state.conditions.slice(0, index),
+			attribute,
+			...this.state.conditions.slice(index + 1)
+		];
+		this.setState({ conditions });
+	}
+
+	handleAdd() {
+		this.setState({ conditions: this.state.conditions.concat([{ name: '' }]) });
 	}
 	onChangeMessage(e) {
 		this.setState({ message: e.target.value });
@@ -350,6 +388,10 @@ class RulesetContainer extends Component {
 								decisions={decisions}
 								expressions={expressions}
 								ruleset={this.props.ruleset}
+								handleAttributeUpdate={this.handleAttributeUpdate}
+								handleValue={this.handleValue}
+								handleAdd={this.handleAdd}
+								conditions={this.state.conditions}
 							/>
 						)}
 						{this.state.activeTab === 'Generate' && (

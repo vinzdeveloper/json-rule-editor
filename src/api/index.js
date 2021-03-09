@@ -1,9 +1,8 @@
 import axios from 'axios';
-const REPO_BASE = 'https://api.github.com/repos/avinashbn2/json-rule-editor';
+const REPO_BASE = 'https://api.github.com/repos/lob/jessie-rulesets';
 
-const REPO_BASE_URL = 'https://api.github.com/repos/avinashbn2/json-rule-editor/contents';
+const REPO_BASE_URL = `${REPO_BASE}/contents`;
 const AC_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
-
 const createRequest = (token, baseURL) => {
 	const request = axios.create({
 		baseURL: baseURL || REPO_BASE_URL

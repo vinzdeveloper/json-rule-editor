@@ -266,7 +266,7 @@ class HomeContainer extends Component {
 								<>
 									<div className="separator">OR</div>
 									<div className="row ">
-										<div style={{ marginLeft: 12 }}>
+										<div style={{ marginLeft: 12, marginTop: 20 }}>
 											<label htmlFor="uploadFile"> Create a new file</label>
 										</div>{' '}
 										<Button

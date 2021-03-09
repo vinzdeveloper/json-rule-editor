@@ -23,7 +23,7 @@ const reverseOperatorsMap = {
 };
 const getStringValue = (value) => {
 	const nullIndex = Array.isArray(value) && value.findIndex((val) => val === null);
-	if (typeof nullIndex !== 'undefined' && value && Array.isArray(value)) {
+	if (nullIndex !== false && nullIndex !== -1 && value && Array.isArray(value)) {
 		value.splice(nullIndex, 1);
 	}
 

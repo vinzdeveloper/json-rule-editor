@@ -15,8 +15,8 @@ const createRequest = (token, baseURL) => {
 	return request;
 };
 
-export const getContent = async ({ path }) => {
-	const request = createRequest();
+export const getContent = async ({ path, token }) => {
+	const request = createRequest(token);
 	const rsp = await request.get(path);
 	return rsp;
 };

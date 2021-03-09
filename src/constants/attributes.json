@@ -55,5 +55,9 @@
 		"name": "mail_type",
 		"type": "string",
 		"fieldType": "array"
+	},
+	{
+		"name": "sheets",
+		"type": "number"
 	}
 ]

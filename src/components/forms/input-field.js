@@ -37,7 +37,13 @@ const InputField = (props) => {
 				disabled={readOnly}
 				placeholder={placeholder}
 			/>
-			{typeof error === 'string' && <span style={{ fontSize: 12, color: 'red' }}>{error}</span>}
+			{typeof error === 'string' && (
+				<>
+					{' '}
+					<br />
+					<span style={{ fontSize: 12, color: 'red' }}>{error}</span>
+				</>
+			)}
 		</div>
 	);
 };

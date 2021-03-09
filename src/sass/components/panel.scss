@@ -1,135 +1,132 @@
 @use "sass:map";
 
 .panel-wrapper {
-    border: 1px solid #006a4d;
-    border-radius: 10px;
-    margin-top: 20px;
-    padding: 20px;
+	border: 1px solid #006a4d;
+	border-radius: 10px;
+	margin-top: 20px;
+	padding: 20px;
 }
 
 .panel-box-wrapper {
-    border: 1px solid #bbb;
-    box-shadow: 1px 3px #eee;
-    display: flex;
-    font-family: $tab-font-family;
-    font-size: 17px;
-    flex-wrap: wrap;
-    margin-top: 30px;
-    padding: 20px;
+	border: 1px solid #bbb;
+	box-shadow: 1px 3px #eee;
+	display: flex;
+	font-family: $tab-font-family;
+	font-size: 17px;
+	flex-wrap: wrap;
+	margin-top: 30px;
+	padding: 20px;
 
-    &.string-type {
-        border-left: 5px solid map-get($attribute-type, "string");
-    }
+	&.string-type {
+		border-left: 5px solid map-get($attribute-type, 'string');
+	}
 
-    &.number-type {
-        border-left: 5px solid map-get($attribute-type, "number");
-    }
+	&.number-type {
+		border-left: 5px solid map-get($attribute-type, 'number');
+	}
 
-    &.date-type {
-        border-left: 5px solid map-get($attribute-type, "date");
-    }
+	&.date-type {
+		border-left: 5px solid map-get($attribute-type, 'date');
+	}
 
-    &.object-type {
-        border-left: 5px solid map-get($attribute-type, "object");
-    }
+	&.object-type {
+		border-left: 5px solid map-get($attribute-type, 'object');
+	}
 
-    &.boolean-type {
-        border-left: 5px solid map-get($attribute-type, "boolean");
-    }
+	&.boolean-type {
+		border-left: 5px solid map-get($attribute-type, 'boolean');
+	}
 
-    &.array-type {
-        border-left: 5px solid map-get($attribute-type, "array");
-    }
+	&.array-type {
+		border-left: 5px solid map-get($attribute-type, 'array');
+	}
 
-    div {
-        margin: 0 20px;
-        width: 10%;
-     }
- 
-    .index {
-         width: 1%;
-    }
- 
-    .name {
-         width: 25%;
-    }
- 
-    .type {
-         width: 15%;
-    }
-    
-    .type-badge {
-        background-color: map-get($attribute-type, "boolean");
-        border-radius: 5px;
-        color: white;
-        font-size: 14px;
-        padding: 4px 8px;
-        
-    }
+	div {
+		margin: 0 20px;
+		width: 10%;
+	}
 
-    .menu {
-        margin-left: 20px;
-        width: auto;
-   }
- 
-    a {
-        color: $link-color;
-        cursor: pointer;
-        font-family: $tab-font-family;
-        font-size: 14px;
-        margin-right: 30px;
-        text-decoration: none;;
-    }
- 
-    a:hover {
-        text-decoration: underline;
-    }
+	.index {
+		width: 1%;
+	}
+
+	.name {
+		width: 25%;
+	}
+
+	.type {
+		width: 15%;
+	}
+
+	.type-badge {
+		background-color: map-get($attribute-type, 'boolean');
+		border-radius: 5px;
+		color: white;
+		font-size: 14px;
+		padding: 4px 8px;
+	}
+
+	.menu {
+		margin-left: 20px;
+		width: auto;
+	}
+
+	a {
+		color: $link-color;
+		cursor: pointer;
+		font-family: $tab-font-family;
+		font-size: 14px;
+		margin-right: 30px;
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
 }
 
 .title-panel {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0px 0px 6px 3px #eee;
-    font-family: $title-font-family;
-    height: 300px;
-    padding: 20px;
-    width: 80vh;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 0px 0px 6px 3px #eee;
+	font-family: $title-font-family;
+	padding: 20px;
+	// width: 80vh;
 
-    .title {
-        display: flex;
-    
-        h3 {
-            color: $page-title-color;
-            font-size: 1.25rem;
-            font-weight: 500;
-            margin-top: 10px;
-            margin-left: 10px;
-        }
-    }
+	.title {
+		display: flex;
+
+		h3 {
+			color: $page-title-color;
+			font-size: 1.25rem;
+			font-weight: 500;
+			margin-top: 10px;
+			margin-left: 10px;
+		}
+	}
 }
 
 .banner {
-    border-radius: 5px;
-    display: flex;
-    font-family: $form-font-family;
-    justify-content: space-between;
-    padding: 20px 20px;
+	border-radius: 5px;
+	display: flex;
+	font-family: $form-font-family;
+	justify-content: space-between;
+	padding: 20px 20px;
 }
 
 .submit-panel {
-    background-color: $panel-bg-color;
-    border: 2px dashed $succees;
-    color: $form-field-color;
+	background-color: $panel-bg-color;
+	border: 2px dashed $succees;
+	color: $form-field-color;
 }
 
 .warning-panel {
-    background-color: $panel-bg-color;
-    border: 2px dashed $warning-dark;
-    color: $form-field-color;
+	background-color: $panel-bg-color;
+	border: 2px dashed $warning-dark;
+	color: $form-field-color;
 }
 
 .banner-container {
-    margin-left: 35px;
-    margin-top: 50px;
+	margin-left: 35px;
+	margin-top: 50px;
 }
-

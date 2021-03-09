@@ -184,7 +184,7 @@ class RulesetContainer extends Component {
 			}
 			return {
 				note,
-				expressions: expressions.map(({ name: lhs, operator, value: rhs = 'null', nullable }) => ({
+				expressions: expressions.map(({ name: lhs, operator, value: rhs = null, nullable }) => ({
 					lhs,
 					operator: getActualOperator({
 						value: rhs,

@@ -466,11 +466,7 @@ class AddDecision extends Component {
 					value={expression.value}
 					// error={expression && expression.error.value}
 					label={!hideLabel && 'Value'}
-					isMulti={
-						expression.name !== 'color' &&
-						expression.name !== 'double_sided' &&
-						FieldOptions[expression.name].length !== 1
-					}
+					isMulti={FieldOptions[expression.name].length !== 1}
 				/>
 			);
 		} else {

@@ -165,7 +165,7 @@ class RulesetContainer extends Component {
 		this.setState({
 			prTitle: '',
 			prBody: '',
-			prURL: '',
+			// prURL: '',
 			message: ''
 		});
 	}

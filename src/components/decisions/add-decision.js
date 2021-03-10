@@ -310,13 +310,13 @@ class AddDecision extends Component {
 	handleAddRule() {
 		const { attributes } = this.state;
 
-		const error = validateAttribute(this.state.expression, attributes);
-		if (Object.keys(error).length > 0) {
-			let expression = this.state.expression;
-			expression.error = error;
-			this.setState({ expression });
-			return undefined;
-		}
+		// const error = validateAttribute(this.state.expression, attributes);
+		// if (Object.keys(error).length > 0) {
+		// 	let expression = this.state.expression;
+		// 	expression.error = error;
+		// 	this.setState({ expression });
+		// 	return undefined;
+		// }
 
 		const exprs = Array.from(this.state.expressions);
 		const { operator, value, name, nullable } = this.state.expression;

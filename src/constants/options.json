@@ -2,7 +2,7 @@
 	"size": ["A5", "A4", "us_letter", "6x9", "6x11", "4x6", "5x7"],
 	"mail_type": ["european_carrier", "usps_first_class", "usps_standard"],
 	"object": ["postcard", "letter", "check", "self_mailer"],
-	"sla": ["1"],
+	"sla": [1],
 	"extra_service": ["certified_return_receipt"],
 	"return_envelope.id": ["no_9_single_window"],
 	"to.address_country": ["United States"],

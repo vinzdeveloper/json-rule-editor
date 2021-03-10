@@ -483,7 +483,7 @@ class RulesetContainer extends Component {
 									{this.state.loading && <Loader />}
 									<Button label="Push" onConfirm={this.pushToRepo} classname="primary-btn" />
 
-									{!this.state.prURL && (
+									{this.state.prURL && (
 										<div style={{ marginTop: 24 }}>
 											<label>Latest Pull Request</label>
 											<br />

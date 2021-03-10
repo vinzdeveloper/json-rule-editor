@@ -244,8 +244,7 @@ class HomeContainer extends Component {
 														onChange={this.chooseDirectory}
 														// webkitdirectory="true"
 													/>
-												</label>
-												<br />
+												</label>{' '}
 												or Drop File
 											</div>
 										)}

@@ -142,8 +142,16 @@ class RulesetContainer extends Component {
 		this.handleAttributeUpdate = this.handleAttributeUpdate.bind(this);
 		this.handleValue = this.handleValue.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
+		this.resetPushFields = this.resetPushFields.bind(this);
 	}
-
+	resetPushFields() {
+		this.setState({
+			prTitle: '',
+			prBody: '',
+			prURL: '',
+			message: ''
+		});
+	}
 	handleAttributeUpdate(e, index) {
 		const attribute = { ...this.state.conditions[index], name: e.value };
 		const conditions = [
@@ -174,13 +182,13 @@ class RulesetContainer extends Component {
 		this.setState({ conditions: this.state.conditions.concat([{ name: '' }]) });
 	}
 	onChangeMessage(e) {
-		this.setState({ message: e.target.value });
+		this.setState({ message: e.target.value, error: {} });
 	}
 	handleTab = (tabName) => {
 		this.setState({ activeTab: tabName });
 	};
 	onChangeAccessToken(e) {
-		this.setState({ accessToken: e.target.value });
+		this.setState({ accessToken: e.target.value, error: {} });
 	}
 
 	onChangePR(e, type) {
@@ -317,13 +325,19 @@ class RulesetContainer extends Component {
 				content: this.state.prBody || `Routing Rule Changes - ${timestamp}`,
 				head: branch
 			});
+
 			this.setState({
 				pushFlag: true,
 				prURL: html_url
 			});
+			this.resetPushFields();
 		} catch (err) {
+			let error = 'Error occured while pushing';
+			if (err.response.status === 401) {
+				error = 'Invalid Access Token';
+			}
 			this.setState({
-				pushError: err.message
+				pushError: error
 			});
 			// eslint-disable-next-line no-console
 			console.log('err', err);
@@ -359,7 +373,8 @@ class RulesetContainer extends Component {
 			outcomes = groupBy(indexedDecisions, (data) => data && data.event && data.event.type);
 		}
 
-		const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
+		const message = Message.MODIFIED_MSG;
+		// const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
 		// const uploadMessage = this.props.updatedFlag ? Message.UPLOAD_MSG : Message.NO_CHANGES_MSG;
 		return (
 			<div>
@@ -451,9 +466,11 @@ class RulesetContainer extends Component {
 									{this.state.loading && <Loader />}
 									<Button label="Push" onConfirm={this.pushToRepo} classname="primary-btn" />
 
-									{this.state.prURL && (
+									{!this.state.prURL && (
 										<div style={{ marginTop: 24 }}>
-											Pull request URL :{' '}
+											<label>Latest Pull Request</label>
+											<br />
+											<div style={{ marginTop: 8 }}> Pull request URL : </div>
 											<a href={this.state.prURL} target="_blank" rel="noopener noreferrer">
 												{this.state.prURL}
 											</a>

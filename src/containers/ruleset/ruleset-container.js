@@ -48,11 +48,11 @@ const opMap = {
 	'==': 'in',
 	'!=': 'not_in'
 };
-// const revOpMap = {
-// 	in: '==',
-// 	not_in: '!='
-// };
-const arrOps = ['in', 'not_in'];
+const revOpMap = {
+	in: '==',
+	not_in: 'not_in'
+};
+// const arrOps = ['in', 'not_in'];
 const getActualOperator = ({ operator, value, nullable }) => {
 	// console.log('operator, value, nullable', operator, value, nullable);
 	if (value && typeof value === 'string' && value.includes(',')) {
@@ -63,7 +63,13 @@ const getActualOperator = ({ operator, value, nullable }) => {
 	if (nullable && value !== 'null' && value !== null) {
 		return opMap[operator] || operator;
 	}
-	return operator;
+	return revOpMap[operator] || operator;
+};
+const getArray = (val, op) => {
+	if (op === 'not_in') {
+		return [val];
+	}
+	return val;
 };
 const getFormattedValue = (value, { type, fieldType } = {}, nullable, operator) => {
 	switch (type) {
@@ -83,23 +89,24 @@ const getFormattedValue = (value, { type, fieldType } = {}, nullable, operator) 
 			return value
 				? nullable
 					? [value, null]
-					: arrOps.includes(operator)
-					? [value]
-					: value
-				: [null];
+					: getArray(value, operator)
+				: getArray(null, operator);
 		// if (value.includes(',')) {
 		// 	return value && value.split(',').map((v) => (!v ? null : v));
 		// }
 
 		case 'boolean':
-			if (nullable) {
-				return null;
-			}
 			if (value && typeof value === 'string' && value.includes(',')) {
 				const arr = value && value.split(',').map((v) => (v === null ? null : v === 'true'));
 				return arr;
 			}
-			return value === 'true';
+			if (nullable && value && typeof value === 'string') {
+				return [null, value === 'true'];
+			} else if (nullable) {
+				return getArray(null, operator);
+			}
+
+			return getArray(value === 'true', operator);
 		case 'number':
 			if (fieldType === 'array') {
 				if (value && typeof value === 'string' && value.includes(',')) {
@@ -111,15 +118,15 @@ const getFormattedValue = (value, { type, fieldType } = {}, nullable, operator) 
 						return arr;
 					}
 				}
-				return value ? parseFloat(value, 10) : [null];
+				return value ? getArray(parseFloat(value, 10), operator) : getArray(null, operator);
 			} else {
 				if (nullable) {
-					return null;
+					return getArray(null, operator);
 				}
 				// eslint-disable-next-line no-case-declarations
 				const num = parseFloat(value, 10);
 
-				return num;
+				return getArray(num, operator);
 			}
 		default:
 			return value;

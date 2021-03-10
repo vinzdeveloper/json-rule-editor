@@ -525,6 +525,14 @@ class DecisionDetails extends Component {
 												// placeholder={placeholder}
 											/>
 										</div>
+										<div style={{ marginLeft: 24 }}>
+											<Checkbox
+												// onChange={(value) => this.onChangeNullable(value)}
+												value={expression.nullable}
+												label={'Nullable?'}
+												readOnly
+											/>
+										</div>
 									</>
 								)}
 								<div className="tool-flex" key={`tool-flex${expression.name}${expression.value}`}>

@@ -55,7 +55,7 @@ const opMap = {
 const arrOps = ['in', 'not_in'];
 const getActualOperator = ({ operator, value, nullable }) => {
 	// console.log('operator, value, nullable', operator, value, nullable);
-	if (value && value.includes(',')) {
+	if (value && typeof value === 'string' && value.includes(',')) {
 		// console.log('operator, value', operator, value);
 		return opMap[operator] || operator;
 	}
@@ -95,14 +95,14 @@ const getFormattedValue = (value, { type, fieldType } = {}, nullable, operator) 
 			if (nullable) {
 				return null;
 			}
-			if (value && value.includes(',')) {
+			if (value && typeof value === 'string' && value.includes(',')) {
 				const arr = value && value.split(',').map((v) => (v === null ? null : v === 'true'));
 				return arr;
 			}
 			return value === 'true';
 		case 'number':
 			if (fieldType === 'array') {
-				if (value && value.includes(',')) {
+				if (value && typeof value === 'string' && value.includes(',')) {
 					const arr = value && value.split(',').map((v) => (!v ? null : parseFloat(v)));
 					if (nullable) {
 						arr.push(null);

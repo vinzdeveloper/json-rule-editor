@@ -22,7 +22,7 @@ const revOpMap = {
 	not_in: 'notEqual'
 };
 const getActualOperator = ({ operator, value, nullable }) => {
-	if ((value && value.includes(',')) || nullable) {
+	if ((value && typeof value === 'string' && value.includes(',')) || nullable) {
 		const rt = opMap[operator] || operator;
 		return rt;
 	}

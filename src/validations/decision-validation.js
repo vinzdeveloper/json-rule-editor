@@ -11,7 +11,7 @@ export const validateOutcome = (outcome) => {
 const isEmpty = (val) => {
 	if (!val) {
 		return true;
-	} else if (!val.trim()) {
+	} else if (val && !val.trim()) {
 		return true;
 	}
 	return false;

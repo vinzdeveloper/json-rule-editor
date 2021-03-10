@@ -30,7 +30,7 @@ import Loader from '../../components/loader/loader';
 
 const operatorsMap = {
 	equal: '==',
-	notEqual: '!=',
+	notEqual: 'not_in',
 	lessThanInclusive: '<=',
 	lessThan: '<',
 	greaterThan: '>',

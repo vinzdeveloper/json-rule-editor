@@ -92,11 +92,13 @@ class DecisionDetails extends Component {
 	cancel(type) {
 		if (type === 'expression') {
 			this.setState({
-				showAddExpression: false
+				showAddExpression: false,
+				expression: defaultExpression
 			});
 		} else {
 			this.setState({
-				showAddYield: false
+				showAddYield: false,
+				yield: defaultYield
 			});
 		}
 	}
@@ -200,7 +202,13 @@ class DecisionDetails extends Component {
 			note,
 			override
 		});
-		this.setState({ currentEditIndex: -1, currentRuleIndex: -1, currentEditType: '' });
+		this.setState({
+			currentEditIndex: -1,
+			currentRuleIndex: -1,
+			currentEditType: '',
+
+			expression: defaultExpression
+		});
 	}
 	resetCondition() {
 		this.setState({ currentEditIndex: -1, currentRuleIndex: -1, currentEditType: '' });
@@ -316,34 +324,46 @@ class DecisionDetails extends Component {
 	}
 	renderValueField({ expression }) {
 		const currentExpression = this.state.expression;
-		if (
-			FieldOptions[currentExpression.name || expression.name] &&
-			FieldOptions[currentExpression.name || expression.name].length > 0
-		) {
-			return (
-				<SelectField
-					options={FieldOptions[currentExpression.name || expression.name]}
-					onChange={(e) => this.onChangeField(e, 'value')}
-					value={expression.value}
-					// error={expression && expression.error.value}
-					label={null}
-					placeholder={'Value'}
-					isMulti
-				/>
-			);
-		} else {
-			return (
-				<InputField
-					onChange={(value) => this.onChangeField(value, 'value')}
-					value={expression && expression.value}
-					// error={expression.error.value}
-					label={null}
-					placeholder={'Value'}
-					// type={expression.operator === 'number' ? 'number' : 'text'}
-					// placeholder={PLACEHOLDER.number}
-				/>
-			);
-		}
+		return (
+			<SelectField
+				options={FieldOptions[currentExpression.name || expression.name]}
+				onChange={(e) => this.onChangeField(e, 'value')}
+				value={expression.value}
+				// error={expression && expression.error.value}
+				label={null}
+				placeholder={'Value'}
+				isMulti
+			/>
+		);
+
+		// if (
+		// 	FieldOptions[currentExpression.name || expression.name] &&
+		// 	FieldOptions[currentExpression.name || expression.name].length > 0
+		// ) {
+		// 	return (
+		// 		<SelectField
+		// 			options={FieldOptions[currentExpression.name || expression.name]}
+		// 			onChange={(e) => this.onChangeField(e, 'value')}
+		// 			value={expression.value}
+		// 			// error={expression && expression.error.value}
+		// 			label={null}
+		// 			placeholder={'Value'}
+		// 			isMulti
+		// 		/>
+		// 	);
+		// } else {
+		// 	return (
+		// 		<InputField
+		// 			onChange={(value) => this.onChangeField(value, 'value')}
+		// 			value={expression && expression.value}
+		// 			// error={expression.error.value}
+		// 			label={null}
+		// 			placeholder={'Value'}
+		// 			// type={expression.operator === 'number' ? 'number' : 'text'}
+		// 			// placeholder={PLACEHOLDER.number}
+		// 		/>
+		// 	);
+		// }
 	}
 	renderConditions = (_, index) => {
 		// const transformedData = transformRuleToTree(conditions);
@@ -511,19 +531,32 @@ class DecisionDetails extends Component {
 											/>
 										</div>
 										<div>
-											<InputField
-												// onChange={(value) => this.onChangeField(value, 'value')}
-												value={
-													typeof expression.value !== 'undefined' && expression.value !== ''
-														? expression.value
-														: 'null'
-												}
-												// error={expression.error.value}
-												label={idx === 0 && 'Value'}
-												readOnly
-												style={{ width: 500 }}
-												// placeholder={placeholder}
-											/>
+											{expression.value.includes(',') ? (
+												<SelectField
+													options={FieldOptions[currentExpression.name || expression.name]}
+													onChange={(e) => this.onChangeField(e, 'value')}
+													value={expression.value}
+													// error={expression && expression.error.value}
+													label={idx === 0 && 'Value'}
+													placeholder={'Value'}
+													isMulti
+													readOnly
+												/>
+											) : (
+												<InputField
+													// onChange={(value) => this.onChangeField(value, 'value')}
+													value={
+														typeof expression.value !== 'undefined' && expression.value !== ''
+															? expression.value
+															: 'null'
+													}
+													// error={expression.error.value}
+													label={idx === 0 && 'Value'}
+													readOnly
+													style={{ width: 500 }}
+													// placeholder={placeholder}
+												/>
+											)}
 										</div>
 										<div style={{ marginLeft: 24 }}>
 											<Checkbox

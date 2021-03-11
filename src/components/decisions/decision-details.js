@@ -496,7 +496,7 @@ class DecisionDetails extends Component {
 												value={expression.name}
 												// error={expression.error.value}
 												label={idx === 0 && 'Expressions'}
-												readOnly={currentEditIndex !== idx}
+												readOnly
 												// placeholder={placeholder}
 											/>
 										</div>
@@ -506,7 +506,7 @@ class DecisionDetails extends Component {
 												value={expression.operator}
 												// error={expression.error.operator}
 												label={idx === 0 && 'Operator'}
-												readOnly={currentEditIndex !== idx}
+												readOnly
 												// placeholder={placeholder}
 											/>
 										</div>
@@ -520,7 +520,7 @@ class DecisionDetails extends Component {
 												}
 												// error={expression.error.value}
 												label={idx === 0 && 'Value'}
-												readOnly={currentEditIndex !== idx}
+												readOnly
 												style={{ width: 500 }}
 												// placeholder={placeholder}
 											/>
@@ -616,35 +616,7 @@ class DecisionDetails extends Component {
 					<div className="add-field-panel">
 						{yields.map((yld, idx) => (
 							<div key={yld.name} className="view-field-panel-row" style={{ alignItems: 'center' }}>
-								{currentEditIndex !== idx && this.state.currentEditType !== 'yield' ? (
-									<>
-										<div className="field">
-											<InputField
-												value={yld.partner}
-												// error={yld.error.value}
-												label={idx === 0 && 'Yields'}
-												readOnly
-												// placeholder={placeholder}
-											/>
-										</div>
-										<div>
-											<InputField
-												// onChange={(value) => this.onChangeField(value, 'value')}
-												value={
-													typeof yld.weight !== 'undefined' &&
-													yld.weight !== '' &&
-													!isNaN(yld.weight)
-														? yld.weight
-														: 'null'
-												}
-												// error={expression.error.value}
-												label={idx === 0 && 'Weight'}
-												readOnly
-												// placeholder={placeholder}
-											/>
-										</div>
-									</>
-								) : (
+								{currentEditIndex === idx && this.state.currentEditType === 'yield' ? (
 									<>
 										<div>
 											<SelectField
@@ -677,6 +649,34 @@ class DecisionDetails extends Component {
 											classname="cancel-btn small-btn"
 											// type="submit"
 										/>
+									</>
+								) : (
+									<>
+										<div className="field">
+											<InputField
+												value={yld.partner}
+												// error={yld.error.value}
+												label={idx === 0 && 'Yields'}
+												readOnly
+												// placeholder={placeholder}
+											/>
+										</div>
+										<div>
+											<InputField
+												// onChange={(value) => this.onChangeField(value, 'value')}
+												value={
+													typeof yld.weight !== 'undefined' &&
+													yld.weight !== '' &&
+													!isNaN(yld.weight)
+														? yld.weight
+														: 'null'
+												}
+												// error={expression.error.value}
+												label={idx === 0 && 'Weight'}
+												readOnly
+												// placeholder={placeholder}
+											/>
+										</div>
 									</>
 								)}
 								<div className="tool-flex">

@@ -822,10 +822,15 @@ class DecisionDetails extends Component {
 
 		const conditions = rulecases
 			.filter(
-				({ note = '', yields }) =>
+				({ note = '', yields, expressions }) =>
 					note.toLowerCase().includes(searchCriteria.toLowerCase()) ||
 					yields
 						.map(({ partner = '', weight = '' }) => `${partner}${weight}`)
+						.join('')
+						.toLowerCase()
+						.includes(searchCriteria.toLowerCase()) ||
+					expressions
+						.map(({ value = '' }) => `${value}`)
 						.join('')
 						.toLowerCase()
 						.includes(searchCriteria.toLowerCase())

@@ -4,13 +4,12 @@
 		"type": "string"
 	},
 	{
-		"name": "object",
-		"type": "string",
-		"fieldType": "array"
+		"name": "billing_group_id",
+		"type": "string"
 	},
 	{
-		"name": "size",
-		"type": "string",
+		"name": "color",
+		"type": "boolean",
 		"fieldType": "array"
 	},
 	{
@@ -18,16 +17,36 @@
 		"type": "string"
 	},
 	{
+		"name": "double_sided",
+		"type": "boolean",
+		"fieldType": "array"
+	},
+	{
+		"name": "extra_service",
+		"type": "string",
+		"fieldType": "array"
+	},
+	{
+		"name": "mail_type",
+		"type": "string",
+		"fieldType": "array"
+	},
+	{
+		"name": "object",
+		"type": "string",
+		"fieldType": "array"
+	},
+	{
 		"name": "return_envelope.id",
 		"type": "string",
 		"fieldType": "array"
 	},
 	{
-		"name": "billing_group_id",
-		"type": "string"
+		"name": "sheets",
+		"type": "number"
 	},
 	{
-		"name": "extra_service",
+		"name": "size",
 		"type": "string",
 		"fieldType": "array"
 	},
@@ -40,24 +59,5 @@
 		"name": "to.address_country",
 		"type": "string",
 		"fieldType": "array"
-	},
-	{
-		"name": "double_sided",
-		"type": "boolean",
-		"fieldType": "array"
-	},
-	{
-		"name": "color",
-		"type": "boolean",
-		"fieldType": "array"
-	},
-	{
-		"name": "mail_type",
-		"type": "string",
-		"fieldType": "array"
-	},
-	{
-		"name": "sheets",
-		"type": "number"
 	}
 ]

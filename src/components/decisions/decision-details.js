@@ -206,7 +206,7 @@ class DecisionDetails extends Component {
 			currentEditIndex: -1,
 			currentRuleIndex: -1,
 			currentEditType: '',
-
+			yield: defaultYield,
 			expression: defaultExpression
 		});
 	}

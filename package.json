@@ -41,7 +41,7 @@
     "json-rules-engine": "5.0.3",
     "lodash": "4.17.15",
     "mini-css-extract-plugin": "0.9.0",
-    "node-sass": "4.13.1",
+    "node-sass": "7.0.0",
     "postcss-loader": "3.0.0",
     "react": "16.12.0",
     "react-bootstrap-sweetalert": "5.1.9",

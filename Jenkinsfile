@@ -8,14 +8,23 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('checkout') {
             steps {
-                echo 'Building..'
+                sh "rm -rf *"
+                checkout scm
+                echo BRANCH_NAME_MODIFIED
+                echo BUILD_VERSION
+                echo "Code checkout one successfully"
+                sh "git rev-parse --verify HEAD >> hash.txt"
             }
         }
-        stage('Test') {
+        stage('Unit Test') {
             steps {
                 echo 'Testing..'
+                sh "docker build -t json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER} -f Dockerfile.test ."
+                sh "docker run --rm json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER}"
+                sh "docker rmi json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER}"
+                echo "Unit testing passed"
             }
         }
         stage('Deploy') {

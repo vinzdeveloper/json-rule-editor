@@ -1,0 +1,10 @@
+FROM node:10-alpine
+
+#Specify a working directory
+USER root
+WORKDIR '/home/jenkins'
+
+COPY package.json .
+COPY . .
+RUN npm install
+ENTRYPOINT ["npm", "run", "build"]

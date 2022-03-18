@@ -20,11 +20,20 @@ pipeline {
         }
         stage('Unit Test') {
             steps {
-                echo 'Testing..'
+                echo 'Unit Testing..'
                 sh "docker build -t json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER} -f Dockerfile.test ."
                 sh "docker run --rm json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER}"
                 sh "docker rmi json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER}"
                 echo "Unit testing passed"
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Build....'
+                sh "docker build -t json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER} -f Dockerfile.build ."
+                sh "docker run --rm json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER}"
+                sh "docker rmi json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER}"
+                echo "Build passed"
             }
         }
         stage('Deploy') {

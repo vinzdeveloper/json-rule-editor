@@ -1,0 +1,31 @@
+body.light {
+    background: #fff;
+    color: $form-label-color;
+}
+
+.light {
+    label {
+        color: $form-label-color;
+    }
+
+    h1 {
+        color: $title-bg-clr;
+    }
+
+    h3 {
+        color: $page-title-color;
+    }
+
+    .tab {
+        color: $form-label-color;
+
+        &.active {
+            color: $title-bg-clr;
+        }
+    }
+
+    .panel-box-wrapper {
+        box-shadow: 1px 3px #eee;
+        color: #000;
+    }
+}

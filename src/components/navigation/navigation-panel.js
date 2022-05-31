@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import { createHashHistory } from 'history';
 import FooterLinks from '../footer/footer';
 import footerLinks from '../../data-objects/footer-links.json';
+import AppearanceContext from '../../context/apperance-context';
 
 const navmenu = [{ name: 'Create Rules', navigate: './create-ruleset', iconClass: "icon fa fa-plus-square-o", linkClass: 'navmenu'},
-                 { name: 'Upload Rules', navigate: './home', iconClass: "icon fa fa-cloud-upload", linkClass: 'navmenu' } ];
+                 { name: 'Upload Rules', navigate: './home', iconClass: "icon fa fa-cloud-upload", linkClass: 'navmenu' },
+                { name: 'Appearance', navigate: './appearance', iconClass: "icon fa fa-sliders", linkClass: 'navmenu'} ];
 class NavigationPanel extends Component {
 
     constructor(props) {
@@ -37,8 +39,10 @@ class NavigationPanel extends Component {
 
         let sideNav = loggedIn && closedState ? 'open' : 'closed';
 
+        let appctx = this.context;
+
         return (
-            <div className={`nav-container ${closedState ? 'closed': 'open'}`}>
+            <div className={`nav-container ${closedState ? 'closed': 'open'} ${appctx.background}`}>
                 <div className="menu-bar">
                        <a href="" onClick={(e) => { e.preventDefault();  this.props.updateState(sideNav)}}> <span className="close-icon fa fa-reorder" ></span></a>
                 </div>
@@ -55,6 +59,8 @@ class NavigationPanel extends Component {
         )
     }
 }
+
+NavigationPanel.contextType = AppearanceContext;
 
 NavigationPanel.defaultProps = {
     closedState: false,

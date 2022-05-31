@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-const Search = ({onConfirm, onChange}) => {
+const Search = ({onChange}) => {
 
     const [search, setSearch] = useState('');
 
@@ -11,19 +11,16 @@ const Search = ({onConfirm, onChange}) => {
     };
 
     return (<div className="search-container">
-        <input type="text" onChange={handleSearch} className="search-field" value={search}/>
-        <button type="button" value="Search" onClick={() => onConfirm(search)} className="search-btn">Search</button>
+        <input type="text" onChange={handleSearch} className="search-field" value={search} placeholder="Search using name or type" />
     </div>);
 };
 
 Search.defaultProps = ({
-    onConfirm: () => false,
     value: '',
     onChange: () => false,
 });
 
 Search.propTypes = ({
-    onConfirm: PropTypes.func,
     value: PropTypes.string,
     onChange: PropTypes.func,
 });

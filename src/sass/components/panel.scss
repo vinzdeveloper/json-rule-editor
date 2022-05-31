@@ -99,12 +99,23 @@
         display: flex;
     
         h3 {
-            color: $page-title-color;
             font-size: 1.25rem;
             font-weight: 500;
             margin-top: 10px;
             margin-left: 10px;
         }
+    }
+
+    &.light {
+        box-shadow: 0px 0px 6px 3px #eee;
+    }
+
+    &.dark {
+        box-shadow: none;
+    }
+
+    &.md-blue {
+        box-shadow: none;
     }
 }
 

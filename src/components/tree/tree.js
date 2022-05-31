@@ -1,51 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Tree from 'react-d3-tree';
-
-
-  const lineStyle = {
-    stroke: '#404040',
-    strokeWidth: 1,
-  };
-
-  const nodeStyle = {
-    stroke: '#73879C',
-    strokeWidth: 1
-  };
-
-  const nameStyle = {
-      fontFamily : '"Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif',
-      fontSize: '13px',
-      fontWeight: 'bold',
-      fill: '#2A3F54',
-      stroke: '#2A3F54',
-      strokeWidth: 0,
-  }
-
-  const attributesStyle = {
-    fontFamily : '"Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif',
-    fontSize: '14px',
-    fill: '#2A3F54',
-    stroke: '#2A3F54',
-    strokeWidth: 0,
-  }
-
-  const treeStyle = {
-    links: lineStyle,
-    nodes: {
-      node: {
-        circle: nodeStyle,
-        rect: nodeStyle,
-        name: nameStyle,
-        attributes: attributesStyle,
-      },
-      leafNode: {
-        circle: nodeStyle,
-        name: nameStyle,
-        attributes: attributesStyle,
-      },
-    },
-  };
+import ApperanceContext from '../../context/apperance-context';
+import TreeStyle from './tree-style';
 
 const transformDepth = (count) => {
     if (count < 1) {
@@ -94,12 +51,16 @@ class TreeView extends Component {
 
     render() {
         const heightStyle = transformDepth(this.props.count);
+        const { background } = this.context;
+        const nodeStyle = TreeStyle(background);
         return(
             <div id="treeWrapper" style={{height: heightStyle}}>
         <Tree data={this.props.treeData} pathFunc={"step"} orientation="vertical" translate={this.state.axis}
-        separation={{siblings: 1.4, nonSiblings: 2}} scaleExtent={{min: 0.8, max:1}} zoom={0.9} styles={treeStyle} onClick={this.handleClick} /></div>);
+        separation={{siblings: 1.4, nonSiblings: 2}} scaleExtent={{min: 0.8, max:1}} zoom={0.9} styles={nodeStyle} onClick={this.handleClick} /></div>);
     }
 }
+
+TreeView.contextType = ApperanceContext;
 
 TreeView.defaultProps = {
     treeData: {},

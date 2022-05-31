@@ -2,6 +2,14 @@ $title-font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
 $title-bg-clr: #2A3F54;
 $title-color: #ECF0F1;
 
+$body-clr-drk: #000;
+$title-bg-clr-drk: #191515;
+$title-color-drk: #aab5bf ;
+
+
+$body-clr-mdblue: #223c56;
+$title-bg-clr-mdblue: #081d31;
+
 
 $btn-color: #ECF0F1;
 $btn-bg-clr: rgba(255, 255, 255, 0.05);
@@ -20,13 +28,16 @@ $link-active-color: #1ABB9C;
 
 $sideNavWidth: 300px;
 $title-height: 30px;
+
 $page-title-color: #73879C;
+$page-title-color-dark: #dadfe4;
 
 $tab-font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
 
 $form-font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
 $form-field-color: #2A3F54;
 $form-label-color: #73879C;
+$form-label-color-drk: #aab5bf;
 
 $danger: #E74C3C;
 $warning: #f1c68e;
@@ -37,6 +48,8 @@ $succees: #17b395;
 
 
 $link-color: #6b5b95;
+
+$link-clr-drk: #bca8f1;
 
 $attribute-type: (
     "string": #2FA4E7,

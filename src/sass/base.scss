@@ -1,6 +1,7 @@
 @import './variables.scss';
 @import './utils.scss';
 @import './components/index.scss';
+@import './theme/index.scss';
 
 h1 {
     color: blue;
@@ -37,6 +38,10 @@ label {
 
 input[type="file"] {
     display: none;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
 }
 
 body {

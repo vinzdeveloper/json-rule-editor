@@ -11,6 +11,7 @@ import footerLinks from '../../data-objects/footer-links.json';
 import { includes } from 'lodash/collection';
 import Notification from '../../components/notification/notification';
 import { RULE_AVAILABLE_UPLOAD, RULE_UPLOAD_ERROR } from '../../constants/messages';
+import ApperanceContext from '../../context/apperance-context';
 
 
 function readFile(file, cb) {
@@ -131,12 +132,14 @@ class HomeContainer extends Component {
     render() {
       const { fileExist, uploadError, message } = this.state;
       const title = this.props.loggedIn ? "Upload Rules" : "Create / Upload Rules";
+      const appctx = this.context;
+
       return <div className="home-container">
         <div className="single-panel-container">
         { (fileExist || uploadError) && <Notification body={message.body} heading={message.heading} type={message.type} /> }
           <TitlePanel title={title} titleClass="fa fa-cloud-upload">
             <div className="upload-panel">
-              <div className="drop-section" onDrop={this.drop} onDragOver={this.allowDrop}>
+              <div className={`drop-section ${appctx.background}`} onDrop={this.drop} onDragOver={this.allowDrop}>
                   <div><label htmlFor="uploadFile">Choose Ruleset directory<input id="uploadFile" type="file" onChange={this.chooseDirectory} webkitdirectory="true" multiple/></label> or Drop Files</div>
                   {this.state.files.length > 0 && <div className="file-drop-msg">{`${this.state.files.length} json files are dropped!`}</div>}
               </div>
@@ -153,6 +156,8 @@ class HomeContainer extends Component {
       </div>
     }
 }
+
+HomeContainer.contextType = ApperanceContext;
 
 HomeContainer.propTypes = {
   ruleset: PropTypes.array,

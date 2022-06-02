@@ -1,13 +1,42 @@
 @use "sass:map";
 
+
+
 .attributes-header {
-    color: $title-bg-clr;
+    color: $form-label-color;
     display: flex;
     flex-wrap: wrap;
     font-family: $tab-font-family;
     justify-content: flex-end;
     margin: 0;
     width: 100%;
+
+    &.dark {
+        color: $link-clr-drk;
+
+        .plus-icon {
+            background: url('../../assets/icons/plus-rounded-dark.svg') no-repeat;
+            background-size: contain;
+        }
+    }
+
+    &.md-blue {
+        color: $link-clr-drk;
+
+        .plus-icon {
+            background: url('../../assets/icons/plus-rounded-dark.svg') no-repeat;
+            background-size: contain;
+        }
+    }
+
+    &.light {
+        color: $form-label-color;
+
+        .plus-icon {
+            background: url('../../assets/icons/plus-icon-rounded.svg') no-repeat;
+            background-size: contain;
+        }
+    }
 
     .attr-link {
         cursor: pointer;

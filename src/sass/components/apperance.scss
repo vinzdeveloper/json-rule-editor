@@ -1,0 +1,15 @@
+.theme-container {
+    display: flex;
+    width: 100%;
+
+    .theme-icon {
+        margin-left: 30px;
+        text-align: center;
+    }
+
+    img {
+        border: 1px solid #ddd;
+        height: 125px;
+        margin-bottom: 20px;
+    }
+}

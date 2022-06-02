@@ -14,7 +14,7 @@ import { transformTreeToRule } from '../../utils/transform';
 import { sortBy } from 'lodash/collection';
 import { validateAttribute } from '../../validations/decision-validation';
 import { PLACEHOLDER } from '../../constants/data-types';
-
+import ApperanceContext from '../../context/apperance-context';
 
 
 const nodeStyle ={
@@ -285,13 +285,14 @@ class AddDecision extends Component {
         const attributeOptions = attributes.map(attr => attr.name);
         const attribute = addAttribute.name && attributes.find(attr => attr.name === addAttribute.name);
         const operatorOptions = attribute && operator[attribute.type];
+        const { background } = this.context;
 
         const placeholder = addAttribute.operator === 'contains' || addAttribute.operator === 'doesNotContain' ?
          PLACEHOLDER['string'] : PLACEHOLDER[attribute.type]
 
         return (<Panel>
             
-            <div className="attributes-header">
+            <div className={`attributes-header ${background}`}>
                     <div className="attr-link" onClick={this.addPath}>
                         <span className="plus-icon" /><span className="text">Add Path</span> 
                     </div>
@@ -325,9 +326,10 @@ class AddDecision extends Component {
     outputPanel() {
         const { outcome } = this.state;
         const { editDecision } = this.props;
+        const { background } = this.context;
 
         return (<Panel>
-            <div className="attributes-header">
+            <div className={`attributes-header ${background}`}>
                     <div className="attr-link" onClick={this.addParams}>
                         <span className="plus-icon" /><span className="text">Add Params</span> 
                     </div>
@@ -387,6 +389,8 @@ class AddDecision extends Component {
         );
     }
 }
+
+AddDecision.contextType = ApperanceContext;
 
 AddDecision.defaultProps = ({
     addCondition: () => false,

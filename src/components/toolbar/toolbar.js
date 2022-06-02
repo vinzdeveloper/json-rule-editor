@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import Search from '../search/search';
+import ApperanceContext from '../../context/apperance-context';
 
 class ToolBar extends Component {
     constructor(props) {
@@ -63,7 +64,8 @@ class ToolBar extends Component {
 
 
     render() {
-        return (<div className="attributes-header">
+        const { background } = this.context;
+        return (<div className={`attributes-header ${background}`}>
             {this.alert()}
             <div className="attr-link" onClick={this.props.handleAdd}>
                 <span className="plus-icon" /><span className="text">Add</span> 
@@ -77,7 +79,7 @@ class ToolBar extends Component {
 }
 
 
-
+ToolBar.contextType = ApperanceContext;
 
 ToolBar.defaultProps = ({
     handleAdd: () => false,

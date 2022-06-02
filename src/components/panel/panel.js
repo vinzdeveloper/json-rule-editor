@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types';
 import { TitleIcon } from '../title/page-title';
+import ApperanceContext from '../../context/apperance-context';
 
 const Panel = (props) => {
 
@@ -44,7 +45,9 @@ PanelBox.defaultProps = {
 
 export const TitlePanel = (props) => {
 
-    return (<div className={"title-panel"}>
+    let appTheme = useContext(ApperanceContext);
+
+    return (<div className={`title-panel ${appTheme.background}`}>
         <div className="title">
         {props.titleClass && 
             <div>

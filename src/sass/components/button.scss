@@ -161,19 +161,79 @@ a.btn.btn-lg.btn-primary {
     padding: 10px;
   }
 
-  button:hover {
-    background-color: $form-field-color;
-    border-radius: 0;
-    color: #fff;
+  &.dark {
+
+    .btn-grp {
+      border: 1px solid $panel-bg-color;
+    }
+    button {
+      border-radius: 0;
+    }
+    button:hover {
+      background-color: $primary-btn-color;
+      border-radius: 0;
+      color: #fff;
+    }
+    button:focus {
+      background-color: $primary-btn-color;
+      border-radius: 0;
+      color: #fff;
+    }
+    button.active {
+      background-color: $primary-btn-color;
+      border-radius: 0;
+      color: #fff;
+    }
   }
-  button:focus {
-    background-color: $form-field-color;
-    border-radius: 0;
-    color: #fff;
+
+  &.md-blue {
+
+    .btn-grp {
+      border: 1px solid $panel-bg-color;
+    }
+    button {
+      border-radius: 0;
+    }
+    button:hover {
+      background-color: $primary-btn-color;
+      border-radius: 0;
+      color: #fff;
+    }
+    button:focus {
+      background-color: $primary-btn-color;
+      border-radius: 0;
+      color: #fff;
+    }
+    button.active {
+      background-color: $primary-btn-color;
+      border-radius: 0;
+      color: #fff;
+    }
   }
-  button.active {
-    background-color: $form-field-color;
-    border-radius: 0;
-    color: #fff;
+
+  &.light {
+
+    .btn-grp {
+      border: 1px solid $form-field-color;
+    }
+    button {
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: $form-field-color;
+      border-radius: 0;
+      color: #fff;
+    }
+    button:focus {
+      background-color: $form-field-color;
+      border-radius: 0;
+      color: #fff;
+    }
+    button.active {
+      background-color: $form-field-color;
+      border-radius: 0;
+      color: #fff;
+    }
+
   }
 }

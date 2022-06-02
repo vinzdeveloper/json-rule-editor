@@ -48,6 +48,24 @@
     }
 }
 
+.dark {
+    .add-decision-step {
+        color: $form-label-color-drk;
+    }
+}
+
+.md-blue {
+    .add-decision-step {
+        color: $form-label-color-drk;
+    }
+}
+
+.light {
+    .add-decision-step {
+        color: $form-label-color;
+    }
+}
+
 .add-field-panel {
     display: flex;
     flex-direction: row;

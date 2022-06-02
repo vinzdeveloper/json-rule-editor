@@ -15,6 +15,18 @@
     &.open {
       width: $sideNavWidth;
     }
+
+    &.light {
+      background-color: $title-bg-clr;
+    }
+
+    &.dark {
+      background-color: $title-bg-clr-drk;
+    }
+
+    &.md-blue {
+      background-color: $title-bg-clr-mdblue;
+    }
 }
 
 .menu-bar {

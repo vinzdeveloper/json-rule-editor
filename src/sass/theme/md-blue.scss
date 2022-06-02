@@ -1,0 +1,41 @@
+body.md-blue
+{
+  background: $body-clr-mdblue;
+  color: $form-label-color-drk;
+}
+
+.md-blue {
+    label {
+        color: $form-label-color-drk;
+    }
+
+    h1 {
+        color: $title-color-drk;
+    }
+
+    h3 {
+        color: $page-title-color-dark;
+    }
+
+    a {
+        color: $form-label-color-drk;
+    }
+
+    .tab {
+        color: $form-label-color-drk;
+
+        &.active {
+            color: $form-label-color-drk;
+        }
+    }
+
+    .panel-box-wrapper {
+        background-color: #fff;
+        box-shadow: none;
+        color: #000;
+
+        a {
+            color: $link-color;
+        }
+    }
+}

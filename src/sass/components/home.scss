@@ -41,6 +41,30 @@
             cursor: pointer;
             text-decoration: underline;
         }
+
+        &.dark {
+            color: #bca8f1;
+
+            label {
+                color: $link-clr-drk;
+            }
+        }
+
+        &.md-blue {
+            color: #bca8f1;
+
+            label {
+                color: $link-clr-drk;
+            }
+        }
+
+        &.light {
+            color: #73879C;
+
+            label {
+                color: $link-color;
+            }
+        }
     }
 
     .file-drop-msg {

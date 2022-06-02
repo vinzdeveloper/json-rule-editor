@@ -6,6 +6,21 @@
     justify-content: flex-end;
     font-size: 22px;
     padding: 15px;
+
+  &.light {
+    background-color: $title-color;
+    color: $title-bg-clr;
+  }
+
+  &.dark {
+    background-color: $title-bg-clr-drk;
+    color: $title-color-drk;
+  }
+
+  &.md-blue {
+    background-color: $title-bg-clr-mdblue;
+    color: $title-color-drk;
+  }
 }
 
 .page-title {

@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import { updateRulesetIndex } from '../../actions/ruleset';
 import { updateState } from '../../actions/app';
 import { createHashHistory } from 'history';
+import ApperanceContext from '../../context/apperance-context';
+
 class ApplicationContainer extends Component {
 
     constructor(props){
@@ -15,6 +17,16 @@ class ApplicationContainer extends Component {
         if (!this.props.loggedIn) {
             history.push('./home');
         }
+        this.toggleBackground = (value) => {
+            const theme = { ...this.state.theme, background: value };
+            document.body.className = value;
+            this.setState({ theme });
+        }
+        this.state = {theme: { background: 'md-blue', toggleBackground: this.toggleBackground }};
+    }
+
+    componentDidMount() {
+        document.body.className = this.state.theme.background;
     }
 
     componentWillUnmount() {
@@ -27,10 +39,12 @@ class ApplicationContainer extends Component {
         const closednav = this.props.navState !== 'open';
         return(
             <React.Fragment>
-              <Title title={'Json Rule Editor'} />
-              <NavigationPanel closedState={closednav} updateState={this.props.updateState} activeIndex={this.props.activeIndex}
-                    rulenames={this.props.rulenames} setActiveRulesetIndex={this.props.setActiveRulesetIndex} loggedIn={this.props.loggedIn}/>
-              <AppRoutes closedState={closednav} loggedIn={this.props.loggedIn} />
+              <ApperanceContext.Provider value={this.state.theme}>
+                <Title title={'Json Rule Editor'} />
+                <NavigationPanel closedState={closednav} updateState={this.props.updateState} activeIndex={this.props.activeIndex}
+                        rulenames={this.props.rulenames} setActiveRulesetIndex={this.props.setActiveRulesetIndex} loggedIn={this.props.loggedIn}/>
+                <AppRoutes closedState={closednav} loggedIn={this.props.loggedIn} appctx={this.state.theme} />
+              </ApperanceContext.Provider>
             </React.Fragment>
         )
     }

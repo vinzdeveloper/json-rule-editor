@@ -26,6 +26,14 @@ pipeline {
                 sh "docker rmi json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER}"
                 echo "Unit testing passed"
             }
+            post {
+                success {
+                    echo 'post process - sucess of unit test'
+                }
+                failure {
+                    echo 'post process - failure of unit test'
+                }
+            }
         }
         stage('Build') {
             steps {
@@ -34,6 +42,11 @@ pipeline {
                 sh "docker run --rm json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER}"
                 sh "docker rmi json-rule-editor-${BRANCH_NAME_MODIFIED}:${BUILD_NUMBER}"
                 echo "Build passed"
+            }
+            post {
+                always {
+                    echo 'post process - always of build'
+                }
             }
         }
         stage('Deploy') {

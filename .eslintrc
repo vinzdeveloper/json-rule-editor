@@ -17,7 +17,7 @@
     "module": true,
     "__dirname": true
   },
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "settings": {
     "react": {
       "createClass": "createReactClass",

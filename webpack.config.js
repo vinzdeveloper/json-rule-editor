@@ -18,7 +18,7 @@ module.exports = (env, arg) => ({
       use: ['babel-loader'],
       exclude: /node_modules/,
     }, {
-      test: /\.(jpe|jpg|png)(\?.*$|$)/,
+      test: /\.(jpe|jpg)(\?.*$|$)/,
       loader: 'file-loader',
       options: {
         name: '[path][name].[ext]',
@@ -40,7 +40,7 @@ module.exports = (env, arg) => ({
       // }
     },
     {
-      test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      test: /\.(ttf|eot|svg|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
       loader: "file-loader",
       options: {
         name: '[path][name].[ext]',

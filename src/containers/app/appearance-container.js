@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AppearanceContext from '../../context/apperance-context';
 
-const themes = [{ name: 'Light', value: "light", src: '../../assets/icons/light-mode.png'},
-                { name: 'Dark', value: "dark", src: '../../assets/icons/dark-mode.png' },
-                { name: 'Midnight Blue', value: "md-blue", src: '../../assets/icons/mdblue-mode.png' }];
+const themes = [{ name: 'Light', value: "light", class: 'light-mode'},
+                { name: 'Dark', value: "dark", class: 'dark-mode' },
+                { name: 'Midnight Blue', value: "md-blue", class: 'mdblue-mode' }];
 
 class AppearanceContainer extends Component {
 
@@ -18,7 +18,7 @@ class AppearanceContainer extends Component {
             <h3>Theme</h3>
             <div className="theme-container">
                 { themes.map(theme => (<div className="theme-icon" key={theme.value}>
-                    <img src={theme.src} alt></img>
+                    <span className={theme.class}></span>
                     <div><input type="radio" name="themeMode" value={theme.value} checked={ background === theme.value }
                         onClick={(e) => toggleBackground(e.target.value)}/>{theme.name}</div>
                     </div>))

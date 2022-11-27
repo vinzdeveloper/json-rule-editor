@@ -7,9 +7,28 @@
         text-align: center;
     }
 
-    img {
-        border: 1px solid #ddd;
-        height: 125px;
-        margin-bottom: 20px;
+
+    span {
+
+        &.light-mode {
+            background: url('../../assets/icons/light-mode.png') no-repeat;
+            background-size: contain;
+            display: block;
+            padding: 20px 40px;
+        }
+
+        &.dark-mode {
+            background: url('../../assets/icons/dark-mode.png') no-repeat;
+            background-size: contain;
+            display: block;
+            padding: 20px 40px;
+        }
+
+        &.mdblue-mode {
+            background: url('../../assets/icons/mdblue-mode.png') no-repeat;
+            background-size: contain;
+            display: block;
+            padding: 20px 40px;
+        }
     }
 }

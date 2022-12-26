@@ -17,7 +17,8 @@ module.exports = (env, arg) => ({
       test: /\.(js|jsx)$/,
       use: ['babel-loader'],
       exclude: /node_modules/,
-    }, {
+    },
+    /* {
       test: /\.(jpe|jpg)(\?.*$|$)/,
       loader: 'file-loader',
       options: {
@@ -38,18 +39,17 @@ module.exports = (env, arg) => ({
       // options: {
       //   name: '[path][name].[ext]',
       // }
-    },
+    }, */
     {
       test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
       loader: "url-loader",
       options: {
        name: '[path][name].[ext]',
        limit: 10000,
-       mimetype: 'application/font-woff',
      } 
-   }, */
+   },
     {
-      test: /\.(ttf|eot|svg|png|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      test: /\.(ttf|eot|svg|png|jpg|jpeg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
       loader: "file-loader",
       options: {
         name: '[path][name].[ext]',

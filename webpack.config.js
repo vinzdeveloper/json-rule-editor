@@ -10,7 +10,7 @@ module.exports = (env, arg) => ({
     filename: "main.bundle.js",
     path: path.resolve(__dirname, 'dist')
   },
-  mode: 'development',
+  mode: arg.mode != 'production' ? 'development' : 'production',
   devtool: arg.mode != 'production' ? 'eval-source-map' : 'nosources-source-map',
   module: {
     rules: [{

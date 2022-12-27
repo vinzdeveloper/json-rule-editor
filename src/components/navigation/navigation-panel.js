@@ -5,10 +5,12 @@ import { createHashHistory } from 'history';
 import FooterLinks from '../footer/footer';
 import footerLinks from '../../data-objects/footer-links.json';
 import AppearanceContext from '../../context/apperance-context';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faSquarePlus, faCloudArrowUp, faSliders } from '@fortawesome/free-solid-svg-icons';
 
-const navmenu = [{ name: 'Create Rules', navigate: './create-ruleset', iconClass: "icon fa fa-plus-square-o", linkClass: 'navmenu'},
-                 { name: 'Upload Rules', navigate: './home', iconClass: "icon fa fa-cloud-upload", linkClass: 'navmenu' },
-                { name: 'Appearance', navigate: './appearance', iconClass: "icon fa fa-sliders", linkClass: 'navmenu'} ];
+const navmenu = [{ name: 'Create Rules', navigate: './create-ruleset', iconClass: "icon", fontIcons: faSquarePlus, linkClass: 'navmenu'},
+                 { name: 'Upload Rules', navigate: './home', iconClass: "icon", fontIcons: faCloudArrowUp, linkClass: 'navmenu' },
+                { name: 'Appearance', navigate: './appearance', iconClass: "icon", fontIcons: faSliders, linkClass: 'navmenu'} ];
 class NavigationPanel extends Component {
 
     constructor(props) {
@@ -44,7 +46,9 @@ class NavigationPanel extends Component {
         return (
             <div className={`nav-container ${closedState ? 'closed': 'open'} ${appctx.background}`}>
                 <div className="menu-bar">
-                       <a href="" onClick={(e) => { e.preventDefault();  this.props.updateState(sideNav)}}> <span className="close-icon fa fa-reorder" ></span></a>
+                       <a href="" onClick={(e) => { e.preventDefault();  this.props.updateState(sideNav)}}> 
+                        <FontAwesomeIcon className="close-icon" icon={faBars}></FontAwesomeIcon>
+                        </a>
                 </div>
                 {!closedState && <div className="links-section">
                     <div>

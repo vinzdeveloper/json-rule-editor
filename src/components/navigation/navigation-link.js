@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { createHashHistory } from 'history';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const NavLinks = (props) => {
     const { links } = props;
@@ -31,6 +32,7 @@ const NavParentLink = ({ link, onConfirm, index, visible }) => {
     <li className={link.linkClass} onClick={(e) => onConfirm(e, index, link.navigate)}>
       <a href="" className={`link ${visible ? 'active': ''}`} >
         <span className={link.iconClass} />
+        {link.fontIcons && <FontAwesomeIcon icon={link.fontIcons} />}
         <span className="text">{link.name}</span>
       </a>
     </li>);

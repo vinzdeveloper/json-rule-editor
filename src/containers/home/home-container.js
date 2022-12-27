@@ -12,6 +12,7 @@ import { includes } from 'lodash/collection';
 import Notification from '../../components/notification/notification';
 import { RULE_AVAILABLE_UPLOAD, RULE_UPLOAD_ERROR } from '../../constants/messages';
 import ApperanceContext from '../../context/apperance-context';
+import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
 
 
 function readFile(file, cb) {
@@ -137,7 +138,7 @@ class HomeContainer extends Component {
       return <div className="home-container">
         <div className="single-panel-container">
         { (fileExist || uploadError) && <Notification body={message.body} heading={message.heading} type={message.type} /> }
-          <TitlePanel title={title} titleClass="fa fa-cloud-upload">
+          <TitlePanel title={title} titleClass={faCloudArrowUp}>
             <div className="upload-panel">
               <div className={`drop-section ${appctx.background}`} onDrop={this.drop} onDragOver={this.allowDrop}>
                   <div><label htmlFor="uploadFile">Choose Ruleset directory<input id="uploadFile" type="file" onChange={this.chooseDirectory} webkitdirectory="true" multiple/></label> or Drop Files</div>

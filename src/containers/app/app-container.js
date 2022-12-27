@@ -22,7 +22,7 @@ class ApplicationContainer extends Component {
             document.body.className = value;
             this.setState({ theme });
         }
-        this.state = {theme: { background: 'md-blue', toggleBackground: this.toggleBackground }};
+        this.state = {theme: { background: 'light', toggleBackground: this.toggleBackground }};
     }
 
     componentDidMount() {

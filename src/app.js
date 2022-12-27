@@ -5,7 +5,6 @@ import { render } from 'react-dom';
 import configureStore from './store';
 import { Provider } from 'react-redux';
 import ApplicationContainer from './containers/app/app-container';
-require('../node_modules/font-awesome/css/font-awesome.css');
 
 
 const store = configureStore();

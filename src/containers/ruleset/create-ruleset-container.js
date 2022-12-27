@@ -9,6 +9,7 @@ import { createHashHistory } from 'history';
 import { addRuleset } from '../../actions/ruleset';
 import Notification from '../../components/notification/notification';
 import { RULE_AVAILABLE_CREATE } from '../../constants/messages';
+import { faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 
 class CreateRulesetContainer extends Component {
 
@@ -43,7 +44,7 @@ class CreateRulesetContainer extends Component {
         return (
             <div className="single-panel-container">
                 { fileExist && <Notification body={message.body} heading={message.heading} type={message.type} /> }
-                <TitlePanel title="Create Rules" titleClass="fa fa-plus-square-o">
+                <TitlePanel title="Create Rules" titleClass={faSquarePlus}>
                     <form>
                         <div className="upload-panel">
                             <InputField label="Name" onChange={this.onChangeName} value={this.state.name} error={this.state.error.name} />

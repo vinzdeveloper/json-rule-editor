@@ -18,28 +18,6 @@ module.exports = (env, arg) => ({
       use: ['babel-loader'],
       exclude: /node_modules/,
     },
-    /* {
-      test: /\.(jpe|jpg)(\?.*$|$)/,
-      loader: 'file-loader',
-      options: {
-        name: '[path][name].[ext]',
-      }
-    },
-    /*{
-      test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      use: [{
-        loader: "url-loader",
-        options: {
-          limit: 10000,
-          mimetype: 'application/font-woff',
-          name: '[path][name].[ext]'
-        }
-      }]
-      //  loader: "url-loader?limit=10000&mimetype=application/font-woff",
-      // options: {
-      //   name: '[path][name].[ext]',
-      // }
-    }, */
     {
       test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
       loader: "url-loader",

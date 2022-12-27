@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const PageTitle = ({name, titleFlag}) => {
     
@@ -25,7 +26,7 @@ PageTitle.propTypes = {
 export const TitleIcon = ({iconClass}) => {
 
     return (<div className="icon-card">
-        <span className={iconClass} />
+        <FontAwesomeIcon icon={iconClass} />
     </div>);
 };
 

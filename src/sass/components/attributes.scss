@@ -132,6 +132,16 @@ td.attributes-header {
     padding: 10px;
 }
 
+.md-blue {
+    .view-attribute {
+        color: $form-label-color-drk;
+    }
+}
+
+.dark {
+    color: $form-label-color-drk;
+}
+
 .view-params-container {
     width: 40%;
     color: $dark-color;

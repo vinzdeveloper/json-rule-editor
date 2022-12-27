@@ -6,6 +6,8 @@ import 'font-awesome/css/font-awesome.min.css';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { transformRuleToTree } from '../../utils/transform';
 import ViewAttribute from '../attributes/view-attributes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 class DecisionDetails extends Component {
 
@@ -127,13 +129,14 @@ class DecisionDetails extends Component {
     }
 
     renderConditions = (conditions, decisionIndex) => {
+        
         const transformedData = transformRuleToTree(conditions);
 
         return (<div className="rule-flex-container">
                 { transformedData && transformedData.map((data, caseIndex) => (<div className="decision-box" key={`case - ${caseIndex} - ${decisionIndex}`}>
                     <div className="tool-flex">
-                        <div><a href="" onClick={(e) => this.editCondition(e, data.index)}><span className="fa fa-edit" /></a></div>
-                        <div><a href="" onClick={((e) => this.handleRemoveCondition(e, data.index))}><span className="fa fa-trash-o" /></a></div>
+                        <div><a href="" onClick={(e) => this.editCondition(e, data.index)}><FontAwesomeIcon icon={faPenToSquare} /></a></div>
+                        <div><a href="" onClick={((e) => this.handleRemoveCondition(e, data.index))}><FontAwesomeIcon icon={faTrash} /></a></div>
                     </div>
                     <Tree treeData={data.node} count={data.depthCount}/>
                     { data.event.params && <div className="view-params-container">

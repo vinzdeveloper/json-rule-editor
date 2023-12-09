@@ -14,6 +14,29 @@ const replaceRulesetByIndex = (rulesets, targetset, index) => {
      return [ ...rulesets.slice(0, index), targetset, ...rulesets.slice(index + 1)];
 }
 
+const moveRuleUpByIndex = (rulesets, index) => {
+    if (index <= 0 || index >= rulesets.length) {
+        // If index is out of bounds (i.e., first element or beyond last element), return the original array
+        return rulesets;
+    }
+    const newRulesets = [...rulesets]; // Create a copy of the array
+    const temp = newRulesets[index]; // Temporarily store the current item
+    newRulesets[index] = newRulesets[index - 1]; // Replace the current item with the previous item
+    newRulesets[index - 1] = temp; // Replace the previous item with the current item (stored in temp)
+    return newRulesets;
+}
+
+const moveRuleDownByIndex = (rulesets, index) => {
+    if (index < 0 || index >= rulesets.length - 1) {
+        // If index is out of bounds (i.e., last element or beyond first element), return the original array
+        return rulesets;
+    }
+    const newRulesets = [...rulesets]; // Create a copy of the array
+    const temp = newRulesets[index]; // Temporarily store the current item
+    newRulesets[index] = newRulesets[index + 1]; // Replace the current item with the next item
+    newRulesets[index + 1] = temp; // Replace the next item with the current item (stored in temp)
+    return newRulesets;
+}
 
 function ruleset(state = initialState, action='') {
 
@@ -140,7 +163,18 @@ function ruleset(state = initialState, action='') {
             return { ...state };
         }
 
+        case ActionTypes.MOVE_RULE_UP: {
+            const { index } = action.payload;
+            const rulesets = moveRuleUpByIndex(state.rulesets, index);
+            return { ...state, rulesets: cloneDeep(rulesets),  uploadedRules: cloneDeep(rulesets)}
+        }
 
+        case ActionTypes.MOVE_RULE_DOWN: {
+            const { index } = action.payload;
+            const rulesets = moveRuleDownByIndex(state.rulesets, index);
+            return { ...state, rulesets: cloneDeep(rulesets),  uploadedRules: cloneDeep(rulesets)}
+        }
+        
         default:
             return { ...state };
     }

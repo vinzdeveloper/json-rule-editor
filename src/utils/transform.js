@@ -19,7 +19,7 @@ const mapFactToChildren = (fact) => {
         }
 
         attributes[fact.operator] = value;
-
+        
         if (fact.path) {
             attributes['path'] = fact.path;
         }
@@ -40,25 +40,25 @@ const mapConditionsToChildren = (condition={}, depth) => {
     const node = mapParentNode(parentNode);
     const childrenNode = condition[parentNode] && condition[parentNode].map(facts => {
         if (has(facts, 'fact')) {
-            return mapFactToChildren(facts);
+                        return mapFactToChildren(facts);
         } else {
-            depthCount = depth > depthCount ? depth : depthCount;
+                        depthCount = depth > depthCount ? depth : depthCount;
             return mapConditionsToChildren(facts, depth + 1);
         }
     });
     node.children = childrenNode;
-    return node;
+        return node;
 };
 
 export const transformRuleToTree = (conditions = []) => {
     depthCount = 0;
     if (isArray(conditions)) {
         return conditions.map((condition) => {
-            depthCount = 0;
-            return { node: mapConditionsToChildren(condition.conditions, 1), depthCount, index: condition.index, event: condition.event };
+                        depthCount = 0;
+                        return { node: mapConditionsToChildren(condition.conditions, 1), depthCount, index: condition.index, event: condition.event };
         });
     } 
-    return { node: mapConditionsToChildren(conditions.conditions, 1), depthCount, index: 0, event: conditions.event};
+        return { node: mapConditionsToChildren(conditions.conditions, 1), depthCount, index: 0, event: conditions.event};
 };
 
 const mapChildNodeToFacts = (children) => {

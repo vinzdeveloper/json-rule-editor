@@ -10,6 +10,10 @@ const MODIFIED_HEADER = 'Submit Ruleset';
 const MODIFIED_BODY = 'You have created / modified this ruleset. Do you want to save these changes into ruleset file?'
 export const MODIFIED_MSG = {header: MODIFIED_HEADER, body: MODIFIED_BODY, type: 'submit-panel', buttonProps: BUTTON_PROPS_NO_CHANGES,};
 
+const BUTTON_PROPS_APPLY = {label: 'Apply Ruleset'};
+const APPLY_HEADER = 'Apply Ruleset';
+const APPLY_BODY = 'You have created / modified this ruleset. Do you want to apply these changes to remote server?'
+export const APPLY_MSG = {header: APPLY_HEADER, body: APPLY_BODY, type: 'submit-panel', buttonProps: BUTTON_PROPS_APPLY,};
 
 const NO_ATTRIBUTE_HEADER = 'No Facts';
 const NO_ATTRIBUTE_BODY = 'There is no facts available in the selected ruleset.'

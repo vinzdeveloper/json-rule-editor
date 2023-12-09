@@ -82,8 +82,12 @@ class AddDecision extends Component {
             let outcomeParams = {};
             this.state.outcome.params.forEach(param => {     
                 outcomeParams[param.pkey] = param.pvalue;
+                console.log(`param: param.pkey: ${param.pkey}; param.pvalue: ${param.pvalue}`);
             })
+            console.log(`Printing outcome params ==========> ${JSON.stringify(outcomeParams)}`);
             const condition = transformTreeToRule(this.state.node, this.state.outcome, outcomeParams);
+            console.log(`Printing new condition =========> ${JSON.stringify(condition)}`);
+
             this.props.addCondition(condition);
         }
     }

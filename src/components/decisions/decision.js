@@ -28,6 +28,8 @@ class Decision extends Component {
         this.removeDecisions = this.removeDecisions.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.moveDown = this.moveDown.bind(this);
+        this.moveUp = this.moveUp.bind(this);
     }
 
     handleSearch = (value) => {
@@ -90,6 +92,35 @@ class Decision extends Component {
         return filteredOutcomes;
     }
 
+    moveUp(index) {
+        if (index === 0) {
+            return;
+        }
+    
+        const { outcomes } = this.props;
+        const newOutcomes = [...outcomes];
+        const temp = newOutcomes[index];
+        newOutcomes[index] = newOutcomes[index - 1];
+        newOutcomes[index - 1] = temp;
+    
+        // Now you need to update your outcomes state with newOutcomes
+        // The implementation depends on where your state is
+    }
+    
+    moveDown(index) {
+        const { outcomes } = this.props;
+        if (index === outcomes.length - 1) {
+            return;
+        }
+    
+        const newOutcomes = [...outcomes];
+        const temp = newOutcomes[index];
+        newOutcomes[index] = newOutcomes[index + 1];
+        newOutcomes[index + 1] = temp;
+    
+        // Now you need to update your outcomes state with newOutcomes
+        // The implementation depends on where your state is
+    }
 
     render() {
         const { searchCriteria, bannerflag } = this.state;
@@ -121,6 +152,8 @@ Decision.defaultProps = ({
     decisions: [],
     attributes: [],
     outcomes: {},
+    moveUp: () => false,
+    moveDown: () => false,
 });
 
 Decision.propTypes = ({
@@ -130,6 +163,8 @@ Decision.propTypes = ({
     decisions: PropTypes.array,
     attributes: PropTypes.array,
     outcomes: PropTypes.object,
+    moveUp: PropTypes.func,
+    moveDown: PropTypes.func,
 });
 
 export default Decision;

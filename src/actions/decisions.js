@@ -27,6 +27,18 @@ export const reset = () => {
     return ({type: ActionTypes.RESET_DECISION});
 }
 
+export const moveRuleUp = (decisionIndex) => {
+    const payload = { decisionIndex };
+
+    return ({ type: ActionTypes.MOVE_RULE_UP, payload});
+}
+
+export const moveRuleDown = (decisionIndex) => {
+    const payload = { decisionIndex };
+
+    return ({ type: ActionTypes.MOVE_RULE_DOWN, payload});
+}
+
 export const handleDecision = (action, editDecision={}) => (dispatch) => {
     const { condition } = editDecision;
     switch(action) {
@@ -47,6 +59,14 @@ export const handleDecision = (action, editDecision={}) => (dispatch) => {
         }
         case 'RESET': {
             return dispatch(reset());
+        }
+        case 'MOVEUP': {
+            const { decisionIndex } = editDecision;
+            return dispatch(moveRuleUp(decisionIndex));
+        }
+        case 'MOVEDOWN': {
+            const { decisionIndex } = editDecision;
+            return dispatch(moveRuleDown(decisionIndex));
         }
     }
 };

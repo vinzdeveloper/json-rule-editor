@@ -44,7 +44,6 @@
     "json-rules-engine": "6.1.2",
     "lodash": "4.17.21",
     "mini-css-extract-plugin": "2.6.1",
-    "node-sass": "8.0.0",
     "postcss-loader": "3.0.0",
     "react": "16.12.0",
     "react-bootstrap-sweetalert": "5.1.9",
@@ -56,16 +55,17 @@
     "react-spinners": "0.8.1",
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",
+    "sass": "^1.69.5",
     "sass-loader": "13.2.0",
     "selectn": "1.1.2",
     "style-loader": "1.1.2",
     "url-loader": "4.1.0",
     "webpack": "5.75.0",
-    "webpack-cli": "4.10.0"
+    "webpack-cli": "^4.10.0"
   },
   "devDependencies": {
-    "@hot-loader/react-dom": "16.13.0",
     "@babel/eslint-parser": "7.19.1",
+    "@hot-loader/react-dom": "16.13.0",
     "eslint": "8.27.0",
     "eslint-plugin-react": "7.31.10",
     "husky": "8.0.2",

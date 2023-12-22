@@ -6,67 +6,79 @@ export const removeDecision = (decisionIndex) => {
     return ({ type: ActionTypes.REMOVE_DECISION, payload});
 }
 
-export const updateDecision = (condition, decisionIndex) => {
-    const payload = { condition, decisionIndex };
+export const updateDecision = (rule, ruleIndex) => {
+    const payload = { rule, ruleIndex };
 
     return ({ type: ActionTypes.UPDATE_DECISION, payload});
 }
 
-export const addDecision = (condition) => {
-    const payload = { condition };
+export const addDecision = (condition, metadata) => {
+    const payload = { condition, metadata };
+    console.log(`in addDecision, payload: ${JSON.stringify(payload)} `);
     return ({ type: ActionTypes.ADD_DECISION, payload});
 }
 
-export const removeDecisions = (outcome) => {
-    const payload = { outcome };
+export const removeDecisions = (index) => {
+    const payload = { index };
 
     return ({ type: ActionTypes.REMOVE_DECISIONS, payload});
+}
+
+export const updateRules = (rule) => {
+    const payload = { rule };
+    console.log(`in updateRules of decisions.js, payload: ${JSON.stringify(payload)} `);
+    return ({ type: ActionTypes.UPDATE_RULE, payload});
 }
 
 export const reset = () => {
     return ({type: ActionTypes.RESET_DECISION});
 }
 
-export const moveRuleUp = (decisionIndex) => {
-    const payload = { decisionIndex };
+export const moveRuleUp = (ruleIndex) => {
+    const payload = { ruleIndex };
 
     return ({ type: ActionTypes.MOVE_RULE_UP, payload});
 }
 
-export const moveRuleDown = (decisionIndex) => {
-    const payload = { decisionIndex };
+export const moveRuleDown = (ruleIndex) => {
+    const payload = { ruleIndex };
 
     return ({ type: ActionTypes.MOVE_RULE_DOWN, payload});
 }
 
-export const handleDecision = (action, editDecision={}) => (dispatch) => {
+export const handleDecision = (action, editDecision={}, metadata = {}) => (dispatch) => {
     const { condition } = editDecision;
     switch(action) {
         case 'ADD': {
-            return dispatch(addDecision(condition));
+            console.log(`in handleDecision, metadata: ${JSON.stringify(metadata)} `);
+            return dispatch(addDecision(condition, metadata));
         }
-        case 'UPDATE': {
-            const { decisionIndex } = editDecision;
-            return dispatch(updateDecision(condition, decisionIndex)); 
-        }
+        // case 'UPDATE': {
+        //     const { decisionIndex } = editDecision;
+        //     return dispatch(updateDecision(condition, decisionIndex)); 
+        // }
         case 'REMOVECONDITION': {
             const { decisionIndex } = editDecision;
             return dispatch(removeDecision(decisionIndex));
         }
         case 'REMOVEDECISIONS': {
-            const { outcome } = editDecision;
-            return dispatch(removeDecisions(outcome));
+            const { index } = editDecision;
+            return dispatch(removeDecisions(index));
         }
         case 'RESET': {
             return dispatch(reset());
         }
+        case 'UPDATERULE': {
+            return dispatch(updateRules(editDecision)); 
+        }
+
         case 'MOVEUP': {
-            const { decisionIndex } = editDecision;
-            return dispatch(moveRuleUp(decisionIndex));
+            const { ruleIndex } = editDecision;
+            return dispatch(moveRuleUp(ruleIndex));
         }
         case 'MOVEDOWN': {
-            const { decisionIndex } = editDecision;
-            return dispatch(moveRuleDown(decisionIndex));
+            const { ruleIndex } = editDecision;
+            return dispatch(moveRuleDown(ruleIndex));
         }
     }
 };

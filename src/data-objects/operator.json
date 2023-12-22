@@ -1,6 +1,11 @@
 {
-    "string": ["equal", "notEqual", "contain", "inList", "longerThan", "shorterThan", "REMatch"],
-    "number": ["equal", "lessThan", "lessThanInclusive", "greaterThan", "greaterThanInclusive", "notEqual"],
-    "array": ["contains", "doesNotContain", "in", "notIn"],
-    "object": ["equal", "notEqual", "lessThan", "lessThanInclusive", "greaterThan", "greaterThanInclusive", "contains", "doesNotContain", "in", "notIn"]
+    "string": [
+        "equal",
+        "notEqual",
+        "contain",
+        "inList",
+        "longerThan",
+        "shorterThan",
+        "REMatch"
+    ]
 }

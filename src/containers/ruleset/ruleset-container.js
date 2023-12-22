@@ -16,12 +16,14 @@ import { groupBy } from 'lodash/collection';
 import RuleErrorBoundary from '../../components/error/ruleset-error';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
-const tabs = [{ name: 'Facts' }, { name: 'Decisions' }, { name: 'Validate' }, { name: 'Generate' }, { name: 'Apply' }];
+// const tabs = [{ name: 'Facts' }, { name: 'Decisions' }, { name: 'Validate' }, { name: 'Generate' }, { name: 'Apply' }];
+const tabs = [{ name: 'Decisions' }, { name: 'Validate' }, { name: 'Generate' }, { name: 'Apply' }];
+
 class RulesetContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { activeTab: 'Facts', generateFlag: false, applyFlag: false, applyErrFlag: false };
+    this.state = { activeTab: 'Decisions', generateFlag: false, applyFlag: false, applyErrFlag: false };
     this.generateFile = this.generateFile.bind(this);
     this.cancelAlert = this.cancelAlert.bind(this);
     this.sendJson = this.sendJson.bind(this);
@@ -118,10 +120,10 @@ class RulesetContainer extends Component {
     const indexedDecisions = decisions && decisions.length > 0 &&
       decisions.map((decision, index) => ({ ...decision, index }));
 
-    let outcomes;
-    if (indexedDecisions && indexedDecisions.length > 0) {
-      outcomes = groupBy(indexedDecisions, data => data.event.type);
-    }
+    let outcomes = indexedDecisions; // The group by operation type is not needed.
+    // if (indexedDecisions && indexedDecisions.length > 0) {
+    //   outcomes = groupBy(indexedDecisions, data => data.event.type);
+    // }
 
     const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
     const apply_message = this.props.updatedFlag ? Message.APPLY_MSG : Message.NO_CHANGES_MSG;
@@ -131,8 +133,8 @@ class RulesetContainer extends Component {
         <PageTitle name={name} />
         <Tabs tabs={tabs} onConfirm={this.handleTab} activeTab={this.state.activeTab} />
         <div className="tab-page-container">
-          {this.state.activeTab === 'Facts' && <Attributes attributes={attributes}
-            handleAttribute={this.props.handleAttribute} />}
+          {/* {this.state.activeTab === 'Facts' && <Attributes attributes={attributes}
+            handleAttribute={this.props.handleAttribute} />} */}
           {this.state.activeTab === 'Decisions' && <Decisions decisions={indexedDecisions || []} attributes={attributes}
             handleDecisions={this.props.handleDecisions} outcomes={outcomes} />}
           {this.state.activeTab === 'Validate' && <ValidateRules attributes={attributes} decisions={decisions} />}
@@ -169,7 +171,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   handleAttribute: (operation, attribute, index) => dispatch(handleAttribute(operation, attribute, index)),
-  handleDecisions: (operation, decision) => dispatch(handleDecision(operation, decision)),
+  handleDecisions: (operation, decision, metadata = {}) => dispatch(handleDecision(operation, decision, metadata)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RulesetContainer);

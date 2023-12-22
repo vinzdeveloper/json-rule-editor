@@ -1,13 +1,14 @@
 
 export const validateOutcome = (outcome) => {
     const error = {};
+    console.log(`outcome in validateOutcome: ${JSON.stringify(outcome)}`);
 
     if (!outcome.value) {
         error.value = 'Please specify the outcome value'
     }
 
     return error;
-} 
+}
 
 const isEmpty = (val) => {
     if(!val) {

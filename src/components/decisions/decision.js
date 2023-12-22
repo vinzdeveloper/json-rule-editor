@@ -26,6 +26,7 @@ class Decision extends Component {
         this.removeCase = this.removeCase.bind(this);
         this.cancelAddAttribute = this.cancelAddAttribute.bind(this);
         this.removeDecisions = this.removeDecisions.bind(this);
+        this.updateRule = this.updateRule.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.moveDown = this.moveDown.bind(this);
@@ -46,6 +47,7 @@ class Decision extends Component {
 
     editCondition(decisionIndex) {
         const decision = this.props.decisions[decisionIndex];
+        console.log(`in editCondition, decision: ${JSON.stringify(decision)} `);
         const editCondition = transformRuleToTree(decision);
         let outputParams = [];
         if (decision.event.params && Object.keys(decision.event.params).length > 0) {
@@ -57,8 +59,10 @@ class Decision extends Component {
             editOutcome: { value: decision.event.type, params: outputParams }});
     }
 
-    addCondition(condition) {
-        this.props.handleDecisions('ADD', { condition });
+    addCondition(condition, metadata) {
+        const updatedMetadata = { ...metadata, ruleIndex: this.state.decisions.length };
+        console.log(`in addCondition, updatedMetadata: ${JSON.stringify(updatedMetadata)} `);
+        this.props.handleDecisions('ADD', { condition }, updatedMetadata);
         this.setState({ showAddRuleCase: false });
     }
 
@@ -72,9 +76,17 @@ class Decision extends Component {
         this.props.handleDecisions('REMOVECONDITION', { decisionIndex});
     }
 
-    removeDecisions(outcome) {
-        this.props.handleDecisions('REMOVEDECISIONS', { outcome});
+    removeDecisions(index) {
+        console.log(`in removeDecisions, index: ${JSON.stringify(index)} `);
+        this.props.handleDecisions('REMOVEDECISION', { index});
     }
+
+    updateRule(rule) {
+        console.log(`in updateRule in decision.js, rule: ${JSON.stringify(rule)} `);
+        this.props.handleDecisions('UPDATERULE', rule );
+    }
+
+    // updateRule(rule) {}
 
     handleReset() {
         this.props.handleDecisions('RESET');
@@ -92,34 +104,14 @@ class Decision extends Component {
         return filteredOutcomes;
     }
 
-    moveUp(index) {
-        if (index === 0) {
-            return;
-        }
-    
-        const { outcomes } = this.props;
-        const newOutcomes = [...outcomes];
-        const temp = newOutcomes[index];
-        newOutcomes[index] = newOutcomes[index - 1];
-        newOutcomes[index - 1] = temp;
-    
-        // Now you need to update your outcomes state with newOutcomes
-        // The implementation depends on where your state is
+    moveUp(ruleIndex) {
+        console.log(`in moveUp, ruleIndex: ${JSON.stringify(ruleIndex)} `);
+        this.props.handleDecisions('MOVEUP', { ruleIndex });
     }
     
-    moveDown(index) {
-        const { outcomes } = this.props;
-        if (index === outcomes.length - 1) {
-            return;
-        }
-    
-        const newOutcomes = [...outcomes];
-        const temp = newOutcomes[index];
-        newOutcomes[index] = newOutcomes[index + 1];
-        newOutcomes[index + 1] = temp;
-    
-        // Now you need to update your outcomes state with newOutcomes
-        // The implementation depends on where your state is
+    moveDown(ruleIndex) {
+        console.log(`in moveDown, ruleIndex: ${JSON.stringify(ruleIndex)} `);
+        this.props.handleDecisions('MOVEDOWN', { ruleIndex });
     }
 
     render() {
@@ -138,7 +130,7 @@ class Decision extends Component {
             { this.state.editCaseFlag && <AddDecision attributes={this.props.attributes} editCondition={this.state.editCondition}
                  outcome={this.state.editOutcome} editDecision addCondition={this.updateCondition} cancel={this.cancelAddAttribute} buttonProps={editButtonProps} /> }
             
-            <DecisionDetails outcomes={filteredOutcomes} editCondition={this.editCondition} removeCase={this.removeCase} removeDecisions={this.removeDecisions} />
+            <DecisionDetails outcomes={filteredOutcomes} editCondition={this.editCondition} removeCase={this.removeCase} removeDecisions={this.removeDecisions} updateRule={this.updateRule} moveUp={this.moveUp} moveDown={this.moveDown} />
             
             { !bannerflag && Object.keys(outcomes).length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
       </div>);

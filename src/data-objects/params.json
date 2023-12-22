@@ -1,0 +1,15 @@
+    {
+        "param-type": [
+            "Orig MSISDN",
+            "Dest MSISDN",
+            "Orig IMSI",
+            "PID",
+            "Orig VMSC"
+        ],
+        "event-type": [
+            "ACCEPT",
+            "REJECT",
+            "LOG",
+            "MODIFY"
+        ]
+    }

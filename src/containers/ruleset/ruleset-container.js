@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PageTitle from '../../components/title/page-title';
 import Tabs from '../../components/tabs/tabs';
-import Attributes from '../../components/attributes/attributes';
+import Klist from '../../components/klists/klist';
 import Decisions from '../../components/decisions/decision';
 import ValidateRules from '../../components/validate/validate-rules';
-import { handleAttribute } from '../../actions/attributes';
+import { handleKlist } from '../../actions/klists';
 import { handleDecision } from '../../actions/decisions';
 import Banner from '../../components/panel/banner';
 import * as Message from '../../constants/messages';
@@ -17,16 +17,22 @@ import RuleErrorBoundary from '../../components/error/ruleset-error';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 // const tabs = [{ name: 'Facts' }, { name: 'Decisions' }, { name: 'Validate' }, { name: 'Generate' }, { name: 'Apply' }];
-const tabs = [{ name: 'Decisions' }, { name: 'Validate' }, { name: 'Generate' }, { name: 'Apply' }];
+const tabs = [{ name: 'Decisions' }, { name: 'Keyword Lists'}, { name: 'Validate' }, { name: 'Generate' }, { name: 'Apply' }];
 
 class RulesetContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { activeTab: 'Decisions', generateFlag: false, applyFlag: false, applyErrFlag: false };
+    this.state = { 
+      activeTab: 'Decisions', 
+      klNames: [],
+      generateFlag: false, 
+      applyFlag: false, 
+      applyErrFlag: false };
     this.generateFile = this.generateFile.bind(this);
     this.cancelAlert = this.cancelAlert.bind(this);
     this.sendJson = this.sendJson.bind(this);
+    this.getKlnames = this.getKlnames.bind(this);
   }
 
   handleTab = (tabName) => {
@@ -114,9 +120,17 @@ class RulesetContainer extends Component {
     </SweetAlert>);
   }
 
-  render() {
-    const { attributes, decisions, name } = this.props.ruleset;
+  getKlnames = () => {
+    const { keywords: klists } = this.props.ruleset;
+    console.log(`klists in ruleset-container: ${JSON.stringify(klists)}`);
+    const klNames = klists.map(klist => klist.name);
+    console.log(`klNames in ruleset-container: ${JSON.stringify(klNames)}`);
+    return klNames;
+  }
 
+  render() {
+    const { attributes, decisions, name, keywords: klists } = this.props.ruleset;
+    // console.log(`klists in RulesetContainer: ${JSON.stringify(klists)}`);
     const indexedDecisions = decisions && decisions.length > 0 &&
       decisions.map((decision, index) => ({ ...decision, index }));
 
@@ -133,10 +147,10 @@ class RulesetContainer extends Component {
         <PageTitle name={name} />
         <Tabs tabs={tabs} onConfirm={this.handleTab} activeTab={this.state.activeTab} />
         <div className="tab-page-container">
-          {/* {this.state.activeTab === 'Facts' && <Attributes attributes={attributes}
-            handleAttribute={this.props.handleAttribute} />} */}
+          {this.state.activeTab === 'Keyword Lists' && <Klist klists={klists}
+            handleKlist={this.props.handleKlist} />}
           {this.state.activeTab === 'Decisions' && <Decisions decisions={indexedDecisions || []} attributes={attributes}
-            handleDecisions={this.props.handleDecisions} outcomes={outcomes} />}
+            handleDecisions={this.props.handleDecisions} getKlnames={this.getKlnames} outcomes={outcomes} />}
           {this.state.activeTab === 'Validate' && <ValidateRules attributes={attributes} decisions={decisions} />}
           {this.state.activeTab === 'Generate' && <Banner message={message} ruleset={this.props.ruleset} onConfirm={this.generateFile} />}
           {this.state.activeTab === 'Apply' && <Banner message={apply_message} ruleset={this.props.ruleset} onConfirm={this.sendJson} />}
@@ -151,7 +165,7 @@ class RulesetContainer extends Component {
 
 RulesetContainer.propTypes = {
   ruleset: PropTypes.object,
-  handleAttribute: PropTypes.func,
+  handleKlist: PropTypes.func,
   handleDecisions: PropTypes.func,
   updatedFlag: PropTypes.bool,
   runRules: PropTypes.func,
@@ -159,7 +173,7 @@ RulesetContainer.propTypes = {
 
 RulesetContainer.defaultProps = {
   ruleset: {},
-  handleAttribute: () => false,
+  handleKlist: () => false,
   handleDecisions: () => false,
   updatedFlag: false,
 }
@@ -170,7 +184,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  handleAttribute: (operation, attribute, index) => dispatch(handleAttribute(operation, attribute, index)),
+  handleKlist: (operation, klist, name) => dispatch(handleKlist(operation, klist, name)),
   handleDecisions: (operation, decision, metadata = {}) => dispatch(handleDecision(operation, decision, metadata)),
 });
 

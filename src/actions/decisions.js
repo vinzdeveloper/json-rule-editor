@@ -46,6 +46,13 @@ export const moveRuleDown = (ruleIndex) => {
     return ({ type: ActionTypes.MOVE_RULE_DOWN, payload});
 }
 
+export const uploadList = (listContent) => {
+    console.log(`in uploadList, listContent: ${JSON.stringify(listContent)} `);
+    const payload = { listContent };
+
+    return ({ type: ActionTypes.UPLOAD_LIST, payload});
+}
+
 export const handleDecision = (action, editDecision={}, metadata = {}) => (dispatch) => {
     const { condition } = editDecision;
     switch(action) {
@@ -79,6 +86,10 @@ export const handleDecision = (action, editDecision={}, metadata = {}) => (dispa
         case 'MOVEDOWN': {
             const { ruleIndex } = editDecision;
             return dispatch(moveRuleDown(ruleIndex));
+        }
+        case 'UPLOADLIST': {
+            //const { listContent } = editDecision;
+            return dispatch(uploadList(editDecision));
         }
     }
 };

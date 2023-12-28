@@ -56,8 +56,13 @@ module.exports = (env, arg) => ({
     alias: {
       'react-dom': '@hot-loader/react-dom',
     },
-    fallback: { "vm": false }
+    fallback: { 
+      "vm": false,
+      "path": false,
+      "crypto": false
+     }
   },
+    
   plugins: [
     new HtmlWebPackPlugin({
       template: 'index.html',

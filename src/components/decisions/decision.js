@@ -31,6 +31,8 @@ class Decision extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.moveDown = this.moveDown.bind(this);
         this.moveUp = this.moveUp.bind(this);
+        this.uploadList = this.uploadList.bind(this);
+        this.getKlnames = this.getKlnames.bind(this);
     }
 
     handleSearch = (value) => {
@@ -47,7 +49,7 @@ class Decision extends Component {
 
     editCondition(decisionIndex) {
         const decision = this.props.decisions[decisionIndex];
-        console.log(`in editCondition, decision: ${JSON.stringify(decision)} `);
+        // console.log(`in editCondition, decision: ${JSON.stringify(decision)} `);
         const editCondition = transformRuleToTree(decision);
         let outputParams = [];
         if (decision.event.params && Object.keys(decision.event.params).length > 0) {
@@ -60,8 +62,9 @@ class Decision extends Component {
     }
 
     addCondition(condition, metadata) {
-        const updatedMetadata = { ...metadata, ruleIndex: this.state.decisions.length };
-        console.log(`in addCondition, updatedMetadata: ${JSON.stringify(updatedMetadata)} `);
+        //console.log(`in addCondition, this.props: ${JSON.stringify(this.props)} `);
+        const updatedMetadata = { ...metadata, ruleIndex: this.props.decisions.length };
+        // console.log(`in addCondition, updatedMetadata: ${JSON.stringify(updatedMetadata)} `);
         this.props.handleDecisions('ADD', { condition }, updatedMetadata);
         this.setState({ showAddRuleCase: false });
     }
@@ -77,12 +80,12 @@ class Decision extends Component {
     }
 
     removeDecisions(index) {
-        console.log(`in removeDecisions, index: ${JSON.stringify(index)} `);
+        // console.log(`in removeDecisions, index: ${JSON.stringify(index)} `);
         this.props.handleDecisions('REMOVEDECISION', { index});
     }
 
     updateRule(rule) {
-        console.log(`in updateRule in decision.js, rule: ${JSON.stringify(rule)} `);
+        // console.log(`in updateRule in decision.js, rule: ${JSON.stringify(rule)} `);
         this.props.handleDecisions('UPDATERULE', rule );
     }
 
@@ -105,13 +108,24 @@ class Decision extends Component {
     }
 
     moveUp(ruleIndex) {
-        console.log(`in moveUp, ruleIndex: ${JSON.stringify(ruleIndex)} `);
+        // console.log(`in moveUp, ruleIndex: ${JSON.stringify(ruleIndex)} `);
         this.props.handleDecisions('MOVEUP', { ruleIndex });
     }
     
     moveDown(ruleIndex) {
-        console.log(`in moveDown, ruleIndex: ${JSON.stringify(ruleIndex)} `);
+        // console.log(`in moveDown, ruleIndex: ${JSON.stringify(ruleIndex)} `);
         this.props.handleDecisions('MOVEDOWN', { ruleIndex });
+    }
+
+    uploadList(listContent) {
+        // console.log(`in uploadList, listContent: ${JSON.stringify(listContent)} `);
+        this.props.handleDecisions('UPLOADLIST', listContent);
+    }
+
+    getKlnames() {
+        const klNames = this.props.getKlnames();
+        // console.log(`klNames in decision.js: ${JSON.stringify(klNames)}`);
+        return klNames;
     }
 
     render() {
@@ -125,12 +139,12 @@ class Decision extends Component {
 
             { <ToolBar handleAdd={this.handleAdd} reset={this.handleReset} searchTxt={this.handleSearch} /> }
 
-            { this.state.showAddRuleCase && <AddDecision attributes={this.props.attributes} addCondition={this.addCondition} cancel={this.cancelAddAttribute} buttonProps={buttonProps} /> }
+            { this.state.showAddRuleCase && <AddDecision attributes={this.props.attributes} addCondition={this.addCondition} cancel={this.cancelAddAttribute} uploadList={this.uploadList} getKlnames={this.getKlnames} buttonProps={buttonProps} /> }
             
             { this.state.editCaseFlag && <AddDecision attributes={this.props.attributes} editCondition={this.state.editCondition}
-                 outcome={this.state.editOutcome} editDecision addCondition={this.updateCondition} cancel={this.cancelAddAttribute} buttonProps={editButtonProps} /> }
+                 outcome={this.state.editOutcome} editDecision addCondition={this.updateCondition} cancel={this.cancelAddAttribute} getKlnames={this.getKlnames} buttonProps={editButtonProps} /> }
             
-            <DecisionDetails outcomes={filteredOutcomes} editCondition={this.editCondition} removeCase={this.removeCase} removeDecisions={this.removeDecisions} updateRule={this.updateRule} moveUp={this.moveUp} moveDown={this.moveDown} />
+            <DecisionDetails outcomes={filteredOutcomes} editCondition={this.editCondition} removeCase={this.removeCase} removeDecisions={this.removeDecisions} updateRule={this.updateRule} moveUp={this.moveUp} moveDown={this.moveDown} getKlnames={this.getKlnames} />
             
             { !bannerflag && Object.keys(outcomes).length < 1 && <Banner message={this.state.message} onConfirm={this.handleAdd}/> }
       </div>);
@@ -146,6 +160,7 @@ Decision.defaultProps = ({
     outcomes: {},
     moveUp: () => false,
     moveDown: () => false,
+    getKlnames: () => false,
 });
 
 Decision.propTypes = ({
@@ -154,9 +169,10 @@ Decision.propTypes = ({
     reset: PropTypes.func,
     decisions: PropTypes.array,
     attributes: PropTypes.array,
-    outcomes: PropTypes.object,
+    outcomes: PropTypes.array,
     moveUp: PropTypes.func,
     moveDown: PropTypes.func,
+    getKlnames: PropTypes.func,
 });
 
 export default Decision;

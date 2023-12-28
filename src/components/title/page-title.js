@@ -35,7 +35,7 @@ TitleIcon.defaultProps = {
 };
 
 TitleIcon.propTypes = {
-    iconClass: PropTypes.string,
+    iconClass: PropTypes.object,
 }
 
 export default PageTitle;

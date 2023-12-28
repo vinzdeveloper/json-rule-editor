@@ -18,31 +18,33 @@ import { PLACEHOLDER } from '../../constants/data-types';
 import ApperanceContext from '../../context/apperance-context';
 
 
-const nodeStyle ={
+
+const nodeStyle = {
     shape: 'circle',
     shapeProps: {
         fill: '#1ABB9C',
         r: 10,
     },
-  };
+};
 
-const factsButton = [{ label : 'Add Facts', disable: false },
-                     { label : 'Add All', disable: false },
-                     { label : 'Add Any', disable: false },
-                     { label : 'Remove', disable: false }];
+const factsButton = [{ label: 'Add Facts', disable: false },
+{ label: 'Add All', disable: false },
+{ label: 'Add Any', disable: false },
+{ label: 'Remove', disable: false }];
 
-const topLevelOptions = [{ label : 'All', active: false, disable: false },
-                         { label : 'Any', active: false, disable: false }];
+const topLevelOptions = [{ label: 'All', active: false, disable: false },
+{ label: 'Any', active: false, disable: false }];
 
-const outcomeOptions = [{ label : 'Add Outcome', active: false, disable: false },
-                        { label : 'Edit Conditions', active: false, disable: false }];
+const outcomeOptions = [{ label: 'Add Outcome', active: false, disable: false },
+{ label: 'Edit Conditions', active: false, disable: false }];
 
+  
 class AddDecision extends Component {
     constructor(props) {
         super(props);
 
-        const outcome = props.editDecision ? props.outcome : ({ value: '', error: {}, params: []});
-        const addAttribute = { error: {}, name: '', operator: '', value: ''};
+        const outcome = props.editDecision ? props.outcome : ({ value: '', error: {}, params: [] });
+        const addAttribute = { error: {}, name: '', operator: '', value: '' };
         const node = props.editDecision ? props.editCondition.node : {};
         const activeNode = { index: 0, depth: 0 };
         const eventTypes = paramsOptions["event-type"];
@@ -52,7 +54,7 @@ class AddDecision extends Component {
             outcome: [{
                 index: 0,
                 value: eventTypes.length > 0 ? eventTypes[0] : '',
-                error:{},
+                error: {},
                 params: []
             }],
             addAttribute,
@@ -60,10 +62,10 @@ class AddDecision extends Component {
             enableFieldView: false,
             enableOutcomeView: false,
             node,
-            metadata: { 
-                ruleName: '', 
-                description: '', 
-                enabled: true, 
+            metadata: {
+                ruleName: '',
+                description: '',
+                enabled: true,
                 ruleIndex: 0
             },
             topLevelOptions,
@@ -71,7 +73,15 @@ class AddDecision extends Component {
             outcomeOptions: outcomeOptions.map(f => ({ ...f, disable: true })),
             formError: '',
             addPathflag: false,
-            activeNodeDepth: [activeNode]
+            activeNodeDepth: [activeNode],
+
+            //Upload file related states
+            uploadedFilesCount: 0,
+            files: [],
+            uploadError: false,
+            fileExist: false,
+            listContent: {},
+            message: {}
         };
         this.handleAdd = this.handleAdd.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -87,11 +97,15 @@ class AddDecision extends Component {
         this.addPath = this.addPath.bind(this);
         this.addOutcome = this.addOutcome.bind(this);
         this.mergeEvent = this.mergeEvent.bind(this);
+        this.onChangeInput = this.onChangeInput.bind(this);
+        this.onChangeNewOperator = this.onChangeNewOperator.bind(this);
+        this.onChangeInputSelector = this.onChangeInputSelector.bind(this);
+
     }
 
     handleAdd(e) {
         e.preventDefault();
-        console.log(`Printing props =========> ${JSON.stringify(this.props)}`);
+        // console.log(`Printing props =========> ${JSON.stringify(this.props)}`);
         const errors = this.state.outcome.map(outcome => decisionValidations(this.state.node, outcome));
         const formError = errors.some(error => error.formError);
 
@@ -105,15 +119,15 @@ class AddDecision extends Component {
                     outcomeParams[param.pkey] = param.pvalue;
                     console.log(`param: param.pkey: ${param.pkey}; param.pvalue: ${param.pvalue}`);
                 })
-                console.log(`Printing outcome params ==========> ${JSON.stringify(outcomeParams)}`);
+                // console.log(`Printing outcome params ==========> ${JSON.stringify(outcomeParams)}`);
                 return transformTreeToRule(this.state.node, outcome, outcomeParams);
                 //return event;
             });
-            console.log(`Printing new events =========> ${JSON.stringify(conditions)}`);
-    
+            // console.log(`Printing new events =========> ${JSON.stringify(conditions)}`);
+
             const mergedConditions = this.mergeEvent(conditions);
-            console.log(`Printing mergedConditions =========> ${JSON.stringify(mergedConditions)}`);
-            console.log(`Printing metadata =========> ${JSON.stringify(this.state.metadata)}`);
+            // console.log(`Printing mergedConditions =========> ${JSON.stringify(mergedConditions)}`);
+            // console.log(`Printing metadata =========> ${JSON.stringify(this.state.metadata)}`);
             this.props.addCondition(mergedConditions, this.state.metadata);
             //conditions.forEach(condition => this.props.addCondition(condition));
         }
@@ -137,65 +151,95 @@ class AddDecision extends Component {
     handleCancel() {
         this.props.cancel();
     }
- 
-     onChangeNewFact(e, name) {
-         const addAttribute = { ...this.state.addAttribute };
-         addAttribute[name] = e.target.value;
-         this.setState({ addAttribute });
-     }
 
-     onChangeOutcomeValue(e, type, index){
+    onChangeInput(e, name) {
+        const newValue = e.target.value.replace(/,/g, ';');
+        const addAttribute = { ...this.state.addAttribute };
+        addAttribute[name] = newValue;
+        this.setState({ addAttribute });
+    }
+
+    onChangeInputSelector(e, name) {
+        const newValue = e.target.value.replace(/,/g, ';');
+        const addAttribute = { ...this.state.addAttribute };
+        addAttribute[name] = newValue;
+        this.setState({ addAttribute });
+    }
+
+
+    onChangeNewFact(e, name) {
+        const addAttribute = { ...this.state.addAttribute };
+        addAttribute[name] = e.target.value;
+        this.setState({ addAttribute });
+    }
+
+    onChangeNewOperator(e, name) {
+        const addAttribute = { ...this.state.addAttribute };
+        addAttribute[name] = e.target.value;
+    
+        // If the operator is 'inList', set a flag in the state
+        if (name === 'operator' && e.target.value === 'inList') {
+            this.setState({ isOperatorInList: true });
+        } else {
+            this.setState({ isOperatorInList: false });
+        }
+    
+        this.setState({ addAttribute });
+    }
+
+
+    onChangeOutcomeValue(e, type, index) {
         const outcomes = [...this.state.outcome];
         outcomes[index][type] = e.target.value;
-        this.setState({ outcome:outcomes });
-     }
+        this.setState({ outcome: outcomes });
+    }
 
-     addParams(outcomeIndex) {
+    addParams(outcomeIndex) {
         const { outcome: outcomes } = this.state;
         const newParams = outcomes[outcomeIndex].params.concat({ pkey: '', pvalue: '' });
         outcomes[outcomeIndex].params = newParams;
-        this.setState({ outcome: outcomes});
-     }
+        this.setState({ outcome: outcomes });
+    }
 
-     addPath() {
+    addPath() {
         this.setState({ addPathflag: true });
-     }
+    }
 
-     addOutcome = () => {
+    addOutcome = () => {
         this.setState(prevState => {
             const lastIndex = prevState.outcome.length > 0 ? prevState.outcome[prevState.outcome.length - 1].index : -1;
-            console.log(`Printing lastIndex =========> ${lastIndex}`);
+            // console.log(`Printing lastIndex =========> ${lastIndex}`);
             return {
                 outcome: [...prevState.outcome, { value: '', params: [], index: lastIndex + 1 }],
             };
         });
     }
 
-     handleOutputParams(e, type, index, outcomeIndex){
-        console.log(`Printing index =========> ${index}`);
-        console.log(`Printing outcomeIndex =========> ${outcomeIndex}`);
-        console.log(`Printing type =========> ${type}`);
-        console.log(`Printing e.target.value =========> ${e.target.value}`);
-         const { outcome:outcomes } = this.state;
-         const paramOption = paramsOptions["param-type"];
-         const params = [ ...outcomes[outcomeIndex].params ];
-         const newParams = params.map((param, ind) => {
-             if (index === ind) {
+    handleOutputParams(e, type, index, outcomeIndex) {
+        // console.log(`Printing index =========> ${index}`);
+        // console.log(`Printing outcomeIndex =========> ${outcomeIndex}`);
+        // console.log(`Printing type =========> ${type}`);
+        // console.log(`Printing e.target.value =========> ${e.target.value}`);
+        const { outcome: outcomes } = this.state;
+        const paramOption = paramsOptions["param-type"];
+        const params = [...outcomes[outcomeIndex].params];
+        const newParams = params.map((param, ind) => {
+            if (index === ind) {
                 if (type === 'pvalue' && !param.pkey && e.target.value) {
                     return { ...param, pkey: paramOption[0], [type]: e.target.value };
                 } else {
                     return { ...param, [type]: e.target.value };
                 }
-             }
-             return param;
-         });
-         outcomes[outcomeIndex].params = newParams;
-         console.log(`Printing outcomes =========> ${JSON.stringify(outcomes)}`);
-         this.setState({outcome: outcomes});
-     }
+            }
+            return param;
+        });
+        outcomes[outcomeIndex].params = newParams;
+        // console.log(`Printing outcomes =========> ${JSON.stringify(outcomes)}`);
+        this.setState({ outcome: outcomes });
+    }
 
     handleTopNode(value) {
-        let parentNode = { ...this.state.node};
+        let parentNode = { ...this.state.node };
         const activeNode = { index: 0, depth: 0 };
         if (has(parentNode, 'name')) {
             parentNode.name = value === 'All' ? 'all' : 'any';
@@ -204,16 +248,18 @@ class AddDecision extends Component {
         }
         const topLevelOptions = this.state.topLevelOptions.map(option => {
             if (option.label === value) {
-                return { ...option, active: true};
+                return { ...option, active: true };
             }
-            return { ...option, active: false};
+            return { ...option, active: false };
         })
 
         const factsButton = this.state.factsButton.map(button => ({ ...button, disable: false }));
         const outcomeOptions = this.state.outcomeOptions.map(button => ({ ...button, disable: false }));
 
-        this.setState({ enableTreeView: true, topNodeName: value, node: parentNode,
-             activeNodeDepth: [activeNode], topLevelOptions, factsButton, outcomeOptions });
+        this.setState({
+            enableTreeView: true, topNodeName: value, node: parentNode,
+            activeNodeDepth: [activeNode], topLevelOptions, factsButton, outcomeOptions
+        });
     }
 
     mapNodeName(val) {
@@ -237,21 +283,21 @@ class AddDecision extends Component {
             node['attributes'] = { ...fact };
         }
         return node;
-    } 
+    }
 
     handleChildrenNode(value) {
-        let factOptions = [ ...factsButton];
+        let factOptions = [...factsButton];
         if (value === 'Add Facts') {
-            this.setState({enableFieldView: true});
+            this.setState({ enableFieldView: true });
         } else {
             const { activeNodeDepth, node, attributes } = this.state;
-            const addAttribute = { error: {}, name: '', operator: '', value: ''};
+            const addAttribute = { error: {}, name: '', operator: '', value: '' };
             if (value === 'Add fact node') {
                 const error = validateAttribute(this.state.addAttribute, attributes);
-                if (Object.keys(error).length > 0 ) {
+                if (Object.keys(error).length > 0) {
                     let addAttribute = this.state.addAttribute;
                     addAttribute.error = error;
-                    this.setState({addAttribute});
+                    this.setState({ addAttribute });
                     return undefined;
                 }
             }
@@ -259,9 +305,9 @@ class AddDecision extends Component {
                 const newNode = { ...node };
 
                 const getActiveNode = (pNode, depthIndex) => pNode[depthIndex];
-                
+
                 let activeNode = newNode;
-                const cloneDepth = value === 'Remove' ? activeNodeDepth.slice(0, activeNodeDepth.length -1 ): [ ...activeNodeDepth ] 
+                const cloneDepth = value === 'Remove' ? activeNodeDepth.slice(0, activeNodeDepth.length - 1) : [...activeNodeDepth]
                 cloneDepth.forEach(nodeDepth => {
                     if (nodeDepth.depth !== 0) {
                         activeNode = getActiveNode(activeNode.children, nodeDepth.index);
@@ -276,8 +322,8 @@ class AddDecision extends Component {
                     factOptions = this.state.factsButton.map(button =>
                         ({ ...button, disable: true }));
                 }
-                
-                this.setState({node: newNode, enableFieldView: false, addAttribute, factsButton: factOptions});
+
+                this.setState({ node: newNode, enableFieldView: false, addAttribute, factsButton: factOptions });
             }
         }
     }
@@ -300,32 +346,34 @@ class AddDecision extends Component {
             }
             return { ...button, disable: false };
         });
-        
+
         const facts = node.name === 'all' || node.name === 'any' ? parentNodeMenu : factsNodemenu;
         const outcomeMenus = outcomeOptions.map(option => ({ ...option, disable: false }));
         this.setState({ activeNodeDepth: sortedArr, factsButton: facts, outcomeOptions: outcomeMenus });
     }
 
     handleFieldCancel() {
-        const addAttribute = { error: {}, name: '', operator: '', value: ''};
+        const addAttribute = { error: {}, name: '', operator: '', value: '' };
         this.setState({ enableFieldView: false, addAttribute });
     }
 
     handleOutputPanel(value) {
-        if(value === 'Add Outcome') {
+        if (value === 'Add Outcome') {
             const factsOptions = this.state.factsButton.map(fact => ({ ...fact, disable: true }))
             const options = this.state.outcomeOptions.map(opt => {
-                if(opt.label === 'Add Outcome') {
+                if (opt.label === 'Add Outcome') {
                     return { ...opt, active: true };
                 }
                 return { ...opt, active: false };
             });
-            this.setState({ enableOutcomeView: true, enableTreeView: false,
-                 enableFieldView: false, outcomeOptions: options, factsButton: factsOptions });
+            this.setState({
+                enableOutcomeView: true, enableTreeView: false,
+                enableFieldView: false, outcomeOptions: options, factsButton: factsOptions
+            });
         }
-        if(value === 'Edit Conditions') {
+        if (value === 'Edit Conditions') {
             const options = this.state.outcomeOptions.map(opt => {
-                if(opt.label === 'Edit Conditions') {
+                if (opt.label === 'Edit Conditions') {
                     return { ...opt, active: true };
                 }
                 return { ...opt, active: false };
@@ -336,7 +384,7 @@ class AddDecision extends Component {
 
     topPanel() {
         const { topLevelOptions, factsButton, outcomeOptions, metadata } = this.state;
-        console.log(`Printing node =========> ${JSON.stringify(this.state.node)}`);
+        // console.log(`Printing node =========> ${JSON.stringify(this.state.node)}`);
         return (<div className="add-decision-step">
             <div className="step0">
                 <div>Rule Name:</div>
@@ -355,51 +403,66 @@ class AddDecision extends Component {
     }
 
     fieldPanel() {
-        const { attributes, addAttribute, addPathflag} = this.state;
+        const { attributes, addAttribute, addPathflag } = this.state;
         const attributeOptions = attributes.map(attr => attr.name);
         const attribute = addAttribute.name && attributes.find(attr => attr.name === addAttribute.name);
         const operatorOptions = attribute && operator[attribute.type];
         const { background } = this.context;
+        const klNames = this.props.getKlnames();
+
+        // console.log(`klNames in addDecision: ${JSON.stringify(klNames)}`);
 
         const placeholder = addAttribute.operator === 'contains' || addAttribute.operator === 'doesNotContain' ?
-         PLACEHOLDER['string'] : PLACEHOLDER[attribute.type]
+            PLACEHOLDER['string'] : PLACEHOLDER[attribute.type]
 
         return (<Panel>
-            
+
             <div className={`attributes-header ${background}`}>
-                    <div className="attr-link" onClick={this.addPath}>
-                        <span className="plus-icon" /><span className="text">Add Path</span> 
-                    </div>
+                <div className="attr-link" onClick={this.addPath}>
+                    <span className="plus-icon" /><span className="text">Add Path</span>
+                </div>
             </div>
 
             <div className="add-field-panel">
                 <div><SelectField options={attributeOptions} onChange={(e) => this.onChangeNewFact(e, 'name')}
-                        value={addAttribute.name} error={addAttribute.error.name} label="Facts"/></div>
-                <div><SelectField options={operatorOptions} onChange={(e) => this.onChangeNewFact(e, 'operator')}
-                        value={addAttribute.operator} error={addAttribute.error.operator} label="Operator"/></div>
-                <div><InputField onChange={(value) => this.onChangeNewFact(value, 'value')} value={addAttribute.value}
-                        error={addAttribute.error.value} label="Value" placeholder={placeholder}/></div>
+                    value={addAttribute.name} error={addAttribute.error.name} label="Facts" /></div>
+                <div><SelectField options={operatorOptions} onChange={(e) => this.onChangeNewOperator(e, 'operator')}
+                    value={addAttribute.operator} error={addAttribute.error.operator} label="Operator" /></div>
+                {this.state.isOperatorInList ? (
+                    <div>
+                        <SelectField
+                            options={klNames}
+                            onChange={(e) => this.onChangeInputSelector(e, 'value')}
+                            value={addAttribute.value}
+                            error={addAttribute.error.value}
+                            label="Value"
+                        />
+                    </div>
+                ) : (
+                    <div><InputField onChange={(value) => this.onChangeInput(value, 'value')} value={addAttribute.value}
+                        error={addAttribute.error.value} label="Value" placeholder={placeholder} /></div>
+                )}
             </div>
 
-            { addPathflag && <div className="add-field-panel half-width">
+            {addPathflag && <div className="add-field-panel half-width">
                 <div>
                     {/*<InputField onChange={(value) => this.onChangeNewFact(value, 'path')} value={addAttribute.path}
                         label="Path" placeholder={"Enter path value - dont give prefix ' . ' "}/> */}
                     <SelectField options={attributeOptions} onChange={(e) => this.onChangeNewFact(e, 'path')}
-                        value={addAttribute.path} label="Path"/>
+                        value={addAttribute.path} label="Path" />
                 </div>
-            </div> }
+            </div>}
 
             <div className="btn-group">
-                    <Button label={'Add'} onConfirm={() => this.handleChildrenNode('Add fact node') } classname="btn-toolbar" type="submit" />
-                    <Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar"/>
+                <Button label={'Add'} onConfirm={() => this.handleChildrenNode('Add fact node')} classname="btn-toolbar" type="submit" />
+                <Button label={'Cancel'} onConfirm={this.handleFieldCancel} classname="btn-toolbar" />
             </div>
         </Panel>)
     }
 
     outputPanel() {
-        const { outcome:outcomes } = this.state;
-        console.log(`Printing outcomes =========> ${JSON.stringify(outcomes)}`);
+        const { outcome: outcomes } = this.state;
+        // console.log(`Printing outcomes =========> ${JSON.stringify(outcomes)}`);
         const { editDecision } = this.props;
         const { background } = this.context;
         const paramOptions = paramsOptions["param-type"];
@@ -413,7 +476,7 @@ class AddDecision extends Component {
                     <span className="plus-icon" /><span className="text">Add More Outcome</span>
                 </div>
             </div>
-            
+
             {outcomes.map((outcome, index) => (
                 <div key={index}>
                     <div className="add-field-panel half-width" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -445,7 +508,7 @@ class AddDecision extends Component {
                     </div>
                 </div>
             ))}
-            
+
         </Panel>)
     }
 
@@ -453,9 +516,9 @@ class AddDecision extends Component {
         const { node } = this.state;
         const depthCount = getNodeDepth(node);
 
-        return(<Panel>
-                <Tree treeData={node} count={depthCount} onConfirm={this.handleActiveNode} />
-            </Panel>)
+        return (<Panel>
+            <Tree treeData={node} count={depthCount} onConfirm={this.handleActiveNode} />
+        </Panel>)
     }
 
 
@@ -480,9 +543,9 @@ class AddDecision extends Component {
                     {this.state.formError && <p className="form-error"> {this.state.formError}</p>}
                     <div className="btn-group">
                         <Button label={buttonProps.primaryLabel} onConfirm={this.handleAdd} classname="primary-btn" type="submit" />
-                        <Button label={buttonProps.secondaryLabel} onConfirm={this.handleCancel} classname="cancel-btn"/>
+                        <Button label={buttonProps.secondaryLabel} onConfirm={this.handleCancel} classname="cancel-btn" />
                     </div>
-                    
+
                 </div>
             </form>
         );
@@ -499,12 +562,15 @@ AddDecision.defaultProps = ({
     attributes: [],
     outcome: {},
     editDecision: false,
-    editCondition: {}
+    editCondition: {},
+    getKlNames: () => false
 });
 
 AddDecision.propTypes = ({
     addCondition: PropTypes.func,
     cancel: PropTypes.func,
+    uploadList: PropTypes.func,
+    getKlNames: PropTypes.func,
     attribute: PropTypes.object,
     buttonProps: PropTypes.object,
     attributes: PropTypes.array,

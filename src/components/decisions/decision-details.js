@@ -82,7 +82,7 @@ class DecisionDetails extends Component {
         })
        
         console.log(`showCase =========> ${JSON.stringify(showCase)}`);
-        console.log(`outcomes =========> ${JSON.stringify(props.outcomes)}`);
+        // console.log(`outcomes =========> ${JSON.stringify(props.outcomes)}`);
         console.log(`Sorted Rules =========> ${JSON.stringify(sortedRules)}`);
 
         this.state = { showCase, sortedRules, submitAlert: false, removeAlert:false, successAlert: false, removeDecisionAlert: false, moveRuleUpAlert: false, moveRuleDownAlert: false, changedFlag: false, successMsg: '', ruleCount: 0};
@@ -116,21 +116,21 @@ class DecisionDetails extends Component {
         let updateCase  = cases[index];
         updateCase = { ...updateCase, case: !updateCase.case}
         cases[index] = { ...updateCase };
-        console.log(`cases [${index}] =========> ${JSON.stringify(cases)}`);
+        // console.log(`cases [${index}] =========> ${JSON.stringify(cases)}`);
         this.setState({ showCase: cases });
     }
 
     handleRemoveCondition(e, decisionIndex) {
         e.preventDefault();
-        console.log(`in handleRemoveCondition, decisionIndex =========> ${JSON.stringify(decisionIndex)}`);
-        console.log(`in handleRemoveCondition, this.props =========> ${JSON.stringify(this.props)}`);
-        console.log(`in handleRemoveCondition, this.state =========> ${JSON.stringify(this.state)}`);
+        // console.log(`in handleRemoveCondition, decisionIndex =========> ${JSON.stringify(decisionIndex)}`);
+        // console.log(`in handleRemoveCondition, this.props =========> ${JSON.stringify(this.props)}`);
+        // console.log(`in handleRemoveCondition, this.state =========> ${JSON.stringify(this.state)}`);
         this.setState({ removeAlert: true, removeDecisionIndex: decisionIndex });
     }
 
     handleRemoveConditions(e, outcome) {
         e.preventDefault();
-        console.log(`in handleRemoveConditions, outcome =========> ${JSON.stringify(outcome)}`);
+        // console.log(`in handleRemoveConditions, outcome =========> ${JSON.stringify(outcome)}`);
         this.setState({ removeDecisionAlert: true, removeOutcome: outcome });
     }
 
@@ -139,13 +139,13 @@ class DecisionDetails extends Component {
     }
 
     removeCase = () => {
-        console.log('In removeCase')
+        // console.log('In removeCase')
         this.props.removeCase(this.state.removeDecisionIndex);
         this.setState({ removeAlert: false, successAlert: true, successMsg: 'Selected condition is removed' });
     }
 
     removeDecisions = () => {
-        console.log(`this.props =========> ${JSON.stringify(this.props)}`)
+        // console.log(`this.props =========> ${JSON.stringify(this.props)}`)
         this.props.removeDecisions(this.state.removeIndex);
         this.setState({ removeDecisionAlert: false, successAlert: true, successMsg: 'Selected conditions are removed', removeIndex: ''});
     }
@@ -157,29 +157,29 @@ class DecisionDetails extends Component {
         //this.props.removeCase(rule);
         const result = this.props.updateRule(rule);
 
-        console.log(`In updateRule, the result is =========> ${JSON.stringify(result)}`);
+        // console.log(`In updateRule, the result is =========> ${JSON.stringify(result)}`);
     }
 
     moveRuleUp = (e, index) => {
         e.preventDefault();
-        console.log(`In moveRuleUp, index =========> ${JSON.stringify(index)}`);
+        // console.log(`In moveRuleUp, index =========> ${JSON.stringify(index)}`);
         this.props.moveUp(index);
         this.setState({ changedFlag: true, moveRuleUpAlert: true, successMsg: 'Selected condition is moved up'});
     }
     
     moveRuleDown = (e, index) => {
         e.preventDefault();
-        console.log(`In moveRuleDown, index =========> ${JSON.stringify(index)}`);
+        // console.log(`In moveRuleDown, index =========> ${JSON.stringify(index)}`);
         this.props.moveDown(index);
         this.setState({ changedFlag: true, moveRuleDownAlert: true, successMsg: 'Selected condition is moved down'});
     }
 
     toggleActive = (e, rule) => {
         e.preventDefault();
-        console.log(`In toggleActive, rule =========> ${JSON.stringify(rule)}`);
+        // console.log(`In toggleActive, rule =========> ${JSON.stringify(rule)}`);
 
         rule.enabled = !rule.enabled;
-        console.log(`In toggleActive after change, rule =========> ${JSON.stringify(rule)}`);
+        // console.log(`In toggleActive after change, rule =========> ${JSON.stringify(rule)}`);
         
         this.updateRule(rule);
         this.setState({changedFlag: true});
@@ -236,7 +236,7 @@ class DecisionDetails extends Component {
         //console.log(`index =========> ${JSON.stringify(index)}`);
         //console.log(`conditions =========> ${JSON.stringify(conditions)}`);
         const transformedData = transformRuleToTree(conditions);
-        console.log(`transformedData =========> ${JSON.stringify(transformedData)}`);
+        // console.log(`transformedData =========> ${JSON.stringify(transformedData)}`);
         return (
             <div className="rule-flex-container">
                 <div className="decision-box" key={`case - ${index}`}>
@@ -297,6 +297,7 @@ DecisionDetails.defaultProps = ({
     moveUp: () => false,
     moveDown: () => false,
     updateRule: () => false,
+    getKlnames: () => false,
     outcomes: {},
 });
 
@@ -308,6 +309,7 @@ DecisionDetails.propTypes = ({
     moveUp: PropTypes.func,
     moveDown: PropTypes.func,
     updateRule: PropTypes.func,
+    getKlnames: PropTypes.func,
     outcomes: PropTypes.object,
 });
 

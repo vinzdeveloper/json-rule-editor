@@ -1,6 +1,8 @@
 import * as ActionTypes from '../actions/action-types';
- import { cloneDeep } from 'lodash/lang';
- import { findIndex } from 'lodash/array';
+import { cloneDeep } from 'lodash/lang';
+import { findIndex } from 'lodash/array';
+import attributesPredefined from '../data-objects/facts.json';
+import { name } from 'file-loader';
 
 const initialState = {
     rulesets: [],
@@ -112,7 +114,8 @@ function ruleset(state = initialState, action='') {
         case ActionTypes.ADD_RULESET: {
 
             const { name } = action.payload;
-            const rulset = { name, attributes: [], decisions: []};
+            const rulset = { name, attributes: attributesPredefined.attributes, decisions: []};
+            console.log(`in ActionTypes.ADD_RULESET, rulset: ${JSON.stringify(rulset)} `);
             const count = state.rulesets.length === 0 ? 0 : state.rulesets.length;
              return { ...state, rulesets: state.rulesets.concat(rulset),  activeRuleset: count}
         }
@@ -261,7 +264,66 @@ function ruleset(state = initialState, action='') {
                 updatedFlag: true,
                 rulesets: replaceRulesetByIndex(state.rulesets, rulesets, state.activeRuleset)}
         }
-        
+
+        case ActionTypes.UPLOAD_LIST: {
+            const kList = action.payload;
+            console.log(`Action payload: kList = ${JSON.stringify(kList)}`);
+
+            const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
+            console.log(`Active rule set before update: ${JSON.stringify(activeRuleSet)}`);
+
+            // Ensure activeRuleSet is defined
+            if (activeRuleSet) {
+                // If activeRuleSet.keywords is undefined, initialize it as an empty array
+                if (!Array.isArray(activeRuleSet.keywords)) {
+                    activeRuleSet.keywords = [];
+                }
+
+                // For each keyword in kList.klist
+                kList.klist.forEach(newKeyword => {
+                    // Find the index of the keyword with the same name in the existing keyword list
+                    const index = activeRuleSet.keywords.findIndex(keyword => keyword.name === newKeyword.name);
+
+                    if (index !== -1) {
+                        // If a keyword with the same name exists, replace it with the new keyword
+                        activeRuleSet.keywords[index] = newKeyword;
+                    } else {
+                        // If no such keyword exists, append the new keyword to the keyword list
+                        activeRuleSet.keywords.push(newKeyword);
+                    }
+                });
+            } else {
+                console.error('activeRuleSet is undefined');
+            }
+
+            console.log(`Updated keywords: ${JSON.stringify(activeRuleSet.keywords)}`);
+
+            console.log(`Active rule set after update: ${JSON.stringify(activeRuleSet)}`);
+
+            // Update the ruleset in the rulesets array
+            const rulesets = [...state.rulesets];
+            rulesets[state.activeRuleset] = activeRuleSet;
+
+            return { ...state, rulesets: rulesets, uploadedRules: cloneDeep(rulesets) }
+        }
+
+        case ActionTypes.REMOVE_LIST: {
+            const { name } = action.payload;
+            const activeRuleSet = { ...state.rulesets[state.activeRuleset] };
+            console.log(`Active rule set before update: ${JSON.stringify(activeRuleSet)}`);
+
+            // Filter out the keyword object with the same name as action.payload.name
+            activeRuleSet.keywords = activeRuleSet.keywords.filter(keyword => keyword.name !== name);
+
+            console.log(`Active rule set after update: ${JSON.stringify(activeRuleSet)}`);
+
+            // Update the ruleset in the rulesets array
+            const rulesets = [...state.rulesets];
+            rulesets[state.activeRuleset] = activeRuleSet;
+
+            return { ...state, rulesets: rulesets, uploadedRules: cloneDeep(rulesets) }
+        }
+
         default:
             return { ...state };
     }

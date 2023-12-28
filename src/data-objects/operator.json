@@ -3,7 +3,9 @@
         "equal",
         "notEqual",
         "contain",
+        "notContain",
         "inList",
+        "notInList",
         "longerThan",
         "shorterThan",
         "REMatch"

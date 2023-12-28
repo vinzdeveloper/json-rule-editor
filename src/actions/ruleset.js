@@ -11,6 +11,14 @@ export const uploadRuleset = (ruleset)  => (dispatch) => {
     });
 }
 
+export const uploadList = (name, list)  => (dispatch) => {
+    //dispatch(updateState('open'));
+    return dispatch({
+        type: ActionTypes.UPLOAD_LIST,
+        payload: { name, list }
+    });
+}
+
 export const addRuleset = (name) => (dispatch) => {
     dispatch(updateState('open'));
     return dispatch({

@@ -68,7 +68,7 @@ TitlePanel.defaultProps = {
   
 TitlePanel.propTypes = {
     children: PropTypes.any,
-    titleClass: PropTypes.string,
+    titleClass: PropTypes.object,
     title: PropTypes.string,
 };
 

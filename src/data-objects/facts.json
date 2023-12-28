@@ -1,0 +1,44 @@
+{
+	"attributes": [
+		{
+			"name": "PID",
+			"type": "string"
+		},
+        {
+            "name": "SMSC-ADDRESS",
+            "type": "string"
+        },
+        {
+            "name": "VMSC-ADDRESS",
+            "type": "string"
+        },
+		{
+			"name": "CONTENT",
+			"type": "string"
+		},
+        {
+            "name": "O-MSISDN",
+            "type": "string"
+        },
+        {
+            "name": "D-MSISDN",
+            "type": "string"
+        },
+        {
+            "name": "O-IMSI",
+            "type": "string"
+        },
+        {
+            "name": "D-IMSI",
+            "type": "string"
+        },
+        {
+            "name": "O-IMEI",
+            "type": "string"
+        },
+        {
+            "name": "D-IMEI",
+            "type": "string"
+        }
+	]
+}

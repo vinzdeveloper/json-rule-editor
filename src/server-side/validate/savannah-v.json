@@ -1,0 +1,270 @@
+{
+    "facts": {
+        "PID": "23"
+    },
+    "ruleset": {
+        "attributes": [
+            {
+                "name": "PID",
+                "type": "string"
+            },
+            {
+                "name": "SMSC-ADDRESS",
+                "type": "string"
+            },
+            {
+                "name": "VMSC-ADDRESS",
+                "type": "string"
+            },
+            {
+                "name": "CONTENT",
+                "type": "string"
+            },
+            {
+                "name": "O-MSISDN",
+                "type": "string"
+            },
+            {
+                "name": "D-MSISDN",
+                "type": "string"
+            },
+            {
+                "name": "O-IMSI",
+                "type": "string"
+            },
+            {
+                "name": "D-IMSI",
+                "type": "string"
+            },
+            {
+                "name": "O-IMEI",
+                "type": "string"
+            },
+            {
+                "name": "D-IMEI",
+                "type": "string"
+            }
+        ],
+        "decisions": [
+            {
+                "conditions": {
+                    "all": [
+                        {
+                            "fact": "PID",
+                            "operator": "contain",
+                            "value": "12;1"
+                        }
+                    ]
+                },
+                "description": "",
+                "enabled": true,
+                "event": [
+                    {
+                        "index": 1,
+                        "params": {},
+                        "type": "ACCEPT"
+                    }
+                ],
+                "ruleIndex": 0,
+                "ruleName": "Cat"
+            },
+            {
+                "conditions": {
+                    "all": [
+                        {
+                            "fact": "CONTENT",
+                            "operator": "contain",
+                            "value": "dog"
+                        }
+                    ]
+                },
+                "description": "",
+                "enabled": true,
+                "event": [
+                    {
+                        "index": 1,
+                        "params": {},
+                        "type": "LOG"
+                    },
+                    {
+                        "index": 2,
+                        "params": {
+                            "SUCCESS_IND": "99"
+                        },
+                        "type": "REJECT"
+                    }
+                ],
+                "ruleIndex": 1,
+                "ruleName": "Dog"
+            },
+            {
+                "conditions": {
+                    "any": [
+                        {
+                            "fact": "SMSC-ADDRESS",
+                            "operator": "equal",
+                            "value": "447999"
+                        },
+                        {
+                            "fact": "O-IMSI",
+                            "operator": "equal",
+                            "value": "23"
+                        }
+                    ]
+                },
+                "description": "",
+                "enabled": true,
+                "event": [
+                    {
+                        "index": 1,
+                        "params": {
+                            "SET-AO": "true"
+                        },
+                        "type": "MODIFY"
+                    }
+                ],
+                "ruleIndex": 2,
+                "ruleName": "coyote"
+            },
+            {
+                "conditions": {
+                    "all": [
+                        {
+                            "fact": "O-MSISDN",
+                            "operator": "longerThan",
+                            "value": "10"
+                        },
+                        {
+                            "any": [
+                                {
+                                    "fact": "CONTENT",
+                                    "operator": "contain",
+                                    "value": "bull"
+                                },
+                                {
+                                    "fact": "VMSC-ADDRESS",
+                                    "operator": "notEqual",
+                                    "value": "4466888"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "",
+                "enabled": true,
+                "event": [
+                    {
+                        "index": 1,
+                        "params": {},
+                        "type": "ACCEPT"
+                    }
+                ],
+                "ruleIndex": 3,
+                "ruleName": "buffalo"
+            },
+            {
+                "conditions": {
+                    "all": [
+                        {
+                            "fact": "CONTENT",
+                            "operator": "inList",
+                            "value": "bat_whitelist"
+                        }
+                    ]
+                },
+                "description": "",
+                "enabled": true,
+                "event": [
+                    {
+                        "index": 1,
+                        "params": {},
+                        "type": "ACCEPT"
+                    }
+                ],
+                "ruleIndex": 4,
+                "ruleName": "Chick"
+            },
+            {
+                "conditions": {
+                    "all": [
+                        {
+                            "fact": "CONTENT",
+                            "operator": "contain",
+                            "value": "swan; rice"
+                        },
+                        {
+                            "fact": "CONTENT",
+                            "operator": "inList",
+                            "value": "rat_whitelist"
+                        }
+                    ]
+                },
+                "description": "",
+                "enabled": true,
+                "event": [
+                    {
+                        "index": 1,
+                        "params": {},
+                        "type": "LOG"
+                    },
+                    {
+                        "index": 2,
+                        "params": {
+                            "PID": "5"
+                        },
+                        "type": "MODIFY"
+                    }
+                ],
+                "ruleIndex": 5,
+                "ruleName": "Duck"
+            },
+            {
+                "conditions": {
+                    "all": [
+                        {
+                            "fact": "PID",
+                            "operator": "equal",
+                            "value": "7"
+                        }
+                    ]
+                },
+                "description": "",
+                "enabled": true,
+                "event": [
+                    {
+                        "index": 1,
+                        "params": {},
+                        "type": "ACCEPT"
+                    }
+                ],
+                "ruleIndex": 6,
+                "ruleName": "Elephant"
+            }
+        ],
+        "keywords": [
+            {
+                "name": "bat_whitelist",
+                "type": "string",
+                "value": [
+                    "Claudia",
+                    "Dominique",
+                    "Dio",
+                    "Mansfield",
+                    "Judith",
+                    "Mephisto"
+                ]
+            },
+            {
+                "name": "rat_whitelist",
+                "type": "string",
+                "value": [
+                    "Magarate",
+                    "Cinderella",
+                    "Hans",
+                    "Fredrick"
+                ]
+            }
+        ],
+        "name": "savannah"
+    }
+}

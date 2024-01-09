@@ -60,11 +60,44 @@ class ValidateRules extends Component {
             facts[condition.name] = condition.value;
            }
         })
-        validateRuleset(facts, decisions).then(outcomes => {
-            this.setState({loading: false, outcomes,  result: true, error: false, errorMessage: '',});
-        }).catch((e) => {
-            this.setState({loading: false, error: true, errorMessage: e.error, result: true, });
-        });
+        console.log(`facts == ${JSON.stringify(facts)}`);
+        this.props.sendValidate(facts, this.props.ruleset)
+            .then(sendResult => {
+                console.log(`sendResult == ${JSON.stringify(sendResult)}`);
+                if (sendResult && sendResult.success == true) {
+                    this.setState({
+                        loading: false, 
+                        outcomes: sendResult.data ? sendResult.data.message : '', 
+                        result: true, 
+                        error: false, 
+                        errorMessage: '',
+                    });
+                } else {
+                    this.setState({
+                        loading: false, 
+                        outcomes: sendResult.data ? sendResult.data.message : '', 
+                        error: true, 
+                        errorMessage: sendResult.data ? sendResult.data.message : 'An error occurred in communicating the rule engine', 
+                        result: true,
+                    });
+                }
+            })
+            .catch(error => {
+                console.error(`Error in sendValidate: ${error}`);
+                this.setState({
+                    loading: false, 
+                    error: true, 
+                    errorMessage: 'An error occurred during validation', 
+                    result: true,
+                });
+            });
+
+
+        // validateRuleset(facts, decisions).then(outcomes => {
+        //     this.setState({loading: false, outcomes,  result: true, error: false, errorMessage: '',});
+        // }).catch((e) => {
+        //     this.setState({loading: false, error: true, errorMessage: e.error, result: true, });
+        // });
     }
 
     attributeItems = () => {
@@ -82,15 +115,20 @@ class ValidateRules extends Component {
 
         let message;
         if (result) {
+            console.log(`result = ${JSON.stringify(result)}`);
+            // console.log(`outcomes == ${JSON.stringify(outcomes)}`);
+            console.log(`outcomes == ${outcomes}`);
+
             if (error) {
-                message = <div className="form-error">Problem occured when processing the rules. Reason is {errorMessage}</div>
+                message = <div className="form-error">{errorMessage}</div>
             } else if (outcomes && outcomes.length < 1) {
                 message = <div>No results found</div>
             } else if (outcomes && outcomes.length > 0) {
+                let displayed = JSON.stringify(outcomes);
                 message = (<div className="view-params-container">
-                                <h4>Outcomes  </h4>
-                                <ViewOutcomes  items={outcomes}/>
-                            </div>)
+                    <h4>Validate Result: </h4>
+                    <p>{outcomes}</p>
+                </div>)
             } else {
                 message = undefined;
             }
@@ -127,11 +165,14 @@ class ValidateRules extends Component {
 ValidateRules.defaultProps = ({
     attributes: [],
     decisions: [],
+    ruleset: {},
 });
 
 ValidateRules.propTypes = ({
     attributes: PropTypes.array,
     decisions: PropTypes.array,
+    ruleset: PropTypes.object,
+    sendValidate: PropTypes.func,
 });
 
 export default ValidateRules;

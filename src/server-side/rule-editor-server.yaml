@@ -1,0 +1,10 @@
+server:
+  port: "3001"
+  host: "localhost"
+smsc:
+  - hostname: "smsc1"
+    ip: "127.0.0.1"
+    port: "8030"
+  - hostname: "smsc2"
+    ip: "192.168.1.2"
+    port: "8030"

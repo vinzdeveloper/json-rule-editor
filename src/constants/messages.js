@@ -5,6 +5,10 @@ const NO_CHANGES_BODY = 'You havent modified this ruleset. Nothing to submit!!!'
 const BUTTON_PROPS_NO_CHANGES = {label: 'Generate Ruleset'};
 export const NO_CHANGES_MSG = {header: NO_CHANGES_HEADER, body: NO_CHANGES_BODY, type: 'warning-panel'};
 
+const NO_CHANGES_APPLY_HEADER = 'No Changes';
+const NO_CHANGES_APPLY_BODY = 'You havent modified this ruleset. Nothing to apply!!!'
+const BUTTON_PROPS_NO_CHANGES_APPLY = {label: 'Apply Ruleset'};
+export const NO_CHANGES_APPLY_MSG = {header: NO_CHANGES_APPLY_HEADER, body: NO_CHANGES_APPLY_BODY, type: 'warning-panel'};
 
 const MODIFIED_HEADER = 'Submit Ruleset';
 const MODIFIED_BODY = 'You have created / modified this ruleset. Do you want to save these changes into ruleset file?'

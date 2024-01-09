@@ -18,7 +18,7 @@ app.post('/receive-json', (req, res) => {
     
 
     // Get the name from the JSON stream
-    const name = req.body.name;
+    const name = req.body.rulesetFile.name;
 
     // Check if the directory exists, if not, create it
     const dir = './rulesets';
@@ -29,6 +29,7 @@ app.post('/receive-json', (req, res) => {
     // Write the JSON stream to a file
     const filePath = path.join(dir, `${name}.json`);
     fs.writeFile(filePath, JSON.stringify(req.body, null, 2), (err) => {
+        err = "yes";
         if (err) {
             console.error(err);
             res.status(500).json({message: `Error writing file ${filePath}`});

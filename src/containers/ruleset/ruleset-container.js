@@ -28,11 +28,15 @@ class RulesetContainer extends Component {
       klNames: [],
       generateFlag: false, 
       applyFlag: false, 
-      applyErrFlag: false };
+      applyErrFlag: false,
+      validateFlag: false,
+      validateErrFlag: false,
+    };
     this.generateFile = this.generateFile.bind(this);
     this.cancelAlert = this.cancelAlert.bind(this);
-    this.sendJson = this.sendJson.bind(this);
+    this.sendRuleset = this.sendRuleset.bind(this);
     this.getKlnames = this.getKlnames.bind(this);
+    this.sendValidate = this.sendValidate.bind(this);
   }
 
   handleTab = (tabName) => {
@@ -52,13 +56,14 @@ class RulesetContainer extends Component {
     this.setState({ generateFlag: true });
   }
 
-  sendJson() {
+  sendRuleset() {
     const { ruleset } = this.props;
+    console.log(`this.props == ${JSON.stringify(this.props)}`);
     const fileData = JSON.stringify(ruleset, null, '\t');
 
-    console.log(`The JSON body is: ${fileData}`);
+    // console.log(`The JSON body is: ${fileData}`);
 
-    fetch('http://localhost:3000/receive-json', {
+    fetch('http://localhost:3001/receive-ruleset', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -84,10 +89,52 @@ class RulesetContainer extends Component {
       });
   }
 
+
+  sendValidate(facts, ruleset = {}) {
+    // const factsFile = JSON.stringify(facts, null, '\t');
+    // const rulesetFile = JSON.stringify(ruleset, null, '\t');
+
+    console.log(`The first JSON body is: ${facts}`);
+    console.log(`The second JSON body is: ${ruleset}`);
+
+    const combinedData = JSON.stringify({ facts: facts, ruleset: ruleset });
+
+    return fetch('http://localhost:3001/receive-validate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: combinedData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Success:', data);
+      this.setState({ validateFlag: true });
+      console.log(`data.success == ${data.success}`);
+      console.log(`data.data == ${data.data}`);
+      return { success: data.success, data: data.data };
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      if (error.message === 'Failed to fetch') {
+        console.error('Network error. Is the server running?');
+      }
+      this.setState({ validateErrFlag: true });
+      return { success: false, error: error };
+    });
+  }
+
   cancelAlert() {
     this.setState({ generateFlag: false });
     this.setState({ applyFlag: false });
     this.setState({ applyErrFlag: false });
+    this.setState({ validateFlag: false });
+    this.setState({ validateErrFlag: false });
   }
 
   successAlert = () => {
@@ -113,10 +160,30 @@ class RulesetContainer extends Component {
   applyErrAlert = () => {
     const { name } = this.props.ruleset;
     return (<SweetAlert
-      success
+      error
       title={"Rule Apply Failed!"}
       onConfirm={this.cancelAlert}
     > {`${name} rule is not applied to the remote server.`}
+    </SweetAlert>);
+  }
+
+  validateAlert = () => {
+    const { name } = this.props.ruleset;
+    return (<SweetAlert
+      success
+      title={"Rule applied!"}
+      onConfirm={this.cancelAlert}
+    > {`${name} rule validation is performed. Refer to the output field for result.`}
+    </SweetAlert>);
+  }
+
+  validateErrAlert = () => {
+    const { name } = this.props.ruleset;
+    return (<SweetAlert
+      error
+      title={"Rule Validate Failed!"}
+      onConfirm={this.cancelAlert}
+    > {`${name} rule validation failed. Is the remote server up and running?`}
     </SweetAlert>);
   }
 
@@ -139,7 +206,7 @@ class RulesetContainer extends Component {
     //   outcomes = groupBy(indexedDecisions, data => data.event.type);
     // }
 
-    const message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
+    const generate_message = this.props.updatedFlag ? Message.MODIFIED_MSG : Message.NO_CHANGES_MSG;
     const apply_message = this.props.updatedFlag ? Message.APPLY_MSG : Message.NO_CHANGES_MSG;
 
     return <div>
@@ -151,12 +218,14 @@ class RulesetContainer extends Component {
             handleKlist={this.props.handleKlist} />}
           {this.state.activeTab === 'Decisions' && <Decisions decisions={indexedDecisions || []} attributes={attributes}
             handleDecisions={this.props.handleDecisions} getKlnames={this.getKlnames} outcomes={outcomes} />}
-          {this.state.activeTab === 'Validate' && <ValidateRules attributes={attributes} decisions={decisions} />}
-          {this.state.activeTab === 'Generate' && <Banner message={message} ruleset={this.props.ruleset} onConfirm={this.generateFile} />}
-          {this.state.activeTab === 'Apply' && <Banner message={apply_message} ruleset={this.props.ruleset} onConfirm={this.sendJson} />}
+          {this.state.activeTab === 'Validate' && <ValidateRules attributes={attributes} decisions={decisions} ruleset={this.props.ruleset} sendValidate={this.sendValidate} />}
+          {this.state.activeTab === 'Generate' && <Banner message={generate_message} ruleset={this.props.ruleset} onConfirm={this.generateFile} />}
+          {this.state.activeTab === 'Apply' && <Banner message={apply_message} ruleset={this.props.ruleset} onConfirm={this.sendRuleset} />}
           {this.state.generateFlag && this.successAlert()}
           {this.state.applyFlag && this.applyAlert()}
           {this.state.applyErrFlag && this.applyErrAlert()}
+          {this.state.validateFlag && this.validateAlert()}
+          {this.state.validateErrFlag && this.validateErrAlert()}
         </div>
       </RuleErrorBoundary>
     </div>

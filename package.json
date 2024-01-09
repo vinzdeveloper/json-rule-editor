@@ -1,8 +1,8 @@
 {
-  "name": "json-rule-editor",
-  "version": "1.0.0",
-  "description": "json-rule-editor",
-  "homepage": "https://github.com/vinzdeveloper/json-rule-editor",
+  "name": "sms-fw-rule-editor",
+  "version": "1.0.1",
+  "description": "sms-fw-rule-editor",
+  "homepage": "https://github.com/skill215/json-rule-editor/",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --hot",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vinzdeveloper/json-rule-editor.git"
+    "url": "https://github.com/skill215/json-rule-editor/"
   },
   "engines": {
     "node": ">=10.15.3",

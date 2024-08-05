@@ -13,6 +13,7 @@ import Notification from '../../components/notification/notification';
 import { RULE_AVAILABLE_UPLOAD, RULE_UPLOAD_ERROR } from '../../constants/messages';
 import ApperanceContext from '../../context/apperance-context';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { sendGevents } from '../../utils/gevents';
 
 
 function readFile(file, cb) {
@@ -120,14 +121,14 @@ class HomeContainer extends Component {
     handleUpload() {
       if(this.state.ruleset.length > 0) {
         this.props.uploadRuleset(this.state.ruleset);
-        this.navigate('./ruleset');
+        this.navigate('./ruleset', 'upload');
       }
     }
 
-    navigate(location)  {
+    navigate(location, action)  {
       const history = createHashHistory();
-      this.props.login();
-      history.push(location); 
+      this.props.login(action);
+      history.push(location);
     }
 
     render() {
@@ -147,7 +148,7 @@ class HomeContainer extends Component {
             </div>
             <div className="btn-group">
               <Button label={"Upload"} onConfirm={this.handleUpload} classname="primary-btn" type="button" />
-              {!this.props.loggedIn && <Button label={"Create"} onConfirm={() => this.navigate('./create-ruleset')} classname="primary-btn" type="button" disabled={this.state.files.length > 0} />}
+              {!this.props.loggedIn && <Button label={"Create"} onConfirm={() => this.navigate('./create-ruleset', 'create')} classname="primary-btn" type="button" disabled={this.state.files.length > 0} />}
             </div>
           </TitlePanel>
         </div>
@@ -183,7 +184,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 
-  login: () => dispatch(login()),
+  login: (action) => dispatch(login(action)),
   uploadRuleset: (ruleset) =>  dispatch(uploadRuleset(ruleset)),
 
 });

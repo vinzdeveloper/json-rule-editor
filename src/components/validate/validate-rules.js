@@ -10,6 +10,7 @@ import * as Message from '../../constants/messages';
 import { validateRuleset } from '../../validations/rule-validation';
 import Loader from '../loader/loader';
 import { ViewOutcomes } from '../attributes/view-attributes';
+import { sendGevents } from '../../utils/gevents';
 
 class ValidateRules extends Component {
 
@@ -65,6 +66,7 @@ class ValidateRules extends Component {
         }).catch((e) => {
             this.setState({loading: false, error: true, errorMessage: e.error, result: true, });
         });
+        sendGevents({ narrative: 'validate rules', name: 'Validate' });
     }
 
     attributeItems = () => {

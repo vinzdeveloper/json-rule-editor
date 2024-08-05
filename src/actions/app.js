@@ -1,4 +1,5 @@
 import { UPDATE_NAV_STATE, LOG_IN } from './action-types';
+import { sendGevents } from '../utils/gevents';
 
 
 export function updateState(flag) {
@@ -8,7 +9,8 @@ export function updateState(flag) {
     });
 }
 
-export function login() {
+export function login(action) {
+    sendGevents({ narrative: action, name: 'Login'});
     return ({
         type: LOG_IN,
     });

@@ -15,7 +15,6 @@ import * as Message from '../../constants/messages';
 import { groupBy } from 'lodash/collection';
 import RuleErrorBoundary from '../../components/error/ruleset-error';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { sendGevents } from '../../utils/gevents';
 
 const tabs = [{name: 'Facts'}, {name: 'Decisions'}, {name: 'Validate'}, {name: 'Generate'}];
 class RulesetContainer extends Component {
@@ -41,7 +40,6 @@ class RulesetContainer extends Component {
       link.href = url;
       link.click();
       this.setState({ generateFlag: true });
-      sendGevents({ narrative: 'generate', name: 'Ruleset' });
     }
 
     cancelAlert() {

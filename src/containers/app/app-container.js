@@ -8,7 +8,6 @@ import { updateRulesetIndex } from '../../actions/ruleset';
 import { updateState } from '../../actions/app';
 import { createHashHistory } from 'history';
 import ApperanceContext from '../../context/apperance-context';
-import { sendGevents } from '../../utils/gevents';
 
 class ApplicationContainer extends Component {
 
@@ -22,7 +21,6 @@ class ApplicationContainer extends Component {
             const theme = { ...this.state.theme, background: value };
             document.body.className = value;
             this.setState({ theme });
-            sendGevents({ narrative: 'value', name: 'Theme' });
         }
         this.state = {theme: { background: 'light', toggleBackground: this.toggleBackground }};
     }

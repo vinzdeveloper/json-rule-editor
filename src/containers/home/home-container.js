@@ -13,7 +13,6 @@ import Notification from '../../components/notification/notification';
 import { RULE_AVAILABLE_UPLOAD, RULE_UPLOAD_ERROR } from '../../constants/messages';
 import ApperanceContext from '../../context/apperance-context';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
-import { sendGevents } from '../../utils/gevents';
 
 
 function readFile(file, cb) {

@@ -12,6 +12,13 @@ module.exports = (env, arg) => ({
   },
   mode: arg.mode != 'production' ? 'development' : 'production',
   devtool: arg.mode != 'production' ? 'eval-source-map' : 'nosources-source-map',
+  devServer: {
+    host: '0.0.0.0',
+    port: 8080,
+    hot: true,
+    historyApiFallback: true,
+    allowedHosts: 'all',
+  },
   module: {
     rules: [{
       test: /\.(js|jsx)$/,
@@ -41,7 +48,11 @@ module.exports = (env, arg) => ({
         {
           loader: "sass-loader",
           options: {
-            sourceMap: false
+            sourceMap: false,
+            implementation: require('sass'),
+            sassOptions: {
+              quietDeps: true,
+            },
           }
         }],
       exclude: /node_modules/,
